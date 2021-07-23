@@ -7,11 +7,11 @@ Let's make a game!
 	version:1
 
 Settings
-	background:https://img.tukuppt.com//ad_preview/00/15/82/5c99abfc95222.jpg
+	background:https://i.imgur.com/ko1yDMX.jpg
 	building cost increase:115%
 	building cost refund:50%
 	spritesheet:icons, 48 by 48, stuff/bunnyIcons.png
-	// stylesheet:stuff/bigBlue.css
+	stylesheet:stuff/bigBlue.css
 
 Layout
 	use default
@@ -50,87 +50,38 @@ Shinies
 			if (have clover) $boost=4
             //get at least 7, or between 1 and 3 minutes of our bitcoin production
             $amount=max(7,random(bitcoins:ps*60*1,bitcoins:ps*60*3))*$boost
-            toast The lucky bitcoin grants you<//><b>[$amount] bitcoins</b>.
             toast 比特币+<b>[$amount]
             yield $amount bitcoins
 		end
+
+Includes
+*include newBuilding %id %name %desc %icon %cost %yield %req
+    *building[%id]
+        name:[%name]
+        desc:[%desc]。<//><b>效果：</b><.>+[%yield]比特币/秒
+        icon:[%icon]
+        cost:[%cost] bitcoins
+        on tick:yield [%yield] bitcoins
+        req:%req bitcoins:earned
 
 Buildings
 	*TEMPLATE
 		on click:anim glow
 		
-	*cage|cages
-		name:Rabbit cage|Rabbit cages
-		desc:A tiny little cage.<//><b>Effect:</b><.>Produces 1 rabbit every 10 seconds.
-		icon:icons[3,0]
-		cost:15 bitcoins
-		on tick:yield 0.1 bitcoin
-		unlocked
-	
-	*hutch|hutches
-		name:Rabbit hutch|Rabbit hutches
-		desc:A bit roomier than a cage, with enough space to hop around.<//><b>Effect:</b><.>Produces 1 rabbit every 2 seconds.
-		icon:icons[3,1]
-		cost:100 bitcoins
-		on tick:yield 1 bitcoins
-		req:100 bitcoins:earned
-	
-	*coop|coops
-		name:Rabbit coop|Rabbit coops
-		desc:A much nicer rabbit home where full bitcoin families can live.<//><b>Effect:</b><.>Produces 5 rabbits per second.
-		icon:icons[3,2]
-		cost:1100 bitcoins
-		on tick:yield 8 bitcoins
-		req:600 bitcoins:earned
-	
-	*pen|pens
-		name:Rabbit pen|Rabbit pens
-		desc:A lovely enclosure with plenty of green space.<//><b>Effect:</b><.>Produces 12 rabbits per second.
-		icon:icons[3,3]
-		cost:12000 bitcoins
-		on tick:yield 47 bitcoins
-		req:12000 bitcoins:earned
-	
-	*meadow|meadows
-		name:Rabbit meadow|Rabbit meadows
-		desc:A wide open space full of shade and lush grass.<//><b>Effect:</b><.>Produces 90 rabbits per second.
-		icon:icons[3,4]
-		cost:130000 bitcoins
-		on tick:yield 260 bitcoins
-		req:130000 bitcoins:earned
-
-    *village|villages
-		name:Rabbit village|Rabbit villages
-		desc:Your bitcoins are building their own villages now!<//><b>Effect:</b><.>Produces 300 rabbits per second.
-		icon:icons[3,5]
-		cost:1400000 bitcoins
-		on tick:yield 1400 bitcoins
-		req:1400000 bitcoins:earned
-		
-	*city|cities
-		name:Rabbit city|Rabbit cities
-		desc:A bustling little city, populated with busy rabbits.<//><b>Effect:</b><.>Produces 1000 rabbits per second.
-		icon:icons[3,6]
-		cost:20000000 bitcoins
-		on tick:yield 7800 bitcoins
-		req:20000000 bitcoins:earned
-		
-	*citadel|citadels
-		name:Moon citadel|Moon citadels
-		desc:An ornate palace standing on the moon, ruled by bitcoin kings and queens and staffed with royal bitcoin guards.<//><b>Effect:</b><.>Produces 4000 rabbits per second.
-		icon:icons[3,7]
-		cost:330000000 bitcoins
-		on tick:yield 44000 bitcoins
-		req:330000000 bitcoins:earned
-		
-	*fortress
-		name:Freedom fortress
-		text:Freedom fortress ([this]%)
-		desc:A huge bitcoin castle. A monument to the adventurous spirit of bunnykind, which will take time and effort to complete.<//><b>The fortress is [this]% complete.</b>
-		icon:icons[3,8]
-		cost:5100000000 bitcoins
-		on tick:yield 260000 bitcoins
-		req:5100000000 bitcoins:earned
+    [include newBuilding %id="1" %name="人工计算" %desc="想通过一个人的大脑计算sha256，几乎是不可能的事情" %icon="icons[3,0]" %cost="5" %yield="0.1" %req="0"]
+	[include newBuilding %id="2" %name="人列计算机" %desc="顾名思义，人列计算机就是由人组成的计算机。但是人数需求庞大，由人组成计算机的的各个部位，由各种符号代替二进制进行运算" %icon="icons[3,1]" %cost="100" %yield="1" %req="100"]
+	[include newBuilding %id="3" %name="家用笔记本" %desc="任何一台电脑都能成为挖矿机，只是收益会比较低" %icon="icons[3,2]" %cost="1100" %yield="8" %req="1100"]
+	[include newBuilding %id="4" %name="组装计算机" %desc="由非常多张显卡组成的挖矿机，哪怕只是HD6770那样的垃圾卡，“组团”之后的运算能力还是能够超越大部分用户的单张显卡的" %icon="icons[3,3]" %cost="12000" %yield="47" %req="12000"]
+	[include newBuilding %id="5" %name="淘汰的二手矿机" %desc="矿老板淘汰下来的二手显卡矿机组" %icon="icons[3,4]" %cost="130000" %yield="260" %req="130000"]
+	[include newBuilding %id="6" %name="全新的显卡矿机" %desc="全新的显卡矿机，挖矿不算快，但是性价比高" %icon="icons[3,5]" %cost="1400000" %yield="1400" %req="1400000"]
+	[include newBuilding %id="7" %name="ASIC矿机" %desc="ASIC矿机芯片的性能超过当前顶级的电脑CPU。因为ASIC矿机在算力上有绝对的优势，所以电脑、显卡矿机开始逐渐被淘汰" %icon="icons[3,6]" %cost="20000000" %yield="7800" %req="20000000"]
+	[include newBuilding %id="8" %name="云服务器" %desc="利用弹性计算能力，可以根据需要随意增加服务器数量，大大提高部署效率" %icon="icons[3,7]" %cost="330000000" %yield="44000" %req="330000000"]
+	[include newBuilding %id="9" %name="挖矿机阵列" %desc="由数十台挖矿机组成的阵列，效率大大提升" %icon="icons[3,8]" %cost="5100000000" %yield="260000" %req="5100000000"]
+	[include newBuilding %id="10" %name="挖矿机集群" %desc="由数百到数千台挖矿机组成的大阵集群，效率惊人" %icon="icons[3,8]" %cost="75000000000" %yield="1600000" %req="75000000000"]
+	[include newBuilding %id="11" %name="超级计算机" %desc="超级计算机（Super computer）是指能够执行一般个人电脑无法处理的大量资料与高速运算的电脑。" %icon="icons[3,8]" %cost="1E+12" %yield="10000000" %req="1E+12"]
+	[include newBuilding %id="12" %name="量子计算机" %desc="量子计算机求解数学算法高斯玻色取样只需200秒，而目前世界最快的超级计算机要用6亿年。" %icon="icons[3,8]" %cost="1.4E+13" %yield="65000000" %req="1.4E+13"]
+	[include newBuilding %id="13" %name="贾维斯" %desc="全称为Just A Rather Very Intelligent System（只是一个相当聪明的智能系统），钢铁侠的私人管家，拥有超越时代的计算能力" %icon="icons[3,8]" %cost="1.7E+14" %yield="430000000" %req="1.7E+14"]
+	[include newBuilding %id="14" %name="克罗托系统" %desc="从宏观上来说物质是一堆堆聚合的原子，而原子的运动都符合物理方程，就像你知道一个小球的速度、位置和所受的力，就能计算出他未来的运行轨迹。所以理论上来说只要确切地得知宇宙中每个原子的状态，再拥有足够的算力，我们就能计算出未来了！" %icon="icons[3,8]" %cost="2.1E+15" %yield="2900000000" %req="2.1E+15"]
 	
 Upgrades
 	*TEMPLATE
@@ -141,7 +92,7 @@ Upgrades
 	
 	*parsley
 		name:Parsley
-		desc:A nice little supplement to your bitcoins' diet.<//><b>Effect:</b><.>+1 bitcoin/click
+		desc:A nice little supplement to your bitcoins' diet.<//><b>效果：</b><.>+1 bitcoin/click
 		icon:icons[1,1]
 		cost:100 bitcoins
 		passive:increase bitcoin yield of bitcoinButton by 1
@@ -149,7 +100,7 @@ Upgrades
 		
 	*spinach
 		name:Spinach
-		desc:Big tasty leaves, perfect for hungry bitcoins.<//><b>Effect:</b><.>+1 bitcoin/click
+		desc:Big tasty leaves, perfect for hungry bitcoins.<//><b>效果：</b><.>+1 bitcoin/click
 		icon:icons[1,2]
 		cost:200 bitcoins
 		passive:increase bitcoin yield of bitcoinButton by 1
@@ -157,7 +108,7 @@ Upgrades
 		
 	*lettuce
 		name:Lettuce
-		desc:Frilly greens loved by all bitcoins.<//><b>Effect:</b><.>+1 bitcoin/click
+		desc:Frilly greens loved by all bitcoins.<//><b>效果：</b><.>+1 bitcoin/click
 		icon:icons[1,3]
 		cost:400 bitcoins
 		passive:increase bitcoin yield of bitcoinButton by 1
@@ -165,7 +116,7 @@ Upgrades
 		
 	*broccoli
 		name:Broccoli
-		desc:Crunchy greens that look like little trees.<//><b>Effect:</b><.>bitcoins/click x2<.>bitcoin production +5%
+		desc:Crunchy greens that look like little trees.<//><b>效果：</b><.>bitcoins/click x2<.>bitcoin production +5%
 		icon:icons[1,4]
 		cost:3000 bitcoins
 		passive:multiply bitcoin yield of bitcoinButton by 2
@@ -174,7 +125,7 @@ Upgrades
 		
 	*apple
 		name:Apple
-		desc:Nice pieces of juicy red apples.<//><b>Effect:</b><.>bitcoins/click x1.5<.>bitcoin production +5%
+		desc:Nice pieces of juicy red apples.<//><b>效果：</b><.>bitcoins/click x1.5<.>bitcoin production +5%
 		icon:icons[1,5]
 		cost:10000 bitcoins
 		passive:multiply bitcoin yield of bitcoinButton by 1.5
@@ -183,7 +134,7 @@ Upgrades
 		
 	*radish
 		name:Radish
-		desc:Purple, crunchy, and strangely spicy.<//><b>Effect:</b><.>bitcoins/click x1.5<.>bitcoin production +5%
+		desc:Purple, crunchy, and strangely spicy.<//><b>效果：</b><.>bitcoins/click x1.5<.>bitcoin production +5%
 		icon:icons[1,6]
 		cost:50000 bitcoins
 		passive:multiply bitcoin yield of bitcoinButton by 1.5
@@ -192,7 +143,7 @@ Upgrades
 		
 	*mint
 		name:Mint
-		desc:Tasty, and gives your bitcoins a lovely breath.<//><b>Effect:</b><.>bitcoins/click x1.5<.>bitcoin production +5%
+		desc:Tasty, and gives your bitcoins a lovely breath.<//><b>效果：</b><.>bitcoins/click x1.5<.>bitcoin production +5%
 		icon:icons[1,7]
 		cost:100000 bitcoins
 		passive:multiply bitcoin yield of bitcoinButton by 1.5
@@ -201,7 +152,7 @@ Upgrades
 		
 	*chard
 		name:Chard
-		desc:Broad leaves that make for a tasty salad.<//><b>Effect:</b><.>bitcoins/click x1.5<.>bitcoin production +5%
+		desc:Broad leaves that make for a tasty salad.<//><b>效果：</b><.>bitcoins/click x1.5<.>bitcoin production +5%
 		icon:icons[1,8]
 		cost:500000 bitcoins
 		passive:multiply bitcoin yield of bitcoinButton by 1.5
@@ -210,7 +161,7 @@ Upgrades
 		
 	*cherry
 		name:Cherry
-		desc:Your bitcoins look like little vampires when they start munching on these!<//><b>Effect:</b><.>bitcoins/click x1.5<.>bitcoin production +5%
+		desc:Your bitcoins look like little vampires when they start munching on these!<//><b>效果：</b><.>bitcoins/click x1.5<.>bitcoin production +5%
 		icon:icons[1,9]
 		cost:1000000 bitcoins
 		passive:multiply bitcoin yield of bitcoinButton by 1.5
@@ -219,7 +170,7 @@ Upgrades
 		
 	*carrot
 		name:Carrot
-		desc:The quintessential rabbit food! Crunchy, orange, and perfect.<//><b>Effect:</b><.>bitcoins/click x2<.>bitcoin production +10%
+		desc:The quintessential rabbit food! Crunchy, orange, and perfect.<//><b>效果：</b><.>bitcoins/click x2<.>bitcoin production +10%
 		icon:icons[1,0]
 		cost:100000000 bitcoins
 		passive:multiply bitcoin yield of bitcoinButton by 2
@@ -230,73 +181,73 @@ Upgrades
 	
 	*buildingUpgrade1
 		name:Sippy bottles
-		desc:Your bitcoins can drink their fill!<//><b>Effect:</b><.>rabbit cage production x2<.>rabbit hutch production x2<.>rabbit coop production x2
+		desc:Your bitcoins can drink their fill!<//><b>效果：</b><.>[n:building1]产量x2<.>[n:building2]产量x2<.>[n:building3]产量x2
 		icon:icons[2,0] icons[3,0]
 		cost:1000 bitcoins
-		passive:multiply yield of cage by 2
-		passive:multiply yield of hutch by 2
-		passive:multiply yield of coop by 2
-		req:(cages>=10 or hutches>=10 or coops>=10)
+		passive:multiply yield of building1 by 2
+		passive:multiply yield of building2 by 2
+		passive:multiply yield of building3 by 2
+		req:(building1>=10 or building2>=10 or building3>=10)
 		
 	*buildingUpgrade2
 		name:Prime grade hay
-		desc:Not just for horses anymore!<//><b>Effect:</b><.>rabbit cage production x2<.>rabbit hutch production x2<.>rabbit coop production x2
+		desc:Not just for horses anymore!<//><b>效果：</b><.>[n:building1]产量x2<.>[n:building2]产量x2<.>[n:building3]产量x2
 		icon:icons[2,0] icons[3,1]
 		cost:100000 bitcoins
-		passive:multiply yield of cage by 2
-		passive:multiply yield of hutch by 2
-		passive:multiply yield of coop by 2
-		req:(cages>=50 or hutches>=50 or coops>=50)
+		passive:multiply yield of building1 by 2
+		passive:multiply yield of building2 by 2
+		passive:multiply yield of building3 by 2
+		req:(building1>=50 or building2>=50 or building3>=50)
 		
 	*buildingUpgrade3
 		name:Shredded newspapers
-		desc:You'd think they just poop on these, but they really enjoy reading the Sunday comics.<//><b>Effect:</b><.>rabbit cage production x2<.>rabbit hutch production x2<.>rabbit coop production x2
+		desc:You'd think they just poop on these, but they really enjoy reading the Sunday comics.<//><b>效果:</b><.>[n:building1]产量x2<.>[n:building2]产量x2<.>[n:building3]产量x2
 		icon:icons[2,0] icons[3,2]
 		cost:5000000 bitcoins
-		passive:multiply yield of cage by 2
-		passive:multiply yield of hutch by 2
-		passive:multiply yield of coop by 2
-		req:(cages>=100 or hutches>=100 or coops>=100)
+		passive:multiply yield of building1 by 2
+		passive:multiply yield of building2 by 2
+		passive:multiply yield of building3 by 2
+		req:(building1>=100 or building2>=100 or building3>=100)
 		
 	*buildingUpgrade4
 		name:Pretty fences
-		desc:Just the right size so your bitcoins can peek through but not hop over!<//><b>Effect:</b><.>rabbit pen production x2<.>rabbit meadow production x2
+		desc:Just the right size so your bitcoins can peek through but not hop over!<//><b>效果：</b><.>[n:building4]产量x2<.>[n:building5]产量x2
 		icon:icons[2,0] icons[3,3]
 		cost:50000 bitcoins
-		passive:multiply yield of pen by 2
-		passive:multiply yield of meadow by 2
-		req:(pens>=10 or meadows>=10)
+		passive:multiply yield of building4 by 2
+		passive:multiply yield of building5 by 2
+		req:(building4>=10 or building5>=10)
 		
 	*buildingUpgrade5
 		name:Bunny playground
-		desc:If your bitcoins are outside, they might as well get some exercise!<//><b>Effect:</b><.>rabbit pen production x2<.>rabbit meadow production x2
+		desc:If your bitcoins are outside, they might as well get some exercise!<//><b>效果：</b><.>[n:building4]产量x2<.>[n:building5]产量x2
 		icon:icons[2,0] icons[3,4]
 		cost:5000000 bitcoins
-		passive:multiply yield of pen by 2
-		passive:multiply yield of meadow by 2
-		req:(pens>=50 or meadows>=50)
+		passive:multiply yield of building4 by 2
+		passive:multiply yield of building5 by 2
+		req:(building4>=50 or building5>=50)
 		
 	*buildingUpgrade6
 		name:Bunny TVs
-		desc:Televisions that broadcast bitcoin cartoons, bitcoin sitcoms, and bitcoin news bulletins.<//><b>Effect:</b><.>rabbit village production x2<.>rabbit city production x2
+		desc:Televisions that broadcast bitcoin cartoons, bitcoin sitcoms, and bitcoin news bulletins.<//><b>效果：</b><.>[n:building6]产量x2<.>[n:building7]产量x2
 		icon:icons[2,0] icons[3,5]
 		cost:1000000 bitcoins
-		passive:multiply yield of village by 2
-		passive:multiply yield of city by 2
-		req:(villages>=10 or cities>=10)
+		passive:multiply yield of building6 by 2
+		passive:multiply yield of building7 by 2
+		req:(building6>=10 or building7>=10)
 		
 	*buildingUpgrade7
 		name:Wee little bitcoin cars
-		desc:Your bitcoins drive around in these. How nice!<//><b>Effect:</b><.>rabbit village production x2<.>rabbit city production x2
+		desc:Your bitcoins drive around in these. How nice!<//><b>效果：</b><.>[n:building6]产量x2<.>[n:building7]产量x2
 		icon:icons[2,0] icons[3,6]
 		cost:500000000 bitcoins
-		passive:multiply yield of village by 2
-		passive:multiply yield of city by 2
-		req:(villages>=50 or cities>=50)
+		passive:multiply yield of building6 by 2
+		passive:multiply yield of building7 by 2
+		req:(building6>=50 or building7>=50)
 		
 	*clover
 		name:Clover
-		desc:A delicious herb that tastes lucky.<//><b>Effect:</b><.>lucky bitcoin effects are 4 times more powerful
+		desc:A delicious herb that tastes lucky.<//><b>效果：</b><.>lucky bitcoin effects are 4 times more powerful
 		icon:icons[2,8]
 		cost:1000000000 bitcoins
 		req:500000000 bitcoins:earned
@@ -355,7 +306,7 @@ Achievements
 		
 	*fortressAchiev
 		name:Freedom!
-		desc:Complete building the <b>freedom fortress</b>.<//>This is it. You beat the game!
-		req:100 fortress
+		desc:Complete building the <b>freedom [n:building9]</b>.<//>This is it. You beat the game!
+		req:100 building9
 		icon:icons[3,8] icons[0,4]
 		
