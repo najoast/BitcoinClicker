@@ -62,7 +62,7 @@ Includes
         icon:[%icon]
         cost:[%cost] bitcoins
         on tick:yield [%yield] bitcoins
-        req:%req bitcoins:earned
+        req:[%req] bitcoins:earned
 
 Buildings
 	*TEMPLATE
