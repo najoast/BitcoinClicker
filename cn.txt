@@ -10,7 +10,7 @@ Settings
 	background:https://i.imgur.com/ko1yDMX.jpg
 	building cost increase:115%
 	building cost refund:50%
-	spritesheet:icons, 48 by 48, stuff/bunnyIcons.png
+	spritesheet:icons, 48 by 48, https://raw.githubusercontent.com/najoast/BitcoinClicker/master/res/icons.png
 	stylesheet:stuff/bigBlue.css
 
 Layout
