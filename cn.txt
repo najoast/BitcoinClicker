@@ -10,7 +10,8 @@ Settings
 	background:https://i.imgur.com/ko1yDMX.jpg
 	building cost increase:115%
 	building cost refund:50%
-	spritesheet:icons, 48 by 48, https://raw.githubusercontent.com/najoast/BitcoinClicker/master/res/icons.png
+	// spritesheet:icons, 48 by 48, https://raw.githubusercontent.com/najoast/BitcoinClicker/master/res/icons.png
+	spritesheet:icons, 48 by 48, https://gitee.com/Yancey/BitcoinClicker/raw/main/res/icons.png
 	stylesheet:stuff/bigBlue.css
 
 Layout
@@ -22,7 +23,8 @@ Buttons
 		desc:点击这个比特币实体来生成更多比特币吧！
 		on click:anim icon wobble
 		on click:yield 1 bitcoin
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/master/res/btn_bitcoin.png
+		// icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/master/res/btn_bitcoin.png
+		icon:https://gitee.com/Yancey/BitcoinClicker/raw/main/res/btn_bitcoin.png
 		no text
 		class:bigButton hasFlares
 		icon class:shadowed
@@ -43,7 +45,7 @@ Shinies
 		movement:onRight moveLeft fade bounce:0.05
 		frequency:60
 		frequency variation:30
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/master/res/btn_bitcoin.png
+		icon:https://gitee.com/Yancey/BitcoinClicker/raw/main/res/btn_bitcoin.png
 		class:bigButton
 		on click:
 			$boost=1
