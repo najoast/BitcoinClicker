@@ -1,0 +1,71 @@
+	*building1
+		name:人工计算
+		desc:想通过一个人的大脑计算sha256，几乎是不可能的事情。<//><b>效果：</b><.>+0.1比特币/秒
+		icon:icons[3,0]
+		cost:15 bitcoins
+		on tick:yield 0.1 bitcoin
+		unlocked
+		
+	*building2
+		name:人列计算机
+		desc:顾名思义，人列计算机就是由人组成的计算机。但是人数需求庞大，由人组成计算机的的各个部位，由各种符号代替二进制进行运算。<//><b>效果：</b><.>+1比特币/秒
+		icon:icons[3,1]
+		cost:100 bitcoins
+		on tick:yield 1 bitcoins
+		req:100 bitcoins:earned
+		
+	*building3
+		name:家用笔记本
+		desc:任何一台电脑都能成为挖矿机，只是收益会比较低。<//><b>效果：</b><.>+8比特币/秒
+		icon:icons[3,2]
+		cost:1100 bitcoins
+		on tick:yield 8 bitcoins
+		req:600 bitcoins:earned
+	
+	*building4
+		name:组装计算机
+		desc:由非常多张显卡组成的挖矿机，哪怕只是HD6770那样的垃圾卡，“组团”之后的运算能力还是能够超越大部分用户的单张显卡的。<//><b>效果：</b><.>+47比特币/秒
+		icon:icons[3,3]
+		cost:12000 bitcoins
+		on tick:yield 47 bitcoins
+		req:12000 bitcoins:earned
+		
+	*building5
+		name:淘汰的二手矿机
+		desc:矿老板淘汰下来的二手显卡矿机组。<//><b>效果：</b><.>+260比特币/秒
+		icon:icons[3,4]
+		cost:130000 bitcoins
+		on tick:yield 260 bitcoins
+		req:130000 bitcoins:earned
+
+    *building6
+		name:全新的显卡矿机
+		desc:全新的显卡矿机，挖矿不算快，但是性价比高。<//><b>效果：</b><.>+1400比特币/秒
+		icon:icons[3,5]
+		cost:1400000 bitcoins
+		on tick:yield 1400 bitcoins
+		req:1400000 bitcoins:earned
+		
+	*building7
+		name:ASIC矿机
+		desc:ASIC矿机芯片的性能超过当前顶级的电脑CPU。因为ASIC矿机在算力上有绝对的优势，所以电脑、显卡矿机开始逐渐被淘汰。<//><b>效果：</b><.>+7800比特币/秒
+		icon:icons[3,6]
+		cost:20000000 bitcoins
+		on tick:yield 7800 bitcoins
+		req:20000000 bitcoins:earned
+		
+	*building8
+		name:云服务器
+		desc:利用弹性计算能力，可以根据需要随意增加服务器数量，大大提高部署效率。<//><b>效果：</b><.>+44000比特币/秒
+		icon:icons[3,7]
+		cost:330000000 bitcoins
+		on tick:yield 44000 bitcoins
+		req:330000000 bitcoins:earned
+		
+	*building9
+		name:挖矿机阵列
+		text:由数十台挖矿机组成的阵列，效率大大提升<//><b>效果：</b><.>+260000比特币/秒
+		icon:icons[3,8]
+		cost:5100000000 bitcoins
+		on tick:yield 260000 bitcoins
+		req:5100000000 bitcoins:earned
