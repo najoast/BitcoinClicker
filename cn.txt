@@ -261,14 +261,6 @@ Upgrades
 		passive:multiply yield of city by 2
 		req:(villages>=50 or cities>=50)
 		
-	*buildingUpgrade8
-		name:Soothing moon crystals
-		desc:Just really nice to be around.<//><b>Effect:</b><.>moon citadel production x2
-		icon:icons[2,0] icons[3,7]
-		cost:1000000000 bitcoins
-		passive:multiply yield of citadel by 2
-		req:10 citadels
-		
 	*clover
 		name:Clover
 		desc:A delicious herb that tastes lucky.<//><b>Effect:</b><.>lucky bitcoin effects are 4 times more powerful
