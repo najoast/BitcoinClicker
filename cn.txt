@@ -78,10 +78,10 @@ Buildings
 	[include newBuilding %id="8" %name="云服务器" %desc="利用弹性计算能力，可以根据需要随意增加服务器数量，大大提高部署效率" %icon="icons[3,7]" %cost="330000000" %yield="44000" %req="330000000"]
 	[include newBuilding %id="9" %name="挖矿机阵列" %desc="由数十台挖矿机组成的阵列，效率大大提升" %icon="icons[3,8]" %cost="5100000000" %yield="260000" %req="5100000000"]
 	[include newBuilding %id="10" %name="挖矿机集群" %desc="由数百到数千台挖矿机组成的大阵集群，效率惊人" %icon="icons[3,8]" %cost="75000000000" %yield="1600000" %req="75000000000"]
-	[include newBuilding %id="11" %name="超级计算机" %desc="超级计算机（Super computer）是指能够执行一般个人电脑无法处理的大量资料与高速运算的电脑。" %icon="icons[3,8]" %cost="1E+12" %yield="10000000" %req="1E+12"]
-	[include newBuilding %id="12" %name="量子计算机" %desc="量子计算机求解数学算法高斯玻色取样只需200秒，而目前世界最快的超级计算机要用6亿年。" %icon="icons[3,8]" %cost="1.4E+13" %yield="65000000" %req="1.4E+13"]
-	[include newBuilding %id="13" %name="贾维斯" %desc="全称为Just A Rather Very Intelligent System（只是一个相当聪明的智能系统），钢铁侠的私人管家，拥有超越时代的计算能力" %icon="icons[3,8]" %cost="1.7E+14" %yield="430000000" %req="1.7E+14"]
-	[include newBuilding %id="14" %name="克罗托系统" %desc="从宏观上来说物质是一堆堆聚合的原子，而原子的运动都符合物理方程，就像你知道一个小球的速度、位置和所受的力，就能计算出他未来的运行轨迹。所以理论上来说只要确切地得知宇宙中每个原子的状态，再拥有足够的算力，我们就能计算出未来了！" %icon="icons[3,8]" %cost="2.1E+15" %yield="2900000000" %req="2.1E+15"]
+	[include newBuilding %id="11" %name="超级计算机" %desc="超级计算机（Super computer）是指能够执行一般个人电脑无法处理的大量资料与高速运算的电脑。" %icon="icons[3,8]" %cost="1000000000000" %yield="10000000" %req="1000000000000"]
+	[include newBuilding %id="12" %name="量子计算机" %desc="量子计算机求解数学算法高斯玻色取样只需200秒，而目前世界最快的超级计算机要用6亿年。" %icon="icons[3,8]" %cost="14000000000000" %yield="65000000" %req="14000000000000"]
+	[include newBuilding %id="13" %name="贾维斯" %desc="全称为Just A Rather Very Intelligent System（只是一个相当聪明的智能系统），钢铁侠的私人管家，拥有超越时代的计算能力" %icon="icons[3,8]" %cost="170000000000000" %yield="430000000" %req="170000000000000"]
+	[include newBuilding %id="14" %name="克罗托系统" %desc="从宏观上来说物质是一堆堆聚合的原子，而原子的运动都符合物理方程，就像你知道一个小球的速度、位置和所受的力，就能计算出他未来的运行轨迹。所以理论上来说只要确切地得知宇宙中每个原子的状态，再拥有足够的算力，我们就能计算出未来了！" %icon="icons[3,8]" %cost="2100000000000000" %yield="2900000000" %req="2100000000000000"]
 	
 Upgrades
 	*TEMPLATE
