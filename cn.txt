@@ -62,13 +62,21 @@ Includes
         icon:[%icon]
         cost:[%cost] bitcoins
         on tick:yield [%yield] bitcoins
-        req:if (%id=1) 0 bitcoins:earned else have building([%id]-1)
+        req:have building([%id]-1)
 
 Buildings
 	*TEMPLATE
 		on click:anim glow
 		
-    [include newBuilding %id="1" %name="人工计算" %desc="想通过一个人的大脑计算sha256，几乎是不可能的事情" %icon="icons[3,0]" %cost="5" %yield="0.1"]
+    *building1
+		name:人工计算
+		desc:想通过一个人的大脑计算sha256，几乎是不可能的事情。<//><b>效果：</b><.>+0.1比特币/秒
+		icon:icons[3,0]
+		cost:15 bitcoins
+		on tick:yield 0.1 bitcoin
+		unlocked
+
+    // [include newBuilding %id="1" %name="人工计算" %desc="想通过一个人的大脑计算sha256，几乎是不可能的事情" %icon="icons[3,0]" %cost="5" %yield="0.1"]
 	[include newBuilding %id="2" %name="人列计算机" %desc="顾名思义，人列计算机就是由人组成的计算机。但是人数需求庞大，由人组成计算机的的各个部位，由各种符号代替二进制进行运算" %icon="icons[3,1]" %cost="100" %yield="1"]
 	[include newBuilding %id="3" %name="家用笔记本" %desc="任何一台电脑都能成为挖矿机，只是收益会比较低" %icon="icons[3,2]" %cost="1100" %yield="8"]
 	[include newBuilding %id="4" %name="组装计算机" %desc="由非常多张显卡组成的挖矿机，哪怕只是HD6770那样的垃圾卡，“组团”之后的运算能力还是能够超越大部分用户的单张显卡的" %icon="icons[3,3]" %cost="12000" %yield="47"]
