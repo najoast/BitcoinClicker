@@ -113,13 +113,15 @@ Shinies
 		class:bigButton
 		icon:https://gitee.com/Yancey/BitcoinClicker/raw/main/res/btn_bitcoin.png
 
+*include buildingDesc %desc
+	desc:[%desc]<//><.>
 Buildings
 	*TEMPLATE
 		on click:anim glow
 		
 	*building1
 		name:人工计算
-		desc:想通过一个人的大脑计算sha256，几乎是不可能的事情。<//><b>效果：</b><.> +0.1 比特币/秒
+		desc:想通过一个人的大脑计算sha256，几乎是不可能的事情。<//><.>每个[n:this]每秒产出[this:ps]个比特币<.>[this]个[n:this]每秒产出[this*this:ps]个比特币（占总产量的[this:ps*100/bitcoin:ps%]）<.>已产出[this:earned]个比特币
 		icon:icons[3,0]
 		cost:15 bitcoins
         on tick:
