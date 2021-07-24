@@ -51,7 +51,7 @@ Includes
 		desc:[%desc]
 		icon:ccIcons[%icon]
 		cost:[%cost] bitcoins
-		req:building[%id] >= [%req]
+		req:building[%id]>=[%req]
 		passive:multiply yield of building[%id] by 2
 
 Buttons
