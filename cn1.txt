@@ -49,7 +49,7 @@ Buttons
             $addition=0
             $total=0
             do count with :Buildings:notTag:tagBuilding1
-            log The buildings num of notTag:tagBuilding1 is $total
+            log The buildings num of notTag:tagBuilding1 is [$total]
             if ($total>0)
                 if (have building1Upgrade4) $addition=0.1*$total
                 if (have building1Upgrade5) $addition=$addition*5
@@ -62,7 +62,7 @@ Buttons
                 if (have building1Upgrade12) $addition=$addition*20
                 if (have building1Upgrade13) $addition=$addition*20
             end
-            log addition is $addition
+            log addition is [$addition]
             yield 1+$addition bitcoins
             // [include cursorClick %yield="1"]
         end
