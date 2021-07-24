@@ -38,6 +38,7 @@ Buttons
             if (have buildingUpgrade1_12) $addition=$addition*20
             if (have buildingUpgrade1_13) $addition=$addition*20
             yield 1+$addition bitcoins
+        end
 		no text
 		icon class:shadowed
 		tooltip origin:bottom
@@ -87,6 +88,7 @@ Buildings
             if (have building1Upgrade12) $addition=$addition*20
             if (have building1Upgrade13) $addition=$addition*20
             yield 0.1+$addition bitcoins
+        end
 	*buildings6
 		desc:全新的显卡矿机，挖矿不算快，但是性价比高。<//><b>效果：</b><.> +1400 比特币/秒
 		name:全新的显卡矿机
