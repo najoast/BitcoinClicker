@@ -206,7 +206,7 @@ Buildings
 Upgrades
 	*TEMPLATE
 		on click:anim glow
-        on click:lose this
+        hidden when 1
 
     *building1Upgrade1
         name:强化点击
