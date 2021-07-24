@@ -260,3 +260,10 @@ Upgrades
         icon:ccIcons[0,2]
         cost:10 bitcoins
         req:building1 > 10
+
+	*clover
+		name:Clover
+		desc:A delicious herb that tastes lucky.<//><b>效果：</b><.>lucky bitcoin effects are 4 times more powerful
+		icon:icons[2,8]
+		cost:1000000000 bitcoins
+		req:500000000 bitcoins:earned
