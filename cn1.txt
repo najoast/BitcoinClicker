@@ -21,7 +21,7 @@ Includes
 *include cursorClick %func %yield
     [%func]:
         $addition=0
-        if (have building1Upgrade4) $addition=0.1*(building2+building3+building4+building5+building6+building7+building8+building9+building10+building11+building12+building13+building14+building15+building16+building17+building18)
+        if (have building1Upgrade4) $addition=0.1*((building2)+(building3)+(building4)+(building5)+(building6)+(building7)+(building8)+(building9)+(building10)+(building11)+(building12)+(building13)+(building14)+(building15)+(building16)+(building17)+(building18))
         if (have building1Upgrade5) $addition=$addition*5
         if (have building1Upgrade6) $addition=$addition*10
         if (have building1Upgrade7) $addition=$addition*20
