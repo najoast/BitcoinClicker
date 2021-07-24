@@ -23,6 +23,7 @@ Includes
         $addition=0
         $total=0
         do count with :Buildings:notTag:tagBuilding1
+        // log The buildings num of notTag:tagBuilding1 is [$total]
         if ($total>0)
             if (have building1Upgrade4) $addition=0.1*$total
             if (have building1Upgrade5) $addition=$addition*5
@@ -35,6 +36,7 @@ Includes
             if (have building1Upgrade12) $addition=$addition*20
             if (have building1Upgrade13) $addition=$addition*20
         end
+        // log addition is [$addition]
         yield [%yield]+$addition bitcoins
 
 Buttons
@@ -46,25 +48,7 @@ Buttons
 		class:bigButton hasFlares
 		on click:
             anim icon wobble
-            $addition=0
-            $total=0
-            do count with :Buildings:notTag:tagBuilding1
-            log The buildings num of notTag:tagBuilding1 is [$total]
-            if ($total>0)
-                if (have building1Upgrade4) $addition=0.1*$total
-                if (have building1Upgrade5) $addition=$addition*5
-                if (have building1Upgrade6) $addition=$addition*10
-                if (have building1Upgrade7) $addition=$addition*20
-                if (have building1Upgrade8) $addition=$addition*20
-                if (have building1Upgrade9) $addition=$addition*20
-                if (have building1Upgrade10) $addition=$addition*20
-                if (have building1Upgrade11) $addition=$addition*20
-                if (have building1Upgrade12) $addition=$addition*20
-                if (have building1Upgrade13) $addition=$addition*20
-            end
-            log addition is [$addition]
-            yield 1+$addition bitcoins
-            // [include cursorClick %yield="1"]
+            [include cursorClick %yield="1"]
         end
 		no text
 		icon class:shadowed
@@ -254,91 +238,91 @@ Upgrades
 
     *building1Upgrade1
         name:强化点击
-        desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>戳戳</q>
+        desc:鼠标点击和人工计算的效果<b>翻倍</b>。<q>戳戳</q>
         icon:ccIcons[0,0]
-        cost:10 bitcoins
-        req:building1 > 1
+        cost:100 bitcoins
+        req:building1 > 0
         passive:multiply bitcoin yield of bitcoinButton by 2
         passive:multiply yield of building1 by 2
 
     *building1Upgrade2
-        name:腕管预防霜
-        desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>它…点击伤害…</q>
+        name:鼠标手隔离霜
+        desc:鼠标点击和人工计算的效果<b>翻倍</b>。<q>它…点击伤害…</q>
         icon:ccIcons[0,1]
-        cost:10 bitcoins
-        req:building1 > 1
+        cost:500 bitcoins
+        req:building1 > 0
         passive:multiply bitcoin yield of bitcoinButton by 2
         passive:multiply yield of building1 by 2
 
     *building1Upgrade3
-        name:Ambidextrous
-        desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
+        name:双手并用
+        desc:鼠标点击和人工计算的效果<b>翻倍</b>。<q>妈妈，快看，我用两只手一起点鼠标！</q>
         icon:ccIcons[0,2]
-        cost:10 bitcoins
+        cost:10000 bitcoins
         req:building1 > 10
         passive:multiply bitcoin yield of bitcoinButton by 2
         passive:multiply yield of building1 by 2
 
     *building1Upgrade4
-        name:Ambidextrous
-        desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
+        name:金手指
+        desc:每拥有一个非<#F43F1A>[n:building1]</#>建筑，鼠标点击和[n:building1]活的+0.1比特币/秒。<q>Look ma, both hands!</q>
         icon:ccIcons[0,13]
-        cost:10 bitcoins
-        req:building1 > 10
+        cost:100000 bitcoins
+        req:building1 >= 25
     *building1Upgrade5
         name:Ambidextrous
         desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
         icon:ccIcons[0,14]
-        cost:10 bitcoins
-        req:building1 > 10
+        cost:10000000 bitcoins
+        req:building1 >= 50
     *building1Upgrade6
         name:Ambidextrous
         desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
         icon:ccIcons[0,15]
-        cost:10 bitcoins
-        req:building1 > 10
+        cost:100000000 bitcoins
+        req:building1 >= 100
     *building1Upgrade7
         name:Ambidextrous
         desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
         icon:ccIcons[0,16]
-        cost:10 bitcoins
-        req:building1 > 10
+        cost:1000000000 bitcoins // 1 billion
+        req:building1 >= 150
     *building1Upgrade8
         name:Ambidextrous
         desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
         icon:ccIcons[0,2]
-        cost:10 bitcoins
-        req:building1 > 10
+        cost:10000000000 bitcoins
+        req:building1 >= 200
     *building1Upgrade9
         name:Ambidextrous
         desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
         icon:ccIcons[0,2]
-        cost:10 bitcoins
-        req:building1 > 10
+        cost:10000000000000 bitcoins
+        req:building1 >= 250
     *building1Upgrade10
         name:Ambidextrous
         desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
         icon:ccIcons[0,2]
-        cost:10 bitcoins
-        req:building1 > 10
+        cost:10000000000000000 bitcoins
+        req:building1 >= 300
     *building1Upgrade11
         name:Ambidextrous
         desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
         icon:ccIcons[0,2]
-        cost:10 bitcoins
-        req:building1 > 10
+        cost:10000000000000000000 bitcoins
+        req:building1 >= 350
     *building1Upgrade12
         name:Ambidextrous
         desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
         icon:ccIcons[0,2]
-        cost:10 bitcoins
-        req:building1 > 10
+        cost:10000000000000000000000 bitcoins
+        req:building1 >= 400
     *building1Upgrade13
         name:Ambidextrous
         desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
         icon:ccIcons[0,2]
-        cost:10 bitcoins
-        req:building1 > 10
+        cost:10000000000000000000000000 bitcoins
+        req:building1 >= 450
 
 	*clover
 		name:Clover
