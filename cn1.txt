@@ -119,7 +119,7 @@ Buildings
 		
 	*building1
 		name:人工计算
-		desc:想通过一个人的大脑计算sha256，几乎是不可能的事情。<//><.>每个[n:this]每秒产出[0.1*pow(2,this-1)]个比特币<.>[this]个[n:this]每秒产出[this*this:ps0.1*pow(2,this-1)]个比特币（占总产量的[this:psthis*this:ps0.1*pow(2,this-1)*100/bitcoin:ps]%）
+		desc:想通过一个人的大脑计算sha256，几乎是不可能的事情。<//><.>每个[n:this]每秒产出[0.1*pow(2,this-1)]个比特币<.>[this]个[n:this]每秒产出[this*0.1*pow(2,this-1)]个比特币（占总产量的[this*0.1*pow(2,this-1)*100/bitcoin:ps]%）
 		icon:icons[3,0]
 		cost:15 bitcoins
         on tick:
