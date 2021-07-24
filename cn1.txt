@@ -15,10 +15,27 @@ Settings
 	spritesheet:ccIcons, 48 by 48, https://gitee.com/Yancey/BitcoinClicker/raw/main/res/ccIcons.png
 
 Layout
-	use default
+	// use default
     // contains:Log
+	*main
+		contains:res, buttons
+	*res
+		contains:Resources
+		class:fullWidth
+	*buttons
+		contains:Buttons
+	*store
+		contains:buildings, upgrades
 	*buildings
+		contains:BulkDisplay, Buildings
+		header:Buildings
+		tooltip origin:left
 		ps:show
+	*upgrades
+		contains:Upgrades
+		header:Upgrades
+		costs:hide
+		names:hide
 
 Includes
 // 鼠标点击和建筑1的科技加成效果
