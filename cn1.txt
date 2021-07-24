@@ -212,7 +212,7 @@ Upgrades
         name:强化点击
         desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>戳戳</q>
         icon:ccIcons[0,0]
-        cost:100 bitcoins
+        cost:10 bitcoins
         req:building1 > 1
         passive:multiply bitcoin yield of bitcoinButton by 2
         passive:multiply yield of building1 by 2
@@ -221,7 +221,7 @@ Upgrades
         name:腕管预防霜
         desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>它…点击伤害…</q>
         icon:ccIcons[0,1]
-        cost:500 bitcoins
+        cost:10 bitcoins
         req:building1 > 1
         passive:multiply bitcoin yield of bitcoinButton by 2
         passive:multiply yield of building1 by 2
@@ -230,7 +230,7 @@ Upgrades
         name:Ambidextrous
         desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
         icon:ccIcons[0,2]
-        cost:10000 bitcoins
+        cost:10 bitcoins
         req:building1 > 10
         passive:multiply bitcoin yield of bitcoinButton by 2
         passive:multiply yield of building1 by 2
