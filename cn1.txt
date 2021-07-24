@@ -31,7 +31,7 @@ Includes
         if (have building1Upgrade11) $addition=$addition*20
         if (have building1Upgrade12) $addition=$addition*20
         if (have building1Upgrade13) $addition=$addition*20
-        yield %yield+$addition bitcoins
+        yield (%yield+$addition) bitcoins
     end
 
 Buttons
