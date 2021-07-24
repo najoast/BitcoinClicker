@@ -39,7 +39,7 @@ Includes
         // log addition is [$addition]
 		log name of building 1 is [i:bn %id="1"], [n:building1]
         yield [%yield]+$addition bitcoins
-*include bn %id:&#60;#F43F1A&#62;&#91;n:building[%id]&#93;&#60;/#&#62;
+*include bn %id:&#60;&#35;F43F1A&#62;&#91;n:building[%id]&#93;&#60;/#&#62;
 
 Buttons
 	*bitcoinButton
