@@ -16,6 +16,7 @@ Settings
 
 Layout
 	use default
+    contains:Log
 
 Includes
 *include cursorClick %yield
