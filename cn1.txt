@@ -18,10 +18,9 @@ Layout
 	use default
 
 Includes
-*include cursorClick %func %yield
-    [%func]:
+*include cursorClick %yield
         $addition=0
-        if (have building1Upgrade4) $addition=0.1*((building2)+(building3)+(building4)+(building5)+(building6)+(building7)+(building8)+(building9)+(building10)+(building11)+(building12)+(building13)+(building14)+(building15)+(building16)+(building17)+(building18))
+        if (have building1Upgrade4) $addition=0.1*(building2+building3+building4+building5+building6+building7+building8+building9+building10+building11+building12+building13+building14+building15+building16+building17+building18)
         if (have building1Upgrade5) $addition=$addition*5
         if (have building1Upgrade6) $addition=$addition*10
         if (have building1Upgrade7) $addition=$addition*20
@@ -32,7 +31,6 @@ Includes
         if (have building1Upgrade12) $addition=$addition*20
         if (have building1Upgrade13) $addition=$addition*20
         yield [%yield]+$addition bitcoins
-    end
 
 Buttons
 	*bitcoinButton
@@ -41,8 +39,10 @@ Buttons
 		name:比特币实体
 		icon:https://gitee.com/Yancey/BitcoinClicker/raw/main/res/btn_bitcoin.png
 		class:bigButton hasFlares
-		on click:anim icon wobble
-        [include cursorClick %func="on click" %yield="1"]
+		on click:
+            anim icon wobble
+            [include cursorClick %yield="1"]
+        end
 		no text
 		icon class:shadowed
 		tooltip origin:bottom
@@ -81,7 +81,9 @@ Buildings
 		desc:想通过一个人的大脑计算sha256，几乎是不可能的事情。<//><b>效果：</b><.> +0.1 比特币/秒
 		icon:icons[3,0]
 		cost:15 bitcoins
-        [include cursorClick %func="on tick" %yield="0.1"]
+        on tick:
+            [include cursorClick %yield="0.1"]
+        end
 		unlocked
 	*building2
 		name:人列计算机
