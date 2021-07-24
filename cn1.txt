@@ -109,14 +109,14 @@ Buildings
         end
 		unlocked
         tag:tagBuilding1
-        on count:$total=$total+1
+        on count:$total=$total+building1
 	*building2
 		name:人列计算机
 		desc:顾名思义，人列计算机就是由人组成的计算机。但是人数需求庞大，由人组成计算机的的各个部位，由各种符号代替二进制进行运算。<//><b>效果：</b><.> +1 比特币/秒
 		icon:icons[3,1]
 		cost:100 bitcoins
 		on tick:yield 1 bitcoins
-        on count:$total=$total+1
+        on count:$total=$total+building2
         req:have building1
 	*building3
 		name:家用笔记本
@@ -124,7 +124,7 @@ Buildings
 		icon:icons[3,2]
 		cost:1100 bitcoins
 		on tick:yield 8 bitcoins
-        on count:$total=$total+1
+        on count:$total=$total+building3
         req:have building2
 	*building4
 		name:组装计算机
@@ -132,7 +132,7 @@ Buildings
 		icon:icons[3,3]
 		cost:12000 bitcoins
 		on tick:yield 47 bitcoins
-        on count:$total=$total+1
+        on count:$total=$total+building4
         req:have building3
 	*building5
 		name:淘汰的二手矿机
@@ -140,7 +140,7 @@ Buildings
 		icon:icons[3,4]
 		cost:130000 bitcoins
 		on tick:yield 260 bitcoins
-        on count:$total=$total+1
+        on count:$total=$total+building5
         req:have building4
 	*building6
 		desc:全新的显卡矿机，挖矿不算快，但是性价比高。<//><b>效果：</b><.> +1400 比特币/秒
@@ -148,7 +148,7 @@ Buildings
 		icon:icons[3,5]
 		cost:1400000 bitcoins
 		on tick:yield 1400 bitcoins
-        on count:$total=$total+1
+        on count:$total=$total+building6
         req:have building5
 	*building7
 		desc:ASIC矿机芯片的性能超过当前顶级的电脑CPU。因为ASIC矿机在算力上有绝对的优势，所以电脑、显卡矿机开始逐渐被淘汰。<//><b>效果：</b><.> +7800 比特币/秒
@@ -156,7 +156,7 @@ Buildings
 		icon:icons[3,6]
 		cost:20000000 bitcoins
 		on tick:yield 7800 bitcoins
-        on count:$total=$total+1
+        on count:$total=$total+building7
         req:have building6
 	*building8
 		desc:利用弹性计算能力，可以根据需要随意增加服务器数量，大大提高部署效率。<//><b>效果：</b><.> +44000 比特币/秒
@@ -164,7 +164,7 @@ Buildings
 		icon:icons[3,7]
 		cost:330000000 bitcoins
 		on tick:yield 44000 bitcoins
-        on count:$total=$total+1
+        on count:$total=$total+building8
         req:have building7
 	*building9
 		desc:由数十台挖矿机组成的阵列，效率大大提升。<//><b>效果：</b><.> +260000 比特币/秒
@@ -172,7 +172,7 @@ Buildings
 		icon:icons[3,8]
 		cost:5100000000 bitcoins
 		on tick:yield 260000 bitcoins
-        on count:$total=$total+1
+        on count:$total=$total+building9
         req:have building8
 	*building10
 		desc:由数百到数千台挖矿机组成的大阵集群，效率惊人。<//><b>效果：</b><.> +1600000 比特币/秒
@@ -180,7 +180,7 @@ Buildings
 		icon:icons[3,8]
 		cost:75000000000 bitcoins
 		on tick:yield 1600000 bitcoins
-        on count:$total=$total+1
+        on count:$total=$total+building10
         req:have building9
 	*building11
 		desc:超级计算机（Super computer）是指能够执行一般个人电脑无法处理的大量资料与高速运算的电脑。。<//><b>效果：</b><.> +10000000 比特币/秒
@@ -188,7 +188,7 @@ Buildings
 		icon:icons[3,8]
 		cost:1000000000000 bitcoins
 		on tick:yield 10000000 bitcoins
-        on count:$total=$total+1
+        on count:$total=$total+building11
         req:have building10
 	*building12
 		desc:量子计算机求解数学算法高斯玻色取样只需200秒，而目前世界最快的超级计算机要用6亿年。。<//><b>效果：</b><.> +65000000 比特币/秒
@@ -196,7 +196,7 @@ Buildings
 		icon:icons[3,8]
 		cost:14000000000000 bitcoins
 		on tick:yield 65000000 bitcoins
-        on count:$total=$total+1
+        on count:$total=$total+building12
         req:have building11
 	*building13
 		desc:全称为Just A Rather Very Intelligent System（只是一个相当聪明的智能系统），钢铁侠的私人管家，拥有超越时代的计算能力。<//><b>效果：</b><.> +430000000 比特币/秒
@@ -204,7 +204,7 @@ Buildings
 		icon:icons[3,8]
 		cost:170000000000000 bitcoins
 		on tick:yield 430000000 bitcoins
-        on count:$total=$total+1
+        on count:$total=$total+building13
         req:have building12
 	*building14
 		name:时间机器
@@ -212,7 +212,7 @@ Buildings
 		icon:icons[3,8]
 		cost:2100000000000000 bitcoins
 		on tick:yield 2900000000 bitcoins
-        on count:$total=$total+1
+        on count:$total=$total+building14
         req:have building13
 	*building15
 		name:智子
@@ -220,7 +220,7 @@ Buildings
 		icon:icons[3,8]
 		cost:26000000000000000 bitcoins
 		on tick:yield 21000000000 bitcoins
-        on count:$total=$total+1
+        on count:$total=$total+building15
         req:have building14
 	*building16
 		name:分形引擎
@@ -228,7 +228,7 @@ Buildings
 		icon:icons[3,8]
 		cost:310000000000000000 bitcoins
 		on tick:yield 150000000000 bitcoins
-        on count:$total=$total+1
+        on count:$total=$total+building16
         req:have building15
 	*building17
 		name:克罗托系统
@@ -236,7 +236,7 @@ Buildings
 		icon:icons[3,8]
 		cost:71000000000000000000 bitcoins
 		on tick:yield 1100000000000 bitcoins
-        on count:$total=$total+1
+        on count:$total=$total+building17
         req:have building16
 	*building18
 		name:空闲宇宙
@@ -244,7 +244,7 @@ Buildings
 		icon:icons[3,8]
 		cost:12000000000000000000000 bitcoins
 		on tick:yield 8300000000000 bitcoins
-        on count:$total=$total+1
+        on count:$total=$total+building18
         req:have building17
 
 Upgrades
