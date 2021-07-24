@@ -17,6 +17,23 @@ Settings
 Layout
 	use default
 
+Includes
+*include cursorClick %yield
+    on click:
+        $addition=0
+        if (have building1Upgrade4) $addition=0.1
+        if (have building1Upgrade5) $addition=$addition*5
+        if (have building1Upgrade6) $addition=$addition*10
+        if (have building1Upgrade7) $addition=$addition*20
+        if (have building1Upgrade8) $addition=$addition*20
+        if (have building1Upgrade9) $addition=$addition*20
+        if (have building1Upgrade10) $addition=$addition*20
+        if (have building1Upgrade11) $addition=$addition*20
+        if (have building1Upgrade12) $addition=$addition*20
+        if (have building1Upgrade13) $addition=$addition*20
+        yield %yield+$addition bitcoins
+    end
+
 Buttons
 	*bitcoinButton
 		desc:点击这个比特币实体来生成更多比特币吧！
@@ -25,20 +42,7 @@ Buttons
 		icon:https://gitee.com/Yancey/BitcoinClicker/raw/main/res/btn_bitcoin.png
 		class:bigButton hasFlares
 		on click:anim icon wobble
-		on click:
-            $addition=0
-            if (have building1Upgrade4) $addition=0.1
-            if (have building1Upgrade5) $addition=$addition*5
-            if (have building1Upgrade6) $addition=$addition*10
-            if (have building1Upgrade7) $addition=$addition*20
-            if (have building1Upgrade8) $addition=$addition*20
-            if (have building1Upgrade9) $addition=$addition*20
-            if (have building1Upgrade10) $addition=$addition*20
-            if (have building1Upgrade11) $addition=$addition*20
-            if (have building1Upgrade12) $addition=$addition*20
-            if (have building1Upgrade13) $addition=$addition*20
-            yield 1+$addition bitcoins
-        end
+        [include cursorClick %yield="1"]
 		no text
 		icon class:shadowed
 		tooltip origin:bottom
@@ -61,7 +65,7 @@ Shinies
 			if (have clover) $boost=4
 			//get at least 7, or between 1 and 3 minutes of our bitcoin production
             $amount=max(7,random(bitcoins:ps*60*1,bitcoins:ps*60*3))*$boost
-			toast 比特币+<b>[$amount]
+			toast 比特币+<b>[$amount]</b>
 			yield $amount bitcoins
 		end
 		frequency:60
@@ -69,110 +73,141 @@ Shinies
 		icon:https://gitee.com/Yancey/BitcoinClicker/raw/main/res/btn_bitcoin.png
 
 Buildings
+	*TEMPLATE
+		on click:anim glow
+		
 	*building1
-		desc:想通过一个人的大脑计算sha256，几乎是不可能的事情。<//><b>效果：</b><.> +0.1 比特币/秒
-		unlocked
 		name:人工计算
+		desc:想通过一个人的大脑计算sha256，几乎是不可能的事情。<//><b>效果：</b><.> +0.1 比特币/秒
 		icon:icons[3,0]
 		cost:15 bitcoins
-		on tick:
-            $addition=0
-            if (have building1Upgrade4) $addition=0.1
-            if (have building1Upgrade5) $addition=$addition*5
-            if (have building1Upgrade6) $addition=$addition*10
-            if (have building1Upgrade7) $addition=$addition*20
-            if (have building1Upgrade8) $addition=$addition*20
-            if (have building1Upgrade9) $addition=$addition*20
-            if (have building1Upgrade10) $addition=$addition*20
-            if (have building1Upgrade11) $addition=$addition*20
-            if (have building1Upgrade12) $addition=$addition*20
-            if (have building1Upgrade13) $addition=$addition*20
-            yield 0.1+$addition bitcoins
-        end
+        [include cursorClick %yield="0.1"]
+		unlocked
+	*building2
+		name:人列计算机
+		desc:顾名思义，人列计算机就是由人组成的计算机。但是人数需求庞大，由人组成计算机的的各个部位，由各种符号代替二进制进行运算。<//><b>效果：</b><.> +1 比特币/秒
+		icon:icons[3,1]
+		cost:100 bitcoins
+		on tick:yield 1 bitcoins
+        unlocked
+	*building3
+		name:家用笔记本
+		desc:任何一台电脑都能成为挖矿机，只是收益会比较低。<//><b>效果：</b><.> +8 比特币/秒
+		icon:icons[3,2]
+		cost:1100 bitcoins
+		on tick:yield 8 bitcoins
+        req:have building1
+	*building4
+		name:组装计算机
+		desc:由非常多张显卡组成的挖矿机，哪怕只是HD6770那样的垃圾卡，“组团”之后的运算能力还是能够超越大部分用户的单张显卡的。<//><b>效果：</b><.> +47 比特币/秒
+		icon:icons[3,3]
+		cost:12000 bitcoins
+		on tick:yield 47 bitcoins
+        req:have building2
+	*building5
+		name:淘汰的二手矿机
+		desc:矿老板淘汰下来的二手显卡矿机组。<//><b>效果：</b><.> +260 比特币/秒
+		icon:icons[3,4]
+		cost:130000 bitcoins
+		on tick:yield 260 bitcoins
+        req:have building3
 	*building6
 		desc:全新的显卡矿机，挖矿不算快，但是性价比高。<//><b>效果：</b><.> +1400 比特币/秒
 		name:全新的显卡矿机
 		icon:icons[3,5]
 		cost:1400000 bitcoins
 		on tick:yield 1400 bitcoins
-	*building4
-		desc:由非常多张显卡组成的挖矿机，哪怕只是HD6770那样的垃圾卡，“组团”之后的运算能力还是能够超越大部分用户的单张显卡的。<//><b>效果：</b><.> +47 比特币/秒
-		name:组装计算机
-		icon:icons[3,3]
-		cost:12000 bitcoins
-		on tick:yield 47 bitcoins
-	*building5
-		desc:矿老板淘汰下来的二手显卡矿机组。<//><b>效果：</b><.> +260 比特币/秒
-		name:淘汰的二手矿机
-		icon:icons[3,4]
-		cost:130000 bitcoins
-		on tick:yield 260 bitcoins
-	*building8
-		desc:利用弹性计算能力，可以根据需要随意增加服务器数量，大大提高部署效率。<//><b>效果：</b><.> +44000 比特币/秒
-		name:云服务器
-		icon:icons[3,7]
-		cost:330000000 bitcoins
-		on tick:yield 44000 bitcoins
-	*building3
-		desc:任何一台电脑都能成为挖矿机，只是收益会比较低。<//><b>效果：</b><.> +8 比特币/秒
-		name:家用笔记本
-		icon:icons[3,2]
-		cost:1100 bitcoins
-		on tick:yield 8 bitcoins
-	*building14
-		desc:从宏观上来说物质是一堆堆聚合的原子，而原子的运动都符合物理方程，就像你知道一个小球的速度、位置和所受的力，就能计算出他未来的运行轨迹。所以理论上来说只要确切地得知宇宙中每个原子的状态，再拥有足够的算力，我们就能计算出未来了！。<//><b>效果：</b><.> +2900000000 比特币/秒
-		name:克罗托系统
-		icon:icons[3,8]
-		cost:2100000000000000 bitcoins
-		on tick:yield 2900000000 bitcoins
-	*building9
-		desc:由数十台挖矿机组成的阵列，效率大大提升。<//><b>效果：</b><.> +260000 比特币/秒
-		name:挖矿机阵列
-		icon:icons[3,8]
-		cost:5100000000 bitcoins
-		on tick:yield 260000 bitcoins
-	*building11
-		desc:超级计算机（Super computer）是指能够执行一般个人电脑无法处理的大量资料与高速运算的电脑。。<//><b>效果：</b><.> +10000000 比特币/秒
-		name:超级计算机
-		icon:icons[3,8]
-		cost:1000000000000 bitcoins
-		on tick:yield 10000000 bitcoins
-	*building2
-		desc:顾名思义，人列计算机就是由人组成的计算机。但是人数需求庞大，由人组成计算机的的各个部位，由各种符号代替二进制进行运算。<//><b>效果：</b><.> +1 比特币/秒
-		name:人列计算机
-		icon:icons[3,1]
-		cost:100 bitcoins
-		on tick:yield 1 bitcoins
+        req:have building4
 	*building7
 		desc:ASIC矿机芯片的性能超过当前顶级的电脑CPU。因为ASIC矿机在算力上有绝对的优势，所以电脑、显卡矿机开始逐渐被淘汰。<//><b>效果：</b><.> +7800 比特币/秒
 		name:ASIC矿机
 		icon:icons[3,6]
 		cost:20000000 bitcoins
 		on tick:yield 7800 bitcoins
-		tag:tagBuilding7
-	*building12
-		desc:量子计算机求解数学算法高斯玻色取样只需200秒，而目前世界最快的超级计算机要用6亿年。。<//><b>效果：</b><.> +65000000 比特币/秒
-		name:量子计算机
+        req:have building5
+	*building8
+		desc:利用弹性计算能力，可以根据需要随意增加服务器数量，大大提高部署效率。<//><b>效果：</b><.> +44000 比特币/秒
+		name:云服务器
+		icon:icons[3,7]
+		cost:330000000 bitcoins
+		on tick:yield 44000 bitcoins
+        req:have building6
+	*building9
+		desc:由数十台挖矿机组成的阵列，效率大大提升。<//><b>效果：</b><.> +260000 比特币/秒
+		name:挖矿机阵列
 		icon:icons[3,8]
-		cost:14000000000000 bitcoins
-		on tick:yield 65000000 bitcoins
-		tag:tagBuilding12
-	*building13
-		desc:全称为Just A Rather Very Intelligent System（只是一个相当聪明的智能系统），钢铁侠的私人管家，拥有超越时代的计算能力。<//><b>效果：</b><.> +430000000 比特币/秒
-		name:贾维斯
-		icon:icons[3,8]
-		cost:170000000000000 bitcoins
-		on tick:yield 430000000 bitcoins
-		tag:tagBuilding13
+		cost:5100000000 bitcoins
+		on tick:yield 260000 bitcoins
+        req:have building7
 	*building10
 		desc:由数百到数千台挖矿机组成的大阵集群，效率惊人。<//><b>效果：</b><.> +1600000 比特币/秒
 		name:挖矿机集群
 		icon:icons[3,8]
 		cost:75000000000 bitcoins
 		on tick:yield 1600000 bitcoins
-		tag:tagBuilding10
+        req:have building8
+	*building11
+		desc:超级计算机（Super computer）是指能够执行一般个人电脑无法处理的大量资料与高速运算的电脑。。<//><b>效果：</b><.> +10000000 比特币/秒
+		name:超级计算机
+		icon:icons[3,8]
+		cost:1000000000000 bitcoins
+		on tick:yield 10000000 bitcoins
+        req:have building9
+	*building12
+		desc:量子计算机求解数学算法高斯玻色取样只需200秒，而目前世界最快的超级计算机要用6亿年。。<//><b>效果：</b><.> +65000000 比特币/秒
+		name:量子计算机
+		icon:icons[3,8]
+		cost:14000000000000 bitcoins
+		on tick:yield 65000000 bitcoins
+        req:have building10
+	*building13
+		desc:全称为Just A Rather Very Intelligent System（只是一个相当聪明的智能系统），钢铁侠的私人管家，拥有超越时代的计算能力。<//><b>效果：</b><.> +430000000 比特币/秒
+		name:贾维斯
+		icon:icons[3,8]
+		cost:170000000000000 bitcoins
+		on tick:yield 430000000 bitcoins
+        req:have building11
+	*building14
+		name:时间机器
+		desc:穿越时间从过去带来比特币。<//><b>效果：</b><.> +2900000000 比特币/秒
+		icon:icons[3,8]
+		cost:2100000000000000 bitcoins
+		on tick:yield 2900000000 bitcoins
+        req:have building12
+	*building15
+		name:智子
+		desc:质子经过二维展开改造后的智能微观粒子，是十一维物体，可以在微观高维空间进行快速计算。<//><b>效果：</b><.> +21000000000 比特币/秒
+		icon:icons[3,8]
+		cost:26000000000000000 bitcoins
+		on tick:yield 21000000000 bitcoins
+        req:have building13
+	*building16
+		name:分形引擎
+		desc:将比特币变成更多比特币。<//><b>效果：</b><.> +150000000000 比特币/秒
+		icon:icons[3,8]
+		cost:310000000000000000 bitcoins
+		on tick:yield 150000000000 bitcoins
+        req:have building14
+	*building17
+		name:克罗托系统
+		desc:从宏观上来说物质是一堆堆聚合的原子，而原子的运动都符合物理方程，就像你知道一个小球的速度、位置和所受的力，就能计算出他未来的运行轨迹。所以理论上来说只要确切地得知宇宙中每个原子的状态，再拥有足够的算力，我们就能计算出未来了！。<//><b>效果：</b><.> +1100000000000 比特币/秒
+		icon:icons[3,8]
+		cost:71000000000000000000 bitcoins
+		on tick:yield 1100000000000 bitcoins
+        req:have building15
+	*building18
+		name:空闲宇宙
+		desc:有无数其他空闲的宇宙与我们自己的宇宙一起运行。 你终于找到了一种方法来劫持他们的产品并将他们制作的任何东西转换成比特币！<//><b>效果：</b><.> +8300000000000 比特币/秒
+		icon:icons[3,8]
+		cost:12000000000000000000000 bitcoins
+		on tick:yield 8300000000000 bitcoins
+        req:have building16
 
 Upgrades
+	*TEMPLATE
+		on click:anim glow
+        on click:lose this
+
     *building1Upgrade1
         name:强化点击
         desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>戳戳</q>
