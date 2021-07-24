@@ -16,7 +16,9 @@ Settings
 
 Layout
 	use default
-    contains:Log
+    // contains:Log
+	*buildings
+		ps:show
 
 Includes
 // 鼠标点击和建筑1的科技加成效果
