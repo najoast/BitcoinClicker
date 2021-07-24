@@ -19,6 +19,7 @@ Layout
     contains:Log
 
 Includes
+// 鼠标点击和建筑1的科技加成效果
 *include cursorClick %yield
         $addition=0
         $total=0
@@ -37,9 +38,21 @@ Includes
             if (have building1Upgrade13) $addition=$addition*20
         end
         // log addition is [$addition]
-		log name of building 1 is [i:bn %id="1"], [n:building1]
+		// log name of building 1 is [i:bn %id="1"], [n:building1]
         yield [%yield]+$addition bitcoins
-*include bn %id:&#60;&#35;F43F1A&#62;&#91;n:building[%id]&#93;&#60;/#&#62;
+
+//*include bn %id:&#60;&#35;F43F1A&#62;&#91;n:building[%id]&#93;&#60;/#&#62;
+*include mn:鼠标点击
+
+// Common building upgrade: only have `twice` effect
+*include br2 %id %idx %name %desc %icon %cost %req
+	*building[%id]Upgrade[%idx]
+		name:[%name]
+		desc:[%desc]
+		icon:ccIcons[%icon]
+		cost:[%cost] bitcoins
+		req:building[%id] >= %req
+		passive:multiply yield of building[%id] by 2
 
 Buttons
 	*bitcoinButton
@@ -238,93 +251,277 @@ Upgrades
 		on click:anim glow
         on earn:hide this
 
+	///////////////////////////////////////////////////////////////////////////////////
+	//                            Building Upgrades                                  //
+	///////////////////////////////////////////////////////////////////////////////////
+
+	// Building 1 Upgrades
     *building1Upgrade1
         name:强化点击
-        desc:鼠标点击和[n:building1]的效果<b>翻倍</b>。<q>戳戳</q>
+        desc:[i:mn]和[n:building1]的效果<b>翻倍</b>。<q>戳戳</q>
         icon:ccIcons[0,0]
         cost:100 bitcoins
         req:building1 > 0
         passive:multiply bitcoin yield of bitcoinButton by 2
         passive:multiply yield of building1 by 2
-
     *building1Upgrade2
         name:鼠标手隔离霜
-        desc:鼠标点击和[n:building1]的效果<b>翻倍</b>。<q>它…点击伤害…</q>
+        desc:[i:mn]和[n:building1]的效果<b>翻倍</b>。<q>它…点击伤害…</q>
         icon:ccIcons[0,1]
         cost:500 bitcoins
         req:building1 > 0
         passive:multiply bitcoin yield of bitcoinButton by 2
         passive:multiply yield of building1 by 2
-
     *building1Upgrade3
         name:双手并用
-        desc:鼠标点击和[n:building1]的效果<b>翻倍</b>。<q>妈妈，快看，我用两只手一起点鼠标！</q>
+        desc:[i:mn]和[n:building1]的效果<b>翻倍</b>。<q>妈妈，快看，我用两只手一起点鼠标！</q>
         icon:ccIcons[0,2]
         cost:10000 bitcoins
         req:building1 > 10
         passive:multiply bitcoin yield of bitcoinButton by 2
         passive:multiply yield of building1 by 2
-
     *building1Upgrade4
         name:金手指
-        desc:每拥有一个非[n:building1]建筑，鼠标点击和[n:building1]活的+0.1比特币/秒。<q>Look ma, both hands!</q>
+        desc:每拥有一个非[n:building1]建筑，[i:mn]和[n:building1]的产量<b>+0.1比特币/秒</b>。<q>咔哒</q>
         icon:ccIcons[0,13]
         cost:100000 bitcoins
         req:building1 >= 25
     *building1Upgrade5
-        name:Ambidextrous
-        desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
+        name:百万手指
+        desc:[n:building1Upgrade4]的效果<b>x5</b>。<q>咔哒咔哒</q>
         icon:ccIcons[0,14]
         cost:10000000 bitcoins
         req:building1 >= 50
     *building1Upgrade6
-        name:Ambidextrous
-        desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
+        name:十亿手指
+        desc:[n:building1Upgrade4]的效果<b>x10</b>。<q>咔哒咔哒咔哒</q>
         icon:ccIcons[0,15]
         cost:100000000 bitcoins
         req:building1 >= 100
     *building1Upgrade7
-        name:Ambidextrous
-        desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
+        name:万亿手指
+        desc:[n:building1Upgrade4]的效果<b>x20</b>。<q>咔哒咔哒咔哒咔哒</q>
         icon:ccIcons[0,16]
         cost:1000000000 bitcoins // 1 billion
         req:building1 >= 150
     *building1Upgrade8
-        name:Ambidextrous
-        desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
+        name:千万亿手指
+        desc:[n:building1Upgrade4]的效果<b>x20</b>。<q>咔哒咔哒咔哒咔哒咔哒</q>
         icon:ccIcons[0,2]
         cost:10000000000 bitcoins
         req:building1 >= 200
     *building1Upgrade9
-        name:Ambidextrous
-        desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
+        name:百亿亿手指
+        desc:[n:building1Upgrade4]的效果<b>x20</b>。<q>朋友，只需点击点击点击点击点击，这真的很容易。</q>
         icon:ccIcons[0,2]
         cost:10000000000000 bitcoins
         req:building1 >= 250
     *building1Upgrade10
-        name:Ambidextrous
-        desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
+        name:十万亿亿手指
+        desc:[n:building1Upgrade4]的效果<b>x20</b>。<q>有时<br>事情只是<br>点击</q>
         icon:ccIcons[0,2]
         cost:10000000000000000 bitcoins
         req:building1 >= 300
     *building1Upgrade11
-        name:Ambidextrous
-        desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
+        name:亿亿亿手指
+        desc:[n:building1Upgrade4]的效果<b>x20</b>。<q>点啊点的也就点习惯了。</q>
         icon:ccIcons[0,2]
         cost:10000000000000000000 bitcoins
         req:building1 >= 350
     *building1Upgrade12
-        name:Ambidextrous
-        desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
+        name:千亿亿亿手指
+        desc:[n:building1Upgrade4]的效果<b>x20</b>。<q>事实证明你完全可以把你的手指放在上面。</q>
         icon:ccIcons[0,2]
         cost:10000000000000000000000 bitcoins
         req:building1 >= 400
     *building1Upgrade13
-        name:Ambidextrous
-        desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
+        name:百万亿亿亿手指
+        desc:[n:building1Upgrade4]的效果<b>x20</b>。<q>只为最疯狂的握手。</q>
         icon:ccIcons[0,2]
         cost:10000000000000000000000000 bitcoins
         req:building1 >= 450
+	// End of Building 1 Upgrades
+	
+	// Building 2 Upgrades
+	[i:br2 %id="2" %idx="1" %name="b2u1" %desc="b2u1"   %icon="[0,1]" %cost="1000" %req="1"]
+	[i:br2 %id="2" %idx="2" %name="b2u2" %desc="b2u2"   %icon="[0,1]" %cost="5000" %req="5"]
+	[i:br2 %id="2" %idx="3" %name="b2u3" %desc="b2u2"   %icon="[0,1]" %cost="50000" %req="25"]
+	[i:br2 %id="2" %idx="4" %name="b2u4" %desc="b2u2"   %icon="[0,1]" %cost="5000000" %req="50"]
+	[i:br2 %id="2" %idx="5" %name="b2u5" %desc="b2u2"   %icon="[0,1]" %cost="500000000" %req="100"]
+	[i:br2 %id="2" %idx="6" %name="b2u6" %desc="b2u2"   %icon="[0,1]" %cost="50000000000" %req="150"]
+	[i:br2 %id="2" %idx="7" %name="b2u7" %desc="b2u2"   %icon="[0,1]" %cost="50000000000000" %req="200"]
+	[i:br2 %id="2" %idx="8" %name="b2u8" %desc="b2u2"   %icon="[0,1]" %cost="50000000000000000" %req="250"]
+	[i:br2 %id="2" %idx="9" %name="b2u9" %desc="b2u2"   %icon="[0,1]" %cost="50000000000000000000" %req="300"]
+	[i:br2 %id="2" %idx="10" %name="b2u10" %desc="b2u2" %icon="[0,1]" %cost="50000000000000000000000" %req="350"]
+	[i:br2 %id="2" %idx="11" %name="b2u11" %desc="b2u2" %icon="[0,1]" %cost="500000000000000000000000000" %req="400"]
+	[i:br2 %id="2" %idx="12" %name="b2u12" %desc="b2u2" %icon="[0,1]" %cost="5000000000000000000000000000000" %req="450"]
+	[i:br2 %id="2" %idx="13" %name="b2u13" %desc="b2u2" %icon="[0,1]" %cost="50000000000000000000000000000000000" %req="500"]
+
+	// Building 3 Upgrades
+	[i:br2 %id="3" %idx="1"  %name="b3u01" %desc="" %icon="[0,2]" %cost="11000" %req="1"]
+	[i:br2 %id="3" %idx="2"  %name="b3u02" %desc="" %icon="[0,2]" %cost="55000" %req="5"]
+	[i:br2 %id="3" %idx="3"  %name="b3u03" %desc="" %icon="[0,2]" %cost="550000" %req="25"]
+	[i:br2 %id="3" %idx="4"  %name="b3u04" %desc="" %icon="[0,2]" %cost="55000000" %req="50"]
+	[i:br2 %id="3" %idx="5"  %name="b3u05" %desc="" %icon="[0,2]" %cost="5500000000" %req="100"]
+	[i:br2 %id="3" %idx="6"  %name="b3u06" %desc="" %icon="[0,2]" %cost="550000000000" %req="150"]
+	[i:br2 %id="3" %idx="7"  %name="b3u07" %desc="" %icon="[0,2]" %cost="550000000000000" %req="200"]
+	[i:br2 %id="3" %idx="8"  %name="b3u08" %desc="" %icon="[0,2]" %cost="550000000000000000" %req="250"]
+	[i:br2 %id="3" %idx="9"  %name="b3u09" %desc="" %icon="[0,2]" %cost="550000000000000000000" %req="300"]
+	[i:br2 %id="3" %idx="10" %name="b3u10" %desc="" %icon="[0,2]" %cost="550000000000000000000000" %req="350"]
+	[i:br2 %id="3" %idx="11" %name="b3u11" %desc="" %icon="[0,2]" %cost="5500000000000000000000000000" %req="400"]
+	[i:br2 %id="3" %idx="12" %name="b3u12" %desc="" %icon="[0,2]" %cost="55000000000000000000000000000000" %req="450"]
+	[i:br2 %id="3" %idx="13" %name="b3u13" %desc="" %icon="[0,2]" %cost="550000000000000000000000000000000000" %req="500"]
+
+	// Building 4 Upgrades
+	[i:br2 %id="4" %idx="1"  %name="b4u01" %desc="" %icon="[0,3]" %cost="120000" %req="1"]
+	[i:br2 %id="4" %idx="2"  %name="b4u02" %desc="" %icon="[0,3]" %cost="600000" %req="5"]
+	[i:br2 %id="4" %idx="3"  %name="b4u03" %desc="" %icon="[0,3]" %cost="6000000" %req="25"]
+	[i:br2 %id="4" %idx="4"  %name="b4u04" %desc="" %icon="[0,3]" %cost="600000000" %req="50"]
+	[i:br2 %id="4" %idx="5"  %name="b4u05" %desc="" %icon="[0,3]" %cost="600000000000" %req="100"]
+	[i:br2 %id="4" %idx="6"  %name="b4u06" %desc="" %icon="[0,3]" %cost="60000000000000" %req="150"]
+	[i:br2 %id="4" %idx="7"  %name="b4u07" %desc="" %icon="[0,3]" %cost="60000000000000000" %req="200"]
+	[i:br2 %id="4" %idx="8"  %name="b4u08" %desc="" %icon="[0,3]" %cost="60000000000000000000" %req="250"]
+	[i:br2 %id="4" %idx="9"  %name="b4u09" %desc="" %icon="[0,3]" %cost="60000000000000000000000" %req="300"]
+	[i:br2 %id="4" %idx="10" %name="b4u10" %desc="" %icon="[0,3]" %cost="60000000000000000000000000" %req="350"]
+	[i:br2 %id="4" %idx="11" %name="b4u11" %desc="" %icon="[0,3]" %cost="600000000000000000000000000000" %req="400"]
+	[i:br2 %id="4" %idx="12" %name="b4u12" %desc="" %icon="[0,3]" %cost="6000000000000000000000000000000000" %req="450"]
+	[i:br2 %id="4" %idx="13" %name="b4u13" %desc="" %icon="[0,3]" %cost="60000000000000000000000000000000000000" %req="500"]
+
+	// TODO: SYNC DATA WITH Cookie Clicker's Upgrades
+	// Building 5 Upgrades
+	[i:br2 %id="5" %idx="1"  %name="b5u01" %desc="" %icon="[0,4]" %cost="120000" %req="1"]
+	[i:br2 %id="5" %idx="2"  %name="b5u02" %desc="" %icon="[0,4]" %cost="600000" %req="5"]
+	[i:br2 %id="5" %idx="3"  %name="b5u03" %desc="" %icon="[0,4]" %cost="6000000" %req="25"]
+	[i:br2 %id="5" %idx="4"  %name="b5u04" %desc="" %icon="[0,4]" %cost="600000000" %req="50"]
+	[i:br2 %id="5" %idx="5"  %name="b5u05" %desc="" %icon="[0,4]" %cost="600000000000" %req="100"]
+	[i:br2 %id="5" %idx="6"  %name="b5u06" %desc="" %icon="[0,4]" %cost="60000000000000" %req="150"]
+	[i:br2 %id="5" %idx="7"  %name="b5u07" %desc="" %icon="[0,4]" %cost="60000000000000000" %req="200"]
+	[i:br2 %id="5" %idx="8"  %name="b5u08" %desc="" %icon="[0,4]" %cost="60000000000000000000" %req="250"]
+	[i:br2 %id="5" %idx="9"  %name="b5u09" %desc="" %icon="[0,4]" %cost="60000000000000000000000" %req="300"]
+	[i:br2 %id="5" %idx="10" %name="b5u10" %desc="" %icon="[0,4]" %cost="60000000000000000000000000" %req="350"]
+	[i:br2 %id="5" %idx="11" %name="b5u11" %desc="" %icon="[0,4]" %cost="600000000000000000000000000000" %req="400"]
+	[i:br2 %id="5" %idx="12" %name="b5u12" %desc="" %icon="[0,4]" %cost="6000000000000000000000000000000000" %req="450"]
+	[i:br2 %id="5" %idx="13" %name="b5u13" %desc="" %icon="[0,4]" %cost="60000000000000000000000000000000000000" %req="500"]
+
+	// Building 6 Upgrades
+	[i:br2 %id="6" %idx="1"  %name="b5u01" %desc="" %icon="[0,4]" %cost="120000" %req="1"]
+	[i:br2 %id="6" %idx="2"  %name="b5u02" %desc="" %icon="[0,4]" %cost="600000" %req="5"]
+	[i:br2 %id="6" %idx="3"  %name="b5u03" %desc="" %icon="[0,4]" %cost="6000000" %req="25"]
+	[i:br2 %id="6" %idx="4"  %name="b5u04" %desc="" %icon="[0,4]" %cost="600000000" %req="50"]
+	[i:br2 %id="6" %idx="5"  %name="b5u05" %desc="" %icon="[0,4]" %cost="600000000000" %req="100"]
+	[i:br2 %id="6" %idx="6"  %name="b5u06" %desc="" %icon="[0,4]" %cost="60000000000000" %req="150"]
+	[i:br2 %id="6" %idx="7"  %name="b5u07" %desc="" %icon="[0,4]" %cost="60000000000000000" %req="200"]
+	[i:br2 %id="6" %idx="8"  %name="b5u08" %desc="" %icon="[0,4]" %cost="60000000000000000000" %req="250"]
+	[i:br2 %id="6" %idx="9"  %name="b5u09" %desc="" %icon="[0,4]" %cost="60000000000000000000000" %req="300"]
+	[i:br2 %id="6" %idx="10" %name="b5u10" %desc="" %icon="[0,4]" %cost="60000000000000000000000000" %req="350"]
+	[i:br2 %id="6" %idx="11" %name="b5u11" %desc="" %icon="[0,4]" %cost="600000000000000000000000000000" %req="400"]
+	[i:br2 %id="6" %idx="12" %name="b5u12" %desc="" %icon="[0,4]" %cost="6000000000000000000000000000000000" %req="450"]
+	[i:br2 %id="6" %idx="13" %name="b5u13" %desc="" %icon="[0,4]" %cost="60000000000000000000000000000000000000" %req="500"]
+
+	// Building 7 Upgrades
+	[i:br2 %id="7" %idx="1"  %name="b5u01" %desc="" %icon="[0,4]" %cost="120000" %req="1"]
+	[i:br2 %id="7" %idx="2"  %name="b5u02" %desc="" %icon="[0,4]" %cost="600000" %req="5"]
+	[i:br2 %id="7" %idx="3"  %name="b5u03" %desc="" %icon="[0,4]" %cost="6000000" %req="25"]
+	[i:br2 %id="7" %idx="4"  %name="b5u04" %desc="" %icon="[0,4]" %cost="600000000" %req="50"]
+	[i:br2 %id="7" %idx="5"  %name="b5u05" %desc="" %icon="[0,4]" %cost="600000000000" %req="100"]
+	[i:br2 %id="7" %idx="6"  %name="b5u06" %desc="" %icon="[0,4]" %cost="60000000000000" %req="150"]
+	[i:br2 %id="7" %idx="7"  %name="b5u07" %desc="" %icon="[0,4]" %cost="60000000000000000" %req="200"]
+	[i:br2 %id="7" %idx="8"  %name="b5u08" %desc="" %icon="[0,4]" %cost="60000000000000000000" %req="250"]
+	[i:br2 %id="7" %idx="9"  %name="b5u09" %desc="" %icon="[0,4]" %cost="60000000000000000000000" %req="300"]
+	[i:br2 %id="7" %idx="10" %name="b5u10" %desc="" %icon="[0,4]" %cost="60000000000000000000000000" %req="350"]
+	[i:br2 %id="7" %idx="11" %name="b5u11" %desc="" %icon="[0,4]" %cost="600000000000000000000000000000" %req="400"]
+	[i:br2 %id="7" %idx="12" %name="b5u12" %desc="" %icon="[0,4]" %cost="6000000000000000000000000000000000" %req="450"]
+	[i:br2 %id="7" %idx="13" %name="b5u13" %desc="" %icon="[0,4]" %cost="60000000000000000000000000000000000000" %req="500"]
+
+	// Building 8 Upgrades
+	[i:br2 %id="8" %idx="1"  %name="b5u01" %desc="" %icon="[0,4]" %cost="120000" %req="1"]
+	[i:br2 %id="8" %idx="2"  %name="b5u02" %desc="" %icon="[0,4]" %cost="600000" %req="5"]
+	[i:br2 %id="8" %idx="3"  %name="b5u03" %desc="" %icon="[0,4]" %cost="6000000" %req="25"]
+	[i:br2 %id="8" %idx="4"  %name="b5u04" %desc="" %icon="[0,4]" %cost="600000000" %req="50"]
+	[i:br2 %id="8" %idx="5"  %name="b5u05" %desc="" %icon="[0,4]" %cost="600000000000" %req="100"]
+	[i:br2 %id="8" %idx="6"  %name="b5u06" %desc="" %icon="[0,4]" %cost="60000000000000" %req="150"]
+	[i:br2 %id="8" %idx="7"  %name="b5u07" %desc="" %icon="[0,4]" %cost="60000000000000000" %req="200"]
+	[i:br2 %id="8" %idx="8"  %name="b5u08" %desc="" %icon="[0,4]" %cost="60000000000000000000" %req="250"]
+	[i:br2 %id="8" %idx="9"  %name="b5u09" %desc="" %icon="[0,4]" %cost="60000000000000000000000" %req="300"]
+	[i:br2 %id="8" %idx="10" %name="b5u10" %desc="" %icon="[0,4]" %cost="60000000000000000000000000" %req="350"]
+	[i:br2 %id="8" %idx="11" %name="b5u11" %desc="" %icon="[0,4]" %cost="600000000000000000000000000000" %req="400"]
+	[i:br2 %id="8" %idx="12" %name="b5u12" %desc="" %icon="[0,4]" %cost="6000000000000000000000000000000000" %req="450"]
+	[i:br2 %id="8" %idx="13" %name="b5u13" %desc="" %icon="[0,4]" %cost="60000000000000000000000000000000000000" %req="500"]
+
+	// Building 9 Upgrades
+	[i:br2 %id="9" %idx="1"  %name="b5u01" %desc="" %icon="[0,4]" %cost="120000" %req="1"]
+	[i:br2 %id="9" %idx="2"  %name="b5u02" %desc="" %icon="[0,4]" %cost="600000" %req="5"]
+	[i:br2 %id="9" %idx="3"  %name="b5u03" %desc="" %icon="[0,4]" %cost="6000000" %req="25"]
+	[i:br2 %id="9" %idx="4"  %name="b5u04" %desc="" %icon="[0,4]" %cost="600000000" %req="50"]
+	[i:br2 %id="9" %idx="5"  %name="b5u05" %desc="" %icon="[0,4]" %cost="600000000000" %req="100"]
+	[i:br2 %id="9" %idx="6"  %name="b5u06" %desc="" %icon="[0,4]" %cost="60000000000000" %req="150"]
+	[i:br2 %id="9" %idx="7"  %name="b5u07" %desc="" %icon="[0,4]" %cost="60000000000000000" %req="200"]
+	[i:br2 %id="9" %idx="8"  %name="b5u08" %desc="" %icon="[0,4]" %cost="60000000000000000000" %req="250"]
+	[i:br2 %id="9" %idx="9"  %name="b5u09" %desc="" %icon="[0,4]" %cost="60000000000000000000000" %req="300"]
+	[i:br2 %id="9" %idx="10" %name="b5u10" %desc="" %icon="[0,4]" %cost="60000000000000000000000000" %req="350"]
+	[i:br2 %id="9" %idx="11" %name="b5u11" %desc="" %icon="[0,4]" %cost="600000000000000000000000000000" %req="400"]
+	[i:br2 %id="9" %idx="12" %name="b5u12" %desc="" %icon="[0,4]" %cost="6000000000000000000000000000000000" %req="450"]
+	[i:br2 %id="9" %idx="13" %name="b5u13" %desc="" %icon="[0,4]" %cost="60000000000000000000000000000000000000" %req="500"]
+
+	// Building 10 Upgrades
+	[i:br2 %id="10" %idx="1"  %name="b5u01" %desc="" %icon="[0,4]" %cost="120000" %req="1"]
+	[i:br2 %id="10" %idx="2"  %name="b5u02" %desc="" %icon="[0,4]" %cost="600000" %req="5"]
+	[i:br2 %id="10" %idx="3"  %name="b5u03" %desc="" %icon="[0,4]" %cost="6000000" %req="25"]
+	[i:br2 %id="10" %idx="4"  %name="b5u04" %desc="" %icon="[0,4]" %cost="600000000" %req="50"]
+	[i:br2 %id="10" %idx="5"  %name="b5u05" %desc="" %icon="[0,4]" %cost="600000000000" %req="100"]
+	[i:br2 %id="10" %idx="6"  %name="b5u06" %desc="" %icon="[0,4]" %cost="60000000000000" %req="150"]
+	[i:br2 %id="10" %idx="7"  %name="b5u07" %desc="" %icon="[0,4]" %cost="60000000000000000" %req="200"]
+	[i:br2 %id="10" %idx="8"  %name="b5u08" %desc="" %icon="[0,4]" %cost="60000000000000000000" %req="250"]
+	[i:br2 %id="10" %idx="9"  %name="b5u09" %desc="" %icon="[0,4]" %cost="60000000000000000000000" %req="300"]
+	[i:br2 %id="10" %idx="10" %name="b5u10" %desc="" %icon="[0,4]" %cost="60000000000000000000000000" %req="350"]
+	[i:br2 %id="10" %idx="11" %name="b5u11" %desc="" %icon="[0,4]" %cost="600000000000000000000000000000" %req="400"]
+	[i:br2 %id="10" %idx="12" %name="b5u12" %desc="" %icon="[0,4]" %cost="6000000000000000000000000000000000" %req="450"]
+	[i:br2 %id="10" %idx="13" %name="b5u13" %desc="" %icon="[0,4]" %cost="60000000000000000000000000000000000000" %req="500"]
+
+	// Building 11 Upgrades
+	[i:br2 %id="11" %idx="1"  %name="b5u01" %desc="" %icon="[0,4]" %cost="120000" %req="1"]
+	[i:br2 %id="11" %idx="2"  %name="b5u02" %desc="" %icon="[0,4]" %cost="600000" %req="5"]
+	[i:br2 %id="11" %idx="3"  %name="b5u03" %desc="" %icon="[0,4]" %cost="6000000" %req="25"]
+	[i:br2 %id="11" %idx="4"  %name="b5u04" %desc="" %icon="[0,4]" %cost="600000000" %req="50"]
+	[i:br2 %id="11" %idx="5"  %name="b5u05" %desc="" %icon="[0,4]" %cost="600000000000" %req="100"]
+	[i:br2 %id="11" %idx="6"  %name="b5u06" %desc="" %icon="[0,4]" %cost="60000000000000" %req="150"]
+	[i:br2 %id="11" %idx="7"  %name="b5u07" %desc="" %icon="[0,4]" %cost="60000000000000000" %req="200"]
+	[i:br2 %id="11" %idx="8"  %name="b5u08" %desc="" %icon="[0,4]" %cost="60000000000000000000" %req="250"]
+	[i:br2 %id="11" %idx="9"  %name="b5u09" %desc="" %icon="[0,4]" %cost="60000000000000000000000" %req="300"]
+	[i:br2 %id="11" %idx="10" %name="b5u10" %desc="" %icon="[0,4]" %cost="60000000000000000000000000" %req="350"]
+	[i:br2 %id="11" %idx="11" %name="b5u11" %desc="" %icon="[0,4]" %cost="600000000000000000000000000000" %req="400"]
+	[i:br2 %id="11" %idx="12" %name="b5u12" %desc="" %icon="[0,4]" %cost="6000000000000000000000000000000000" %req="450"]
+	[i:br2 %id="11" %idx="13" %name="b5u13" %desc="" %icon="[0,4]" %cost="60000000000000000000000000000000000000" %req="500"]
+
+	// Building 12 Upgrades
+	[i:br2 %id="12" %idx="1"  %name="b5u01" %desc="" %icon="[0,4]" %cost="120000" %req="1"]
+	[i:br2 %id="12" %idx="2"  %name="b5u02" %desc="" %icon="[0,4]" %cost="600000" %req="5"]
+	[i:br2 %id="12" %idx="3"  %name="b5u03" %desc="" %icon="[0,4]" %cost="6000000" %req="25"]
+	[i:br2 %id="12" %idx="4"  %name="b5u04" %desc="" %icon="[0,4]" %cost="600000000" %req="50"]
+	[i:br2 %id="12" %idx="5"  %name="b5u05" %desc="" %icon="[0,4]" %cost="600000000000" %req="100"]
+	[i:br2 %id="12" %idx="6"  %name="b5u06" %desc="" %icon="[0,4]" %cost="60000000000000" %req="150"]
+	[i:br2 %id="12" %idx="7"  %name="b5u07" %desc="" %icon="[0,4]" %cost="60000000000000000" %req="200"]
+	[i:br2 %id="12" %idx="8"  %name="b5u08" %desc="" %icon="[0,4]" %cost="60000000000000000000" %req="250"]
+	[i:br2 %id="12" %idx="9"  %name="b5u09" %desc="" %icon="[0,4]" %cost="60000000000000000000000" %req="300"]
+	[i:br2 %id="12" %idx="10" %name="b5u10" %desc="" %icon="[0,4]" %cost="60000000000000000000000000" %req="350"]
+	[i:br2 %id="12" %idx="11" %name="b5u11" %desc="" %icon="[0,4]" %cost="600000000000000000000000000000" %req="400"]
+	[i:br2 %id="12" %idx="12" %name="b5u12" %desc="" %icon="[0,4]" %cost="6000000000000000000000000000000000" %req="450"]
+	[i:br2 %id="12" %idx="13" %name="b5u13" %desc="" %icon="[0,4]" %cost="60000000000000000000000000000000000000" %req="500"]
+
+	// Building 13 Upgrades
+	[i:br2 %id="13" %idx="1"  %name="b5u01" %desc="" %icon="[0,4]" %cost="120000" %req="1"]
+	[i:br2 %id="13" %idx="2"  %name="b5u02" %desc="" %icon="[0,4]" %cost="600000" %req="5"]
+	[i:br2 %id="13" %idx="3"  %name="b5u03" %desc="" %icon="[0,4]" %cost="6000000" %req="25"]
+	[i:br2 %id="13" %idx="4"  %name="b5u04" %desc="" %icon="[0,4]" %cost="600000000" %req="50"]
+	[i:br2 %id="13" %idx="5"  %name="b5u05" %desc="" %icon="[0,4]" %cost="600000000000" %req="100"]
+	[i:br2 %id="13" %idx="6"  %name="b5u06" %desc="" %icon="[0,4]" %cost="60000000000000" %req="150"]
+	[i:br2 %id="13" %idx="7"  %name="b5u07" %desc="" %icon="[0,4]" %cost="60000000000000000" %req="200"]
+	[i:br2 %id="13" %idx="8"  %name="b5u08" %desc="" %icon="[0,4]" %cost="60000000000000000000" %req="250"]
+	[i:br2 %id="13" %idx="9"  %name="b5u09" %desc="" %icon="[0,4]" %cost="60000000000000000000000" %req="300"]
+	[i:br2 %id="13" %idx="10" %name="b5u10" %desc="" %icon="[0,4]" %cost="60000000000000000000000000" %req="350"]
+	[i:br2 %id="13" %idx="11" %name="b5u11" %desc="" %icon="[0,4]" %cost="600000000000000000000000000000" %req="400"]
+	[i:br2 %id="13" %idx="12" %name="b5u12" %desc="" %icon="[0,4]" %cost="6000000000000000000000000000000000" %req="450"]
+	[i:br2 %id="13" %idx="13" %name="b5u13" %desc="" %icon="[0,4]" %cost="60000000000000000000000000000000000000" %req="500"]
 
 	*clover
 		name:Clover
