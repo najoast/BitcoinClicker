@@ -51,7 +51,7 @@ Includes
 		desc:[%desc]
 		icon:ccIcons[%icon]
 		cost:[%cost] bitcoins
-		req:building[%id] >= %req
+		req:building[%id] >= [%req]
 		passive:multiply yield of building[%id] by 2
 
 Buttons
@@ -259,7 +259,7 @@ Upgrades
     *building1Upgrade1
         name:强化点击
         // desc:[i:mn]和[n:building1]的效果<b>翻倍</b>。<q>戳戳</q>
-        desc:[n:building1]的效果<b>翻倍</b>。<q>戳戳</q>
+        desc:鼠标点击和[n:building1]的效果<b>翻倍</b>。<q>戳戳</q>
         icon:ccIcons[0,0]
         cost:100 bitcoins
         req:building1 > 0
@@ -268,7 +268,7 @@ Upgrades
     *building1Upgrade2
         name:鼠标手隔离霜
         // desc:[i:mn]和[n:building1]的效果<b>翻倍</b>。<q>它…点击伤害…</q>
-        desc:[n:building1]的效果<b>翻倍</b>。<q>它…点击伤害…</q>
+        desc:鼠标点击和[n:building1]的效果<b>翻倍</b>。<q>它…点击伤害…</q>
         icon:ccIcons[0,1]
         cost:500 bitcoins
         req:building1 > 0
@@ -277,7 +277,7 @@ Upgrades
     *building1Upgrade3
         name:双手并用
         // desc:[i:mn]和[n:building1]的效果<b>翻倍</b>。<q>妈妈，快看，我用两只手一起点鼠标！</q>
-        desc:[n:building1]的效果<b>翻倍</b>。<q>妈妈，快看，我用两只手一起点鼠标！</q>
+        desc:鼠标点击和[n:building1]的效果<b>翻倍</b>。<q>妈妈，快看，我用两只手一起点鼠标！</q>
         icon:ccIcons[0,2]
         cost:10000 bitcoins
         req:building1 > 10
@@ -286,7 +286,7 @@ Upgrades
     *building1Upgrade4
         name:金手指
         // desc:每拥有一个非[n:building1]建筑，[i:mn]和[n:building1]的产量<b>+0.1比特币/秒</b>。<q>咔哒</q>
-        desc:每拥有一个非[n:building1]建筑，[n:building1]的产量<b>+0.1比特币/秒</b>。<q>咔哒</q>
+        desc:每拥有一个非[n:building1]建筑，鼠标点击和[n:building1]的产量<b>+0.1比特币/秒</b>。<q>咔哒</q>
         icon:ccIcons[0,13]
         cost:100000 bitcoins
         req:building1 >= 25
