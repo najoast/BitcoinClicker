@@ -1,0 +1,260 @@
+Let's make a game!
+	desc:尽情的享受挖矿的乐趣吧！
+	updated:24/07/2021
+	name:无尽的比特币
+	version:1
+	created:23/7/2021
+	by:Ares Studio
+
+Settings
+	building cost increase:115%
+	background:https://i.imgur.com/ko1yDMX.jpg
+	stylesheet:stuff/bigBlue.css
+	building cost refund:50%
+	spritesheet:icons, 48 by 48, https://gitee.com/Yancey/BitcoinClicker/raw/main/res/icons.png
+	spritesheet:ccIcons, 48 by 48, https://gitee.com/Yancey/BitcoinClicker/raw/main/res/ccIcons.png
+
+Layout
+	use default
+
+Buttons
+	*bitcoinButton
+		desc:点击这个比特币实体来生成更多比特币吧！
+		tooltip class:red
+		name:比特币实体
+		icon:https://gitee.com/Yancey/BitcoinClicker/raw/main/res/btn_bitcoin.png
+		class:bigButton hasFlares
+		on click:anim icon wobble
+		on click:
+            $addition=0
+            if (have buildingUpgrade1_4) $addition=0.1
+            if (have buildingUpgrade1_5) $addition=$addition*5
+            if (have buildingUpgrade1_6) $addition=$addition*10
+            if (have buildingUpgrade1_7) $addition=$addition*20
+            if (have buildingUpgrade1_8) $addition=$addition*20
+            if (have buildingUpgrade1_9) $addition=$addition*20
+            if (have buildingUpgrade1_10) $addition=$addition*20
+            if (have buildingUpgrade1_11) $addition=$addition*20
+            if (have buildingUpgrade1_12) $addition=$addition*20
+            if (have buildingUpgrade1_13) $addition=$addition*20
+            yield 1+$addition bitcoins
+		no text
+		icon class:shadowed
+		tooltip origin:bottom
+
+Resources
+	*bitcoin|bitcoins
+		desc:这是你拥有的比特币，你能用它们购买东西。你的目标是获得尽可能多的比特币！
+		name:比特币
+		icon:icons[0,0]
+		class:noBackground
+		show earned
+
+Shinies
+	*luckyBitcoin
+		frequency variation:30
+		movement:onRight moveLeft fade bounce:0.05
+		on click:log Woop
+		on click:
+			$boost=1
+			if (have clover) $boost=4
+			//get at least 7, or between 1 and 3 minutes of our bitcoin production
+            $amount=max(7,random(bitcoins:ps*60*1,bitcoins:ps*60*3))*$boost
+			toast 比特币+<b>[$amount]
+			yield $amount bitcoins
+		end
+		frequency:60
+		class:bigButton
+		icon:https://gitee.com/Yancey/BitcoinClicker/raw/main/res/btn_bitcoin.png
+
+Buildings
+	*buildings1
+		desc:想通过一个人的大脑计算sha256，几乎是不可能的事情。<//><b>效果：</b><.> +0.1 比特币/秒
+		unlocked
+		name:人工计算
+		icon:icons[3,0]
+		cost:15 bitcoins
+		on tick:
+            $addition=0
+            if (have building1Upgrade4) $addition=0.1
+            if (have building1Upgrade5) $addition=$addition*5
+            if (have building1Upgrade6) $addition=$addition*10
+            if (have building1Upgrade7) $addition=$addition*20
+            if (have building1Upgrade8) $addition=$addition*20
+            if (have building1Upgrade9) $addition=$addition*20
+            if (have building1Upgrade10) $addition=$addition*20
+            if (have building1Upgrade11) $addition=$addition*20
+            if (have building1Upgrade12) $addition=$addition*20
+            if (have building1Upgrade13) $addition=$addition*20
+            yield 0.1+$addition bitcoins
+	*buildings6
+		desc:全新的显卡矿机，挖矿不算快，但是性价比高。<//><b>效果：</b><.> +1400 比特币/秒
+		name:全新的显卡矿机
+		icon:icons[3,5]
+		cost:1400000 bitcoins
+		on tick:yield 1400 bitcoins
+	*buildings4
+		desc:由非常多张显卡组成的挖矿机，哪怕只是HD6770那样的垃圾卡，“组团”之后的运算能力还是能够超越大部分用户的单张显卡的。<//><b>效果：</b><.> +47 比特币/秒
+		name:组装计算机
+		icon:icons[3,3]
+		cost:12000 bitcoins
+		on tick:yield 47 bitcoins
+	*buildings5
+		desc:矿老板淘汰下来的二手显卡矿机组。<//><b>效果：</b><.> +260 比特币/秒
+		name:淘汰的二手矿机
+		icon:icons[3,4]
+		cost:130000 bitcoins
+		on tick:yield 260 bitcoins
+	*buildings8
+		desc:利用弹性计算能力，可以根据需要随意增加服务器数量，大大提高部署效率。<//><b>效果：</b><.> +44000 比特币/秒
+		name:云服务器
+		icon:icons[3,7]
+		cost:330000000 bitcoins
+		on tick:yield 44000 bitcoins
+	*buildings3
+		desc:任何一台电脑都能成为挖矿机，只是收益会比较低。<//><b>效果：</b><.> +8 比特币/秒
+		name:家用笔记本
+		icon:icons[3,2]
+		cost:1100 bitcoins
+		on tick:yield 8 bitcoins
+	*buildings14
+		desc:从宏观上来说物质是一堆堆聚合的原子，而原子的运动都符合物理方程，就像你知道一个小球的速度、位置和所受的力，就能计算出他未来的运行轨迹。所以理论上来说只要确切地得知宇宙中每个原子的状态，再拥有足够的算力，我们就能计算出未来了！。<//><b>效果：</b><.> +2900000000 比特币/秒
+		name:克罗托系统
+		icon:icons[3,8]
+		cost:2100000000000000 bitcoins
+		on tick:yield 2900000000 bitcoins
+	*buildings9
+		desc:由数十台挖矿机组成的阵列，效率大大提升。<//><b>效果：</b><.> +260000 比特币/秒
+		name:挖矿机阵列
+		icon:icons[3,8]
+		cost:5100000000 bitcoins
+		on tick:yield 260000 bitcoins
+	*buildings11
+		desc:超级计算机（Super computer）是指能够执行一般个人电脑无法处理的大量资料与高速运算的电脑。。<//><b>效果：</b><.> +10000000 比特币/秒
+		name:超级计算机
+		icon:icons[3,8]
+		cost:1000000000000 bitcoins
+		on tick:yield 10000000 bitcoins
+	*buildings2
+		desc:顾名思义，人列计算机就是由人组成的计算机。但是人数需求庞大，由人组成计算机的的各个部位，由各种符号代替二进制进行运算。<//><b>效果：</b><.> +1 比特币/秒
+		name:人列计算机
+		icon:icons[3,1]
+		cost:100 bitcoins
+		on tick:yield 1 bitcoins
+	*buildings7
+		desc:ASIC矿机芯片的性能超过当前顶级的电脑CPU。因为ASIC矿机在算力上有绝对的优势，所以电脑、显卡矿机开始逐渐被淘汰。<//><b>效果：</b><.> +7800 比特币/秒
+		name:ASIC矿机
+		icon:icons[3,6]
+		cost:20000000 bitcoins
+		on tick:yield 7800 bitcoins
+		tag:tagBuilding7
+	*buildings12
+		desc:量子计算机求解数学算法高斯玻色取样只需200秒，而目前世界最快的超级计算机要用6亿年。。<//><b>效果：</b><.> +65000000 比特币/秒
+		name:量子计算机
+		icon:icons[3,8]
+		cost:14000000000000 bitcoins
+		on tick:yield 65000000 bitcoins
+		tag:tagBuilding12
+	*buildings13
+		desc:全称为Just A Rather Very Intelligent System（只是一个相当聪明的智能系统），钢铁侠的私人管家，拥有超越时代的计算能力。<//><b>效果：</b><.> +430000000 比特币/秒
+		name:贾维斯
+		icon:icons[3,8]
+		cost:170000000000000 bitcoins
+		on tick:yield 430000000 bitcoins
+		tag:tagBuilding13
+	*buildings10
+		desc:由数百到数千台挖矿机组成的大阵集群，效率惊人。<//><b>效果：</b><.> +1600000 比特币/秒
+		name:挖矿机集群
+		icon:icons[3,8]
+		cost:75000000000 bitcoins
+		on tick:yield 1600000 bitcoins
+		tag:tagBuilding10
+
+Upgrades
+    *building1Upgrade1
+        name:强化点击
+        desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>戳戳</q>
+        icon:ccIcons[0,0]
+        cost:100 bitcoins
+        req:building1 > 1
+        passive:multiply bitcoin yield of bitcoinButton by 2
+        passive:multiply yield of building1 by 2
+
+    *building1Upgrade2
+        name:腕管预防霜
+        desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>它…点击伤害…</q>
+        icon:ccIcons[0,1]
+        cost:500 bitcoins
+        req:building1 > 1
+        passive:multiply bitcoin yield of bitcoinButton by 2
+        passive:multiply yield of building1 by 2
+
+    *building1Upgrade3
+        name:Ambidextrous
+        desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
+        icon:ccIcons[0,2]
+        cost:10000 bitcoins
+        req:building1 > 10
+        passive:multiply bitcoin yield of bitcoinButton by 2
+        passive:multiply yield of building1 by 2
+
+    *building1Upgrade4
+        name:Ambidextrous
+        desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
+        icon:ccIcons[0,13]
+        cost:10 bitcoins
+        req:building1 > 10
+    *building1Upgrade5
+        name:Ambidextrous
+        desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
+        icon:ccIcons[0,14]
+        cost:10 bitcoins
+        req:building1 > 10
+    *building1Upgrade6
+        name:Ambidextrous
+        desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
+        icon:ccIcons[0,15]
+        cost:10 bitcoins
+        req:building1 > 10
+    *building1Upgrade7
+        name:Ambidextrous
+        desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
+        icon:ccIcons[0,16]
+        cost:10 bitcoins
+        req:building1 > 10
+    *building1Upgrade8
+        name:Ambidextrous
+        desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
+        icon:ccIcons[0,2]
+        cost:10 bitcoins
+        req:building1 > 10
+    *building1Upgrade9
+        name:Ambidextrous
+        desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
+        icon:ccIcons[0,2]
+        cost:10 bitcoins
+        req:building1 > 10
+    *building1Upgrade10
+        name:Ambidextrous
+        desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
+        icon:ccIcons[0,2]
+        cost:10 bitcoins
+        req:building1 > 10
+    *building1Upgrade11
+        name:Ambidextrous
+        desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
+        icon:ccIcons[0,2]
+        cost:10 bitcoins
+        req:building1 > 10
+    *building1Upgrade12
+        name:Ambidextrous
+        desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
+        icon:ccIcons[0,2]
+        cost:10 bitcoins
+        req:building1 > 10
+    *building1Upgrade13
+        name:Ambidextrous
+        desc:每次鼠标和游标工作效率 <b>翻倍</b>。<q>Look ma, both hands!</q>
+        icon:ccIcons[0,2]
+        cost:10 bitcoins
+        req:building1 > 10
