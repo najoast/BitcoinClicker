@@ -138,11 +138,11 @@ Buildings
 				if (have building1Upgrade12) $addition=$addition*20
 				if (have building1Upgrade13) $addition=$addition*20
 			end
-			$amount=0.1+$addition
-			log [$total] [$addition] [$amount] [0.1+$addition]
+			$amount=$addition+0.1
+			log [$total] [$addition] [$amount] [$addition+0.1]
 			yield 0.1+$addition bitcoins
-			varBuilding1Cps is 0.1+$addition
 			yield 0.1+$addition varBuilding1Earned
+			varBuilding1Cps is 0.1+$addition
 		end
 		unlocked
         tag:tagBuilding1
