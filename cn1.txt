@@ -76,9 +76,8 @@ Includes
 
 Buttons
 	*bitcoinButton
-		desc:点击这个比特币实体来生成更多比特币吧！
-		tooltip class:red
 		name:比特币实体
+		desc:点击这个比特币实体来生成更多比特币吧！
 		icon:https://gitee.com/Yancey/BitcoinClicker/raw/main/res/btn_bitcoin.png
 		class:bigButton hasFlares
 		on click:anim icon wobble
@@ -88,18 +87,25 @@ Buttons
 		no text
 		icon class:shadowed
 		tooltip origin:bottom
+		tooltip class:red
 
 Resources
 	*bitcoin|bitcoins
-		desc:这是你拥有的比特币，你能用它们购买东西。你的目标是获得尽可能多的比特币！
 		name:比特币
+		desc:这是你拥有的比特币，你能用它们购买东西。你的目标是获得尽可能多的比特币！
 		icon:icons[0,0]
 		class:noBackground
 		show earned
 	// 用来记录建筑1的产量
 	*varBuilding1Cps
+		name:varBuilding1Cps
+		desc:nothing
+		class:noBackground
 		always hidden
 	*varBuilding1Earned
+		name:varBuilding1Earned
+		desc:nothing
+		class:noBackground
 		always hidden
 
 Shinies
