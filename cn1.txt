@@ -55,6 +55,17 @@ Includes
 		req:building[%id]>=[%req]
 		passive:multiply yield of building[%id] by 2
 
+*include newBuilding %id %name %desc %icon %cost %yield %req
+    *building[%id]
+        name:[%name]
+        desc:[%desc]。<//><b>效果：</b><.>+[%yield]比特币/秒
+		desc:[%desc]。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding1Cps]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[this*varBuilding1Cps]个比特币（占总产量的[this*varBuilding1Cps*100/bitcoin:ps]%）<.>已生产[varBuilding1Earned]个比特币|]
+        icon:[%icon]
+        cost:[%cost] bitcoins
+        on tick:yield [%yield] bitcoins
+        req:have building[%req]
+        // req:have building[%req] or [%cost] bitcoins:earned
+
 Buttons
 	*bitcoinButton
 		name:比特币实体
@@ -140,20 +151,21 @@ Buildings
 			end
 			log [$total] [$addition] [$num] [bitcoins:ps]
 			yield $addition+1 bitcoins
-			yield $addition+1 varBuilding1Earned
-			// 因为科技的加成是在 on tick 外面生效的，所以CPS只能在这里自己算，太扭曲了
-			$cps=$addition+1
-			if (have building1Upgrade1) $cps=$cps*2
-			if (have building1Upgrade2) $cps=$cps*2
-			if (have building1Upgrade3) $cps=$cps*2
-			varBuilding1Cps=$cps
+			// 因为科技的加成是在 on tick 外面生效的，所以上面的结果并不是最终的
+			// 真实产量只能在这里自己算，太扭曲了
+			$realYield=$addition+1
+			if (have building1Upgrade1) $realYield=$realYield*2
+			if (have building1Upgrade2) $realYield=$realYield*2
+			if (have building1Upgrade3) $realYield=$realYield*2
+			varBuilding1Cps=$realYield
+			yield $realYield varBuilding1Earned
 		end
 		unlocked
         tag:tagBuilding1
         on count:$total=$total+building1
 	*building2
 		name:人列计算机
-		desc:顾名思义，人列计算机就是由人组成的计算机。但是人数需求庞大，由人组成计算机的的各个部位，由各种符号代替二进制进行运算。<//><b>效果：</b><.> +1 比特币/秒
+		desc:顾名思义，人列计算机就是由人组成的计算机。但是人数需求庞大，由人组成计算机的的各个部位，由各种符号代替二进制进行运算。
 		icon:icons[3,1]
 		cost:100 bitcoins
 		on tick:yield 4 bitcoins
