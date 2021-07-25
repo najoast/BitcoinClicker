@@ -57,13 +57,13 @@ Includes
             if (have building1Upgrade13) $addition=$addition*20
         end
 		$amount=[%yield]+$addition
-		if ([%yield]=0.1)//Ugly!!
-			varBuilding1Cps=$amount
-			varBuilding1Earned=varBuilding1Earned+$amount
-		end
+        yield $amount bitcoins
+		// if ([%yield]=0.1)
+		// 	varBuilding1Cps=$amount
+		// 	varBuilding1Earned=varBuilding1Earned+$amount
+		// end
         // log addition is [$addition]
 		// log name of building 1 is [i:bn %id="1"], [n:building1]
-        yield $amount bitcoins
 
 //*include bn %id:&#60;&#35;F43F1A&#62;&#91;n:building[%id]&#93;&#60;/#&#62;
 // *include mn:鼠标点击
