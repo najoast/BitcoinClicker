@@ -138,7 +138,7 @@ Buildings
 				if (have building1Upgrade12) $addition=$addition*20
 				if (have building1Upgrade13) $addition=$addition*20
 			end
-			$amount=($addition+0.1)*10
+			$amount=$addition*10+1
 			log [$total] [$addition] [$amount]
 			yield 0.1+$addition bitcoins
 			yield 0.1+$addition varBuilding1Earned
