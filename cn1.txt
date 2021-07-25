@@ -98,15 +98,19 @@ Resources
 		show earned
 	// 用来记录建筑1的产量
 	*varBuilding1Cps
-		name:varBuilding1Cps
+		name:建筑1CPS
 		desc:nothing
+		icon:icons[0,0]
 		class:noBackground
-		always hidden
+		show earned
+		// always hidden
 	*varBuilding1Earned
-		name:varBuilding1Earned
+		// always hidden
+		name:建筑1挣的钱
 		desc:nothing
+		icon:icons[0,0]
 		class:noBackground
-		always hidden
+		show earned
 
 Shinies
 	*luckyBitcoin
@@ -154,7 +158,7 @@ Buildings
 			end
 			$amount=0.1+$addition
 			yield $amount bitcoins
-			// varBuilding1Cps=$amount
+			varBuilding1Cps is $amount
 			yield $amount varBuilding1Earned
 		end
 		unlocked
