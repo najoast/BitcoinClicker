@@ -153,12 +153,12 @@ Buildings
 			yield $addition+1 bitcoins
 			// 因为科技的加成是在 on tick 外面生效的，所以上面的结果并不是最终的
 			// 真实产量只能在这里自己算，太扭曲了
-			$realYield=$addition+1
-			if (have building1Upgrade1) $realYield=$realYield*2
-			if (have building1Upgrade2) $realYield=$realYield*2
-			if (have building1Upgrade3) $realYield=$realYield*2
-			varBuilding1Cps=$realYield
-			yield $realYield varBuilding1Earned
+			$realNum=$addition+1
+			if (have building1Upgrade1) $realNum=$realNum*2
+			if (have building1Upgrade2) $realNum=$realNum*2
+			if (have building1Upgrade3) $realNum=$realNum*2
+			varBuilding1Cps=$realNum
+			yield $realNum varBuilding1Earned
 		end
 		unlocked
         tag:tagBuilding1
