@@ -152,7 +152,7 @@ Buildings
 				if (have building1Upgrade12) $addition=$addition*20
 				if (have building1Upgrade13) $addition=$addition*20
 			end
-			$amount=[%yield]+$addition
+			$amount=0.1+$addition
 			yield $amount bitcoins
 			varBuilding1Cps=$amount
 			varBuilding1Earned=varBuilding1Earned+$amount
