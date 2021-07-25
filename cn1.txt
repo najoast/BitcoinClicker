@@ -135,7 +135,25 @@ Buildings
 		icon:icons[3,0]
 		cost:15 bitcoins
 		on tick:
-			[include cursorClick %yield="0.1"]
+			// [include cursorClick %yield="0.1"]
+			$addition=0
+			$total=0
+			do count with :Buildings:notTag:tagBuilding1
+			// log The buildings num of notTag:tagBuilding1 is [$total]
+			if ($total>0)
+				if (have building1Upgrade4) $addition=0.1*$total
+				if (have building1Upgrade5) $addition=$addition*5
+				if (have building1Upgrade6) $addition=$addition*10
+				if (have building1Upgrade7) $addition=$addition*20
+				if (have building1Upgrade8) $addition=$addition*20
+				if (have building1Upgrade9) $addition=$addition*20
+				if (have building1Upgrade10) $addition=$addition*20
+				if (have building1Upgrade11) $addition=$addition*20
+				if (have building1Upgrade12) $addition=$addition*20
+				if (have building1Upgrade13) $addition=$addition*20
+			end
+			$amount=[%yield]+$addition
+			yield $amount bitcoins
 			varBuilding1Cps=$amount
 			varBuilding1Earned=varBuilding1Earned+$amount
 		end
