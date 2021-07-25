@@ -39,7 +39,8 @@ Layout
 
 Includes
 // 鼠标点击和建筑1的科技加成效果
-*include cursorClick %yield
+*include cursorClick %func %yield
+	[%func]:
         $addition=0
         $total=0
         do count with :Buildings:notTag:tagBuilding1
@@ -56,9 +57,14 @@ Includes
             if (have building1Upgrade12) $addition=$addition*20
             if (have building1Upgrade13) $addition=$addition*20
         end
+		$amount=[%yield]+$addition
+		if ([%func]=="on tick")
+			varBuilding1Cps=$amount
+			varBuilding1Earned=varBuilding1Earned+$amount
         // log addition is [$addition]
 		// log name of building 1 is [i:bn %id="1"], [n:building1]
-        yield [%yield]+$addition bitcoins
+        yield $amount bitcoins
+	end
 
 //*include bn %id:&#60;&#35;F43F1A&#62;&#91;n:building[%id]&#93;&#60;/#&#62;
 // *include mn:鼠标点击
@@ -80,10 +86,8 @@ Buttons
 		name:比特币实体
 		icon:https://gitee.com/Yancey/BitcoinClicker/raw/main/res/btn_bitcoin.png
 		class:bigButton hasFlares
-		on click:
-            anim icon wobble
-            [include cursorClick %yield="1"]
-        end
+		on click:anim icon wobble
+		[include cursorClick %func="on click" %yield="1"]
 		no text
 		icon class:shadowed
 		tooltip origin:bottom
@@ -95,6 +99,11 @@ Resources
 		icon:icons[0,0]
 		class:noBackground
 		show earned
+	// 用来记录建筑1的产量
+	*varBuilding1Cps
+		always hidden
+	*varBuilding1Earned
+		always hidden
 
 Shinies
 	*luckyBitcoin
@@ -119,12 +128,10 @@ Buildings
 		
 	*building1
 		name:人工计算
-		desc:想通过一个人的大脑计算sha256，几乎是不可能的事情。<//><.>每个[n:this]每秒产出[0.1*pow(2,this-1)]个比特币<.>[this]个[n:this]每秒产出[this*0.1*pow(2,this-1)]个比特币（占总产量的[this*0.1*pow(2,this-1)*100/bitcoin:ps]%）
+		desc:想通过一个人的大脑计算sha256，几乎是不可能的事情。<//></><.>每个[n:this]每秒产出[varBuilding1Cps]个比特币<.>[this]个[n:this]每秒产出[this*varBuilding1Cps]个比特币（占总产量的[this*varBuilding1Cps*100/bitcoin:ps]%）<.>已生产[varBuilding1Earned]个比特币
 		icon:icons[3,0]
 		cost:15 bitcoins
-        on tick:
-            [include cursorClick %yield="0.1"]
-        end
+		[include cursorClick %func="on tick" %yield="0.1"]
 		unlocked
         tag:tagBuilding1
         on count:$total=$total+building1
