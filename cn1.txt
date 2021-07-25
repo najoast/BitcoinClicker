@@ -142,7 +142,7 @@ Buildings
 			log [$total] [$addition] [$amount]
 			yield 0.1+$addition bitcoins
 			yield 0.1+$addition varBuilding1Earned
-			varBuilding1Cps is ($addition+0.1)*10
+			varBuilding1Cps is $amount
 		end
 		unlocked
         tag:tagBuilding1
