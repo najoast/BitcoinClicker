@@ -144,8 +144,8 @@ Buildings
 			// 因为科技的加成是在 on tick 外面生效的，所以CPS只能在这里自己算，太扭曲了
 			$cps=$addition+1
 			if (have building1Upgrade1) $cps=$cps*2
-			if (have building1Upgrade1) $cps=$cps*2
-			if (have building1Upgrade1) $cps=$cps*2
+			if (have building1Upgrade2) $cps=$cps*2
+			if (have building1Upgrade3) $cps=$cps*2
 			varBuilding1Cps=$cps
 		end
 		unlocked
