@@ -152,7 +152,7 @@ Buildings
 		desc:顾名思义，人列计算机就是由人组成的计算机。但是人数需求庞大，由人组成计算机的的各个部位，由各种符号代替二进制进行运算。<//><b>效果：</b><.> +1 比特币/秒
 		icon:icons[3,1]
 		cost:100 bitcoins
-		on tick:yield 1 bitcoins
+		on tick:yield 4 bitcoins
         on count:$total=$total+building2
         req:have building1
 	*building3
