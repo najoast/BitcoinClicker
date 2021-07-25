@@ -15,27 +15,8 @@ Settings
 	spritesheet:ccIcons, 48 by 48, https://gitee.com/Yancey/BitcoinClicker/raw/main/res/ccIcons.png
 
 Layout
-	// use default
-    // contains:Log
-	*main
-		contains:res, buttons
-	*res
-		contains:Resources
-		class:fullWidth
-	*buttons
-		contains:Buttons
-	*store
-		contains:buildings, upgrades
-	*buildings
-		contains:BulkDisplay, Buildings
-		header:Buildings
-		tooltip origin:left
-		ps:show
-	*upgrades
-		contains:Upgrades
-		header:Upgrades
-		costs:hide
-		names:hide
+	use default
+    contains:Log
 
 Includes
 // 鼠标点击和建筑1的科技加成效果
@@ -83,6 +64,7 @@ Buttons
 		on click:anim icon wobble
 		on click:
 			[include cursorClick %yield="1"]
+			clear log
 		end
 		no text
 		icon class:shadowed
@@ -157,6 +139,7 @@ Buildings
 				if (have building1Upgrade13) $addition=$addition*20
 			end
 			$amount=0.1+$addition
+			log $total $addition $amount
 			yield $amount bitcoins
 			varBuilding1Cps is $amount
 			yield $amount varBuilding1Earned
