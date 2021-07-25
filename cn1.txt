@@ -58,7 +58,7 @@ Includes
             if (have building1Upgrade13) $addition=$addition*20
         end
 		$amount=[%yield]+$addition
-		if ([%func]="tick")
+		if ([%yield]=0.1)//Ugly!!
 			varBuilding1Cps=$amount
 			varBuilding1Earned=varBuilding1Earned+$amount
 		end
