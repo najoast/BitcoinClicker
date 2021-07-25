@@ -154,8 +154,8 @@ Buildings
 			end
 			$amount=0.1+$addition
 			yield $amount bitcoins
-			varBuilding1Cps=$amount
-			varBuilding1Earned=varBuilding1Earned+$amount
+			// varBuilding1Cps=$amount
+			yield $amount varBuilding1Earned
 		end
 		unlocked
         tag:tagBuilding1
