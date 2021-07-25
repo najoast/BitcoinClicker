@@ -173,7 +173,7 @@ Buildings
         tag:tagBuilding1
         on count:$total=$total+building1
 	// 从第2个建筑开始，之后所有建筑都用工具生成的(因为它们的行为完全一致)
-		*buildings2
+	*buildings2
 		name:人列计算机
 		desc:顾名思义，人列计算机就是由人组成的计算机。但是人数需求庞大，由人组成计算机的的各个部位，由各种符号代替二进制进行运算。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding2Cps]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[this*varBuilding2Cps]个比特币（占总产量的[this*varBuilding2Cps*100/bitcoin:ps]%）<.>已生产[varBuilding2Earned]个比特币|]
 		icon:icons[3,1]
@@ -185,6 +185,7 @@ Buildings
 			$realNum=4*pow(2,$total)
 			varBuilding2Cps=$realNum
 			yield varBuilding2Cps varBuilding2Earned
+		end
 		tag:tagBuilding2
 	*buildings3
 		name:家用笔记本
@@ -198,6 +199,7 @@ Buildings
 			$realNum=8*pow(2,$total)
 			varBuilding3Cps=$realNum
 			yield varBuilding3Cps varBuilding3Earned
+		end
 		tag:tagBuilding3
 	*buildings4
 		name:组装计算机
@@ -211,6 +213,7 @@ Buildings
 			$realNum=47*pow(2,$total)
 			varBuilding4Cps=$realNum
 			yield varBuilding4Cps varBuilding4Earned
+		end
 		tag:tagBuilding4
 	*buildings5
 		name:淘汰的二手矿机
@@ -224,6 +227,7 @@ Buildings
 			$realNum=260*pow(2,$total)
 			varBuilding5Cps=$realNum
 			yield varBuilding5Cps varBuilding5Earned
+		end
 		tag:tagBuilding5
 	*buildings6
 		name:全新的显卡矿机
@@ -237,6 +241,7 @@ Buildings
 			$realNum=1400*pow(2,$total)
 			varBuilding6Cps=$realNum
 			yield varBuilding6Cps varBuilding6Earned
+		end
 		tag:tagBuilding6
 	*buildings7
 		name:ASIC矿机
@@ -250,6 +255,7 @@ Buildings
 			$realNum=7800*pow(2,$total)
 			varBuilding7Cps=$realNum
 			yield varBuilding7Cps varBuilding7Earned
+		end
 		tag:tagBuilding7
 	*buildings8
 		name:云服务器
@@ -263,6 +269,7 @@ Buildings
 			$realNum=44000*pow(2,$total)
 			varBuilding8Cps=$realNum
 			yield varBuilding8Cps varBuilding8Earned
+		end
 		tag:tagBuilding8
 	*buildings9
 		name:挖矿机阵列
@@ -276,6 +283,7 @@ Buildings
 			$realNum=260000*pow(2,$total)
 			varBuilding9Cps=$realNum
 			yield varBuilding9Cps varBuilding9Earned
+		end
 		tag:tagBuilding9
 	*buildings10
 		name:挖矿机集群
@@ -289,6 +297,7 @@ Buildings
 			$realNum=1600000*pow(2,$total)
 			varBuilding10Cps=$realNum
 			yield varBuilding10Cps varBuilding10Earned
+		end
 		tag:tagBuilding10
 	*buildings11
 		name:超级计算机
@@ -302,6 +311,7 @@ Buildings
 			$realNum=10000000*pow(2,$total)
 			varBuilding11Cps=$realNum
 			yield varBuilding11Cps varBuilding11Earned
+		end
 		tag:tagBuilding11
 	*buildings12
 		name:量子计算机
@@ -315,6 +325,7 @@ Buildings
 			$realNum=65000000*pow(2,$total)
 			varBuilding12Cps=$realNum
 			yield varBuilding12Cps varBuilding12Earned
+		end
 		tag:tagBuilding12
 	*buildings13
 		name:贾维斯
@@ -328,6 +339,7 @@ Buildings
 			$realNum=430000000*pow(2,$total)
 			varBuilding13Cps=$realNum
 			yield varBuilding13Cps varBuilding13Earned
+		end
 		tag:tagBuilding13
 	*buildings14
 		name:时间机器
@@ -341,6 +353,7 @@ Buildings
 			$realNum=2900000000*pow(2,$total)
 			varBuilding14Cps=$realNum
 			yield varBuilding14Cps varBuilding14Earned
+		end
 		tag:tagBuilding14
 	*buildings15
 		name:智子
@@ -354,6 +367,7 @@ Buildings
 			$realNum=21000000000*pow(2,$total)
 			varBuilding15Cps=$realNum
 			yield varBuilding15Cps varBuilding15Earned
+		end
 		tag:tagBuilding15
 	*buildings16
 		name:分形引擎
@@ -367,6 +381,7 @@ Buildings
 			$realNum=150000000000*pow(2,$total)
 			varBuilding16Cps=$realNum
 			yield varBuilding16Cps varBuilding16Earned
+		end
 		tag:tagBuilding16
 	*buildings17
 		name:克罗托系统
@@ -380,12 +395,13 @@ Buildings
 			$realNum=1100000000000*pow(2,$total)
 			varBuilding17Cps=$realNum
 			yield varBuilding17Cps varBuilding17Earned
+		end
 		tag:tagBuilding17
 	*buildings18
 		name:空闲宇宙
 		desc:有无数其他空闲的宇宙与我们自己的宇宙一起运行。 你终于找到了一种方法来劫持他们的产品并将他们制作的任何东西转换成比特币！[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding18Cps]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[this*varBuilding18Cps]个比特币（占总产量的[this*varBuilding18Cps*100/bitcoin:ps]%）<.>已生产[varBuilding18Earned]个比特币|]
 		icon:icons[3,8]
-		cost:12000000000000000000000 bitcoins
+		cost:1.2e+22 bitcoins
 		on tick:
 			yield 8300000000000 bitcoins
 			$total=0
@@ -393,6 +409,7 @@ Buildings
 			$realNum=8300000000000*pow(2,$total)
 			varBuilding18Cps=$realNum
 			yield varBuilding18Cps varBuilding18Earned
+		end
 		tag:tagBuilding18
 
 
