@@ -40,7 +40,7 @@ Layout
 Includes
 // 鼠标点击和建筑1的科技加成效果
 *include cursorClick %func %yield
-	[%func]:
+	on [%func]:
         $addition=0
         $total=0
         do count with :Buildings:notTag:tagBuilding1
@@ -58,7 +58,7 @@ Includes
             if (have building1Upgrade13) $addition=$addition*20
         end
 		$amount=[%yield]+$addition
-		if ([%func]="on tick")
+		if ([%func]="tick")
 			varBuilding1Cps=$amount
 			varBuilding1Earned=varBuilding1Earned+$amount
 		end
@@ -88,7 +88,7 @@ Buttons
 		icon:https://gitee.com/Yancey/BitcoinClicker/raw/main/res/btn_bitcoin.png
 		class:bigButton hasFlares
 		on click:anim icon wobble
-		[include cursorClick %func="on click" %yield="1"]
+		[include cursorClick %func="click" %yield="1"]
 		no text
 		icon class:shadowed
 		tooltip origin:bottom
@@ -132,7 +132,7 @@ Buildings
 		desc:想通过一个人的大脑计算sha256，几乎是不可能的事情。<//></><.>每个[n:this]每秒产出[varBuilding1Cps]个比特币<.>[this]个[n:this]每秒产出[this*varBuilding1Cps]个比特币（占总产量的[this*varBuilding1Cps*100/bitcoin:ps]%）<.>已生产[varBuilding1Earned]个比特币
 		icon:icons[3,0]
 		cost:15 bitcoins
-		[include cursorClick %func="on tick" %yield="0.1"]
+		[include cursorClick %func="tick" %yield="0.1"]
 		unlocked
         tag:tagBuilding1
         on count:$total=$total+building1
