@@ -117,7 +117,7 @@ Buildings
 		
 	*building1
 		name:人工计算
-		desc:想通过一个人的大脑计算sha256，几乎是不可能的事情。<//></><.>每个[n:this]每秒产出[varBuilding1Cps/10]个比特币<.>[this]个[n:this]每秒产出[this*varBuilding1Cps/10]个比特币（占总产量的[this*varBuilding1Cps*10/bitcoin:ps]%）<.>已生产[varBuilding1Earned]个比特币
+		desc:想通过一个人的大脑计算sha256，几乎是不可能的事情。<//></><.>每个[n:this]每秒产出[varBuilding1Cps]个比特币<.>[this]个[n:this]每秒产出[this*varBuilding1Cps]个比特币（占总产量的[this*varBuilding1Cps*100/bitcoin:ps]%）<.>已生产[varBuilding1Earned]个比特币
 		icon:icons[3,0]
 		cost:15 bitcoins
 		on tick:
@@ -138,10 +138,10 @@ Buildings
 				if (have building1Upgrade12) $addition=$addition*20
 				if (have building1Upgrade13) $addition=$addition*20
 			end
-			$amount=$addition*10+1
-			log [$total] [$addition] [$amount]
-			yield 0.1+$addition bitcoins
-			yield 0.1+$addition varBuilding1Earned
+			$amount=$addition+1
+			log [$total] [$addition] [$amount] [bitcoins:ps]
+			yield $amount bitcoins
+			yield $amount varBuilding1Earned
 			varBuilding1Cps is $amount
 		end
 		unlocked
