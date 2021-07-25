@@ -157,7 +157,7 @@ Buildings
 			if (have building1Upgrade2) $realNum=$realNum*2
 			if (have building1Upgrade3) $realNum=$realNum*2
 			varBuilding1Cps=$realNum
-			yield $realNum varBuilding1Earned
+			yield varBuilding1Cps varBuilding1Earned
 			log [$total] [$addition] [$num] [bitcoins:ps] [$realNum]
 		end
 		unlocked
