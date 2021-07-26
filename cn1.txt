@@ -131,7 +131,7 @@ Buildings
 		
 	*building1
 		name:人工计算
-        desc:想通过一个人的大脑计算sha256，几乎是不可能的事情。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding1Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding1Earned:ps]个比特币（占总产量的[varBuilding1Earned*100/bitcoin:ps]%）<.>已生产[varBuilding1Earned]个比特币|]
+        desc:想通过一个人的大脑计算sha256，几乎是不可能的事情。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding1Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding1Earned:ps]个比特币（占总产量的[varBuilding1Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding1Earned]个比特币|]
 		icon:icons[3,0]
 		cost:15 bitcoins
 		on tick:
