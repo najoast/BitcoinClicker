@@ -450,7 +450,7 @@ Upgrades
         cost:100 bitcoins
         req:building1 > 0
         passive:multiply bitcoin yield of bitcoinButton by 2
-        passive:multiply yield of building1 by 2
+        passive:multiply bitcoin yield of building1 by 2
     *building1Upgrade2
         name:鼠标手隔离霜
         // desc:[i:mn]和[n:building1]的效果<b>翻倍</b>。<q>它…点击伤害…</q>
@@ -459,7 +459,7 @@ Upgrades
         cost:500 bitcoins
         req:building1 > 0
         passive:multiply bitcoin yield of bitcoinButton by 2
-        passive:multiply yield of building1 by 2
+        passive:multiply bitcoin yield of building1 by 2
     *building1Upgrade3
         name:双手并用
         // desc:[i:mn]和[n:building1]的效果<b>翻倍</b>。<q>妈妈，快看，我用两只手一起点鼠标！</q>
@@ -468,7 +468,7 @@ Upgrades
         cost:10000 bitcoins
         req:building1 > 10
         passive:multiply bitcoin yield of bitcoinButton by 2
-        passive:multiply yield of building1 by 2
+        passive:multiply bitcoin yield of building1 by 2
     *building1Upgrade4
         name:金手指
         // desc:每拥有一个非[n:building1]建筑，[i:mn]和[n:building1]的产量<b>+0.1比特币/秒</b>。<q>咔哒</q>
