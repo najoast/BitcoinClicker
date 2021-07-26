@@ -1,5 +1,5 @@
 Let's make a game!
-	desc:尽情的享受挖矿的乐趣吧！
+	desc:尽情的享受挖矿的乐趣吧！QQ交流群：956107317
 	updated:24/07/2021
 	name:无尽的比特币
 	version:1
@@ -16,20 +16,19 @@ Settings
 
 Layout
 	use default
-    // contains:Log
+    contains:Log
 
 Includes
 // 鼠标点击和建筑1的科技加成效果
-*include cursorClick %yield
+*include cursorClick
         $addition=0
         $total=0
         do count with :Buildings:notTag:tagBuilding1
-        // log The buildings num of notTag:tagBuilding1 is [$total]
         if ($total>0)
-            if (have building1Upgrade4) $addition=0.1*$total
-            if (have building1Upgrade5) $addition=$addition*5
-            if (have building1Upgrade6) $addition=$addition*10
-            if (have building1Upgrade7) $addition=$addition*20
+			if (have building1Upgrade4) $addition=$total
+			if (have building1Upgrade5) $addition=$addition*2
+			if (have building1Upgrade6) $addition=$addition*5
+			if (have building1Upgrade7) $addition=$addition*10
             if (have building1Upgrade8) $addition=$addition*20
             if (have building1Upgrade9) $addition=$addition*20
             if (have building1Upgrade10) $addition=$addition*20
@@ -37,8 +36,8 @@ Includes
             if (have building1Upgrade12) $addition=$addition*20
             if (have building1Upgrade13) $addition=$addition*20
         end
-		$amount=[%yield]+$addition
-        yield $amount bitcoins
+		// $amount=[%yield]+$addition
+        // yield $amount bitcoins
         // log addition is [$addition]
 		// log name of building 1 is [i:bn %id="1"], [n:building1]
 
@@ -73,7 +72,8 @@ Buttons
 		class:bigButton hasFlares
 		on click:anim icon wobble
 		on click:
-			[include cursorClick %yield="1"]
+			[include cursorClick]
+			yield 1+$addition bitcoins
 			// clear log
 		end
 		no text
@@ -135,32 +135,16 @@ Buildings
 		icon:ccIcons[0,0]
 		cost:15 bitcoins
 		on tick:
-			// [include cursorClick %yield="0.1"]
-			$addition=0
-			$total=0
-			do count with :Buildings:notTag:tagBuilding1
-			// log The buildings num of notTag:tagBuilding1 is [$total]
-			if ($total>0)
-				if (have building1Upgrade4) $addition=0.1*$total
-				if (have building1Upgrade5) $addition=$addition*5
-				if (have building1Upgrade6) $addition=$addition*10
-				if (have building1Upgrade7) $addition=$addition*20
-				if (have building1Upgrade8) $addition=$addition*20
-				if (have building1Upgrade9) $addition=$addition*20
-				if (have building1Upgrade10) $addition=$addition*20
-				if (have building1Upgrade11) $addition=$addition*20
-				if (have building1Upgrade12) $addition=$addition*20
-				if (have building1Upgrade13) $addition=$addition*20
-			end
-			yield $addition+1 bitcoins
-			yield $addition+1 varBuilding1Earned
-			// log [$total] [$addition] [$num] [bitcoins:ps] [varBuilding1Earned:ps]
+			[include cursorClick]
+			yield 1+$addition bitcoins
+			yield 1+$addition varBuilding1Earned
+			log [$total] [$addition] [bitcoins:ps] [varBuilding1Earned:ps]
 		end
 		unlocked
         tag:tagBuilding1
         on count:$total=$total+building1
 	// 从第2个建筑开始，之后所有建筑都用工具生成的(因为它们的行为完全一致)
-		*building2
+	*building2
 		name:人列计算机
 		desc:顾名思义，人列计算机就是由人组成的计算机。但是人数需求庞大，由人组成计算机的的各个部位，由各种符号代替二进制进行运算。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding2Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding2Earned:ps]个比特币（占总产量的[varBuilding2Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding2Earned]个比特币|]
 		icon:ccIcons[16,0]
