@@ -80,8 +80,7 @@ Buttons
 		class:bigButton hasFlares
 		on click:anim icon wobble
 		on click:
-			[include cursorClick %yield="100000000000000000"]
-			// [include cursorClick %yield="1"]
+			[include cursorClick %yield="1000000000"]
 			clear log
 		end
 		no text
