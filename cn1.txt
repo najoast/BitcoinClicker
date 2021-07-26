@@ -141,7 +141,7 @@ Buildings
 		cost:15 bitcoins
 		on tick:
 			[include cursorClick]
-			varBuilding1Cost=15*pow(1.15,building1)/varBuilding1Earned:ps/this
+			varBuilding1Cost=15*pow(1.15,building1)/varBuilding1Earned:ps/building1
 			building1Cps=1+$addition
 			yield building1Cps bitcoins
 			yield building1Cps varBuilding1Earned
