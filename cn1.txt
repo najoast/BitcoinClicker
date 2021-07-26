@@ -1,5 +1,5 @@
 Let's make a game!
-	desc:尽情的享受挖矿的乐趣吧！<br>QQ交流群：956107317
+	desc:尽情的享受挖矿的乐趣吧！QQ交流群：956107317
 	updated:24/07/2021
 	name:无尽的比特币
 	version:1
@@ -20,16 +20,15 @@ Layout
 
 Includes
 // 鼠标点击和建筑1的科技加成效果
-*include cursorClick %yield
+*include cursorClick
         $addition=0
         $total=0
         do count with :Buildings:notTag:tagBuilding1
-        // log The buildings num of notTag:tagBuilding1 is [$total]
         if ($total>0)
-            if (have building1Upgrade4) $addition=0.1*$total
-            if (have building1Upgrade5) $addition=$addition*5
-            if (have building1Upgrade6) $addition=$addition*10
-            if (have building1Upgrade7) $addition=$addition*20
+			if (have building1Upgrade4) $addition=$total
+			if (have building1Upgrade5) $addition=$addition*2
+			if (have building1Upgrade6) $addition=$addition*5
+			if (have building1Upgrade7) $addition=$addition*10
             if (have building1Upgrade8) $addition=$addition*20
             if (have building1Upgrade9) $addition=$addition*20
             if (have building1Upgrade10) $addition=$addition*20
@@ -37,7 +36,7 @@ Includes
             if (have building1Upgrade12) $addition=$addition*20
             if (have building1Upgrade13) $addition=$addition*20
         end
-		$amount=[%yield]+$addition
+		// $amount=[%yield]+$addition
         yield $amount bitcoins
         // log addition is [$addition]
 		// log name of building 1 is [i:bn %id="1"], [n:building1]
@@ -73,7 +72,8 @@ Buttons
 		class:bigButton hasFlares
 		on click:anim icon wobble
 		on click:
-			[include cursorClick %yield="1"]
+			[include cursorClick]
+			yield 1+$addition bitcoins
 			// clear log
 		end
 		no text
@@ -135,26 +135,10 @@ Buildings
 		icon:ccIcons[0,0]
 		cost:15 bitcoins
 		on tick:
-			// [include cursorClick %yield="0.1"]
-			$addition=0
-			$total=0
-			do count with :Buildings:notTag:tagBuilding1
-			// log The buildings num of notTag:tagBuilding1 is [$total]
-			if ($total>0)
-				if (have building1Upgrade4) $addition=0.1*$total
-				if (have building1Upgrade5) $addition=$addition*5
-				if (have building1Upgrade6) $addition=$addition*10
-				if (have building1Upgrade7) $addition=$addition*20
-				if (have building1Upgrade8) $addition=$addition*20
-				if (have building1Upgrade9) $addition=$addition*20
-				if (have building1Upgrade10) $addition=$addition*20
-				if (have building1Upgrade11) $addition=$addition*20
-				if (have building1Upgrade12) $addition=$addition*20
-				if (have building1Upgrade13) $addition=$addition*20
-			end
-			yield $addition+1 bitcoins
-			yield $addition+1 varBuilding1Earned
-			log [$total] [$addition] [$num] [bitcoins:ps] [varBuilding1Earned:ps]
+			[include cursorClick]
+			yield 1+$addition bitcoins
+			yield 1+$addition varBuilding1Earned
+			log [$total] [$addition] [bitcoins:ps] [varBuilding1Earned:ps]
 		end
 		unlocked
         tag:tagBuilding1
