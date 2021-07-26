@@ -16,7 +16,7 @@ Settings
 
 Layout
 	use default
-    contains:Log
+    // contains:Log
 
 Includes
 // 鼠标点击和建筑1的科技加成效果
@@ -73,8 +73,8 @@ Buttons
 		class:bigButton hasFlares
 		on click:anim icon wobble
 		on click:
-			[include cursorClick %yield="1000000000000000000"]
-			clear log
+			[include cursorClick %yield="1"]
+			// clear log
 		end
 		no text
 		icon class:shadowed
@@ -154,7 +154,7 @@ Buildings
 			end
 			yield $addition+1 bitcoins
 			yield $addition+1 varBuilding1Earned
-			log [$total] [$addition] [$num] [bitcoins:ps] [varBuilding1Earned:ps]
+			// log [$total] [$addition] [$num] [bitcoins:ps] [varBuilding1Earned:ps]
 		end
 		unlocked
         tag:tagBuilding1
