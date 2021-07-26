@@ -136,15 +136,15 @@ Buildings
 		
 	*building1
 		name:人工计算
-        desc:想通过一个人的大脑计算sha256，几乎是不可能的事情。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding1Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding1Earned:ps]个比特币（占总产量的[varBuilding1Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding1Earned]个比特币<//><.>购买性价比：产量每+1需花费<b>[varBuilding1Cost/varBuilding1Earned:ps/this]</b>比特币|]
+        desc:想通过一个人的大脑计算sha256，几乎是不可能的事情。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding1Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding1Earned:ps]个比特币（占总产量的[varBuilding1Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding1Earned]个比特币<//><.>购买性价比：产量每+1需花费<b>[varBuilding1Cost]</b>比特币|]
 		icon:ccIcons[0,0]
 		cost:15 bitcoins
 		on tick:
 			[include cursorClick]
+			varBuilding1Cost=15*pow(1.15,building1)/varBuilding1Earned:ps/this
 			building1Cps=1+$addition
 			yield building1Cps bitcoins
 			yield building1Cps varBuilding1Earned
-			varBuilding1Cost=15*pow(1.15,building1)
 			log [$total] [$addition] [bitcoins:ps] [varBuilding1Earned:ps] [varBuilding1Cost]
 		end
 		unlocked
