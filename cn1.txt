@@ -136,7 +136,7 @@ Buildings
 		
 	*building1
 		name:人工计算
-        desc:想通过一个人的大脑计算sha256，几乎是不可能的事情。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding1Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding1Earned:ps]个比特币（占总产量的[varBuilding1Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding1Earned]个比特币<//><.>购买性价比：产量每+1需花费<b>[varBuilding1Cost/building1Cps]</b>比特币|]
+        desc:想通过一个人的大脑计算sha256，几乎是不可能的事情。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding1Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding1Earned:ps]个比特币（占总产量的[varBuilding1Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding1Earned]个比特币<//><.>购买性价比：产量每+1需花费<b>[varBuilding1Cost/varBuilding1Earned:ps/this]</b>比特币|]
 		icon:ccIcons[0,0]
 		cost:15 bitcoins
 		on tick:
@@ -144,7 +144,7 @@ Buildings
 			building1Cps=1+$addition
 			yield building1Cps bitcoins
 			yield building1Cps varBuilding1Earned
-			varBuilding1Cost=15*pow(1.15,this-1)
+			varBuilding1Cost=15*pow(1.15,building1)
 			log [$total] [$addition] [bitcoins:ps] [varBuilding1Earned:ps] [varBuilding1Cost]
 		end
 		unlocked
@@ -153,221 +153,221 @@ Buildings
 	// 从第2个建筑开始，之后所有建筑都用工具生成的(因为它们的行为完全一致)
 	*building2
 		name:人列计算机
-		desc:顾名思义，人列计算机就是由人组成的计算机。但是人数需求庞大，由人组成计算机的的各个部位，由各种符号代替二进制进行运算。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding2Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding2Earned:ps]个比特币（占总产量的[varBuilding2Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding2Earned]个比特币<//><.>购买性价比：产量每+1需花费<b>[varBuilding2Cost/varBuilding2Earned:ps/this]</b>比特币|]
+		desc:顾名思义，人列计算机就是由人组成的计算机。但是人数需求庞大，由人组成计算机的的各个部位，由各种符号代替二进制进行运算。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding2Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding2Earned:ps]个比特币（占总产量的[varBuilding2Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding2Earned]个比特币<//></><.>购买性价比：产量每+1需花费<b>[varBuilding2Cost/varBuilding2Earned:ps/this]</b>比特币|]
 		icon:ccIcons[16,0]
 		cost:100 bitcoins
 		on tick:
 			yield 4 bitcoins
 			yield 4 varBuilding2Earned
-			varBuilding2Cost=100*pow(1.15,this-1)
+			varBuilding2Cost=100*pow(1.15,building2)
 		end
 		tag:tagBuilding2
 		req:have building1
 		on count:$total=$total+building2
 	*building3
 		name:家用笔记本
-		desc:任何一台电脑都能成为挖矿机，只是收益会比较低。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding3Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding3Earned:ps]个比特币（占总产量的[varBuilding3Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding3Earned]个比特币<//><.>购买性价比：产量每+1需花费<b>[varBuilding3Cost/varBuilding3Earned:ps/this]</b>比特币|]
+		desc:任何一台电脑都能成为挖矿机，只是收益会比较低。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding3Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding3Earned:ps]个比特币（占总产量的[varBuilding3Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding3Earned]个比特币<//></><.>购买性价比：产量每+1需花费<b>[varBuilding3Cost/varBuilding3Earned:ps/this]</b>比特币|]
 		icon:icons[3,2]
 		cost:1100 bitcoins
 		on tick:
 			yield 8 bitcoins
 			yield 8 varBuilding3Earned
-			varBuilding3Cost=1100*pow(1.15,this-1)
+			varBuilding3Cost=1100*pow(1.15,building3)
 		end
 		tag:tagBuilding3
 		req:have building2
 		on count:$total=$total+building3
 	*building4
 		name:组装计算机
-		desc:由非常多张显卡组成的挖矿机，哪怕只是HD6770那样的垃圾卡，“组团”之后的运算能力还是能够超越大部分用户的单张显卡的。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding4Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding4Earned:ps]个比特币（占总产量的[varBuilding4Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding4Earned]个比特币<//><.>购买性价比：产量每+1需花费<b>[varBuilding4Cost/varBuilding4Earned:ps/this]</b>比特币|]
+		desc:由非常多张显卡组成的挖矿机，哪怕只是HD6770那样的垃圾卡，“组团”之后的运算能力还是能够超越大部分用户的单张显卡的。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding4Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding4Earned:ps]个比特币（占总产量的[varBuilding4Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding4Earned]个比特币<//></><.>购买性价比：产量每+1需花费<b>[varBuilding4Cost/varBuilding4Earned:ps/this]</b>比特币|]
 		icon:ccIcons[4,0]
 		cost:12000 bitcoins
 		on tick:
 			yield 47 bitcoins
 			yield 47 varBuilding4Earned
-			varBuilding4Cost=12000*pow(1.15,this-1)
+			varBuilding4Cost=12000*pow(1.15,building4)
 		end
 		tag:tagBuilding4
 		req:have building3
 		on count:$total=$total+building4
 	*building5
 		name:二手矿机
-		desc:矿老板淘汰下来的二手显卡矿机组。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding5Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding5Earned:ps]个比特币（占总产量的[varBuilding5Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding5Earned]个比特币<//><.>购买性价比：产量每+1需花费<b>[varBuilding5Cost/varBuilding5Earned:ps/this]</b>比特币|]
+		desc:矿老板淘汰下来的二手显卡矿机组。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding5Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding5Earned:ps]个比特币（占总产量的[varBuilding5Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding5Earned]个比特币<//></><.>购买性价比：产量每+1需花费<b>[varBuilding5Cost/varBuilding5Earned:ps/this]</b>比特币|]
 		icon:icons[3,0]
 		cost:130000 bitcoins
 		on tick:
 			yield 260 bitcoins
 			yield 260 varBuilding5Earned
-			varBuilding5Cost=130000*pow(1.15,this-1)
+			varBuilding5Cost=130000*pow(1.15,building5)
 		end
 		tag:tagBuilding5
 		req:have building4
 		on count:$total=$total+building5
 	*building6
 		name:显卡矿机
-		desc:全新的显卡矿机，挖矿不算快，但是性价比高。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding6Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding6Earned:ps]个比特币（占总产量的[varBuilding6Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding6Earned]个比特币<//><.>购买性价比：产量每+1需花费<b>[varBuilding6Cost/varBuilding6Earned:ps/this]</b>比特币|]
+		desc:全新的显卡矿机，挖矿不算快，但是性价比高。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding6Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding6Earned:ps]个比特币（占总产量的[varBuilding6Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding6Earned]个比特币<//></><.>购买性价比：产量每+1需花费<b>[varBuilding6Cost/varBuilding6Earned:ps/this]</b>比特币|]
 		icon:icons[3,1]
 		cost:1400000 bitcoins
 		on tick:
 			yield 1400 bitcoins
 			yield 1400 varBuilding6Earned
-			varBuilding6Cost=1400000*pow(1.15,this-1)
+			varBuilding6Cost=1400000*pow(1.15,building6)
 		end
 		tag:tagBuilding6
 		req:have building5
 		on count:$total=$total+building6
 	*building7
 		name:ASIC矿机
-		desc:ASIC矿机芯片的性能超过当前顶级的电脑CPU。因为ASIC矿机在算力上有绝对的优势，所以电脑、显卡矿机开始逐渐被淘汰。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding7Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding7Earned:ps]个比特币（占总产量的[varBuilding7Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding7Earned]个比特币<//><.>购买性价比：产量每+1需花费<b>[varBuilding7Cost/varBuilding7Earned:ps/this]</b>比特币|]
+		desc:ASIC矿机芯片的性能超过当前顶级的电脑CPU。因为ASIC矿机在算力上有绝对的优势，所以电脑、显卡矿机开始逐渐被淘汰。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding7Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding7Earned:ps]个比特币（占总产量的[varBuilding7Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding7Earned]个比特币<//></><.>购买性价比：产量每+1需花费<b>[varBuilding7Cost/varBuilding7Earned:ps/this]</b>比特币|]
 		icon:icons[3,8]
 		cost:20000000 bitcoins
 		on tick:
 			yield 7800 bitcoins
 			yield 7800 varBuilding7Earned
-			varBuilding7Cost=20000000*pow(1.15,this-1)
+			varBuilding7Cost=20000000*pow(1.15,building7)
 		end
 		tag:tagBuilding7
 		req:have building6
 		on count:$total=$total+building7
 	*building8
 		name:云服务器
-		desc:利用弹性计算能力，可以根据需要随意增加服务器数量，大大提高部署效率。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding8Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding8Earned:ps]个比特币（占总产量的[varBuilding8Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding8Earned]个比特币<//><.>购买性价比：产量每+1需花费<b>[varBuilding8Cost/varBuilding8Earned:ps/this]</b>比特币|]
+		desc:利用弹性计算能力，可以根据需要随意增加服务器数量，大大提高部署效率。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding8Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding8Earned:ps]个比特币（占总产量的[varBuilding8Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding8Earned]个比特币<//></><.>购买性价比：产量每+1需花费<b>[varBuilding8Cost/varBuilding8Earned:ps/this]</b>比特币|]
 		icon:icons[3,6]
 		cost:330000000 bitcoins
 		on tick:
 			yield 44000 bitcoins
 			yield 44000 varBuilding8Earned
-			varBuilding8Cost=330000000*pow(1.15,this-1)
+			varBuilding8Cost=330000000*pow(1.15,building8)
 		end
 		tag:tagBuilding8
 		req:have building7
 		on count:$total=$total+building8
 	*building9
 		name:挖矿机阵列
-		desc:由数十台挖矿机组成的阵列，效率大大提升。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding9Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding9Earned:ps]个比特币（占总产量的[varBuilding9Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding9Earned]个比特币<//><.>购买性价比：产量每+1需花费<b>[varBuilding9Cost/varBuilding9Earned:ps/this]</b>比特币|]
+		desc:由数十台挖矿机组成的阵列，效率大大提升。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding9Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding9Earned:ps]个比特币（占总产量的[varBuilding9Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding9Earned]个比特币<//></><.>购买性价比：产量每+1需花费<b>[varBuilding9Cost/varBuilding9Earned:ps/this]</b>比特币|]
 		icon:ccIcons[18,7]
 		cost:5100000000 bitcoins
 		on tick:
 			yield 260000 bitcoins
 			yield 260000 varBuilding9Earned
-			varBuilding9Cost=5100000000*pow(1.15,this-1)
+			varBuilding9Cost=5100000000*pow(1.15,building9)
 		end
 		tag:tagBuilding9
 		req:have building8
 		on count:$total=$total+building9
 	*building10
 		name:挖矿机集群
-		desc:由数百到数千台挖矿机组成的大阵集群，效率惊人。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding10Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding10Earned:ps]个比特币（占总产量的[varBuilding10Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding10Earned]个比特币<//><.>购买性价比：产量每+1需花费<b>[varBuilding10Cost/varBuilding10Earned:ps/this]</b>比特币|]
+		desc:由数百到数千台挖矿机组成的大阵集群，效率惊人。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding10Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding10Earned:ps]个比特币（占总产量的[varBuilding10Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding10Earned]个比特币<//></><.>购买性价比：产量每+1需花费<b>[varBuilding10Cost/varBuilding10Earned:ps/this]</b>比特币|]
 		icon:ccIcons[17,7]
 		cost:75000000000 bitcoins
 		on tick:
 			yield 1600000 bitcoins
 			yield 1600000 varBuilding10Earned
-			varBuilding10Cost=75000000000*pow(1.15,this-1)
+			varBuilding10Cost=75000000000*pow(1.15,building10)
 		end
 		tag:tagBuilding10
 		req:have building9
 		on count:$total=$total+building10
 	*building11
 		name:超级计算机
-		desc:超级计算机（Super computer）是指能够执行一般个人电脑无法处理的大量资料与高速运算的电脑。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding11Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding11Earned:ps]个比特币（占总产量的[varBuilding11Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding11Earned]个比特币<//><.>购买性价比：产量每+1需花费<b>[varBuilding11Cost/varBuilding11Earned:ps/this]</b>比特币|]
+		desc:超级计算机（Super computer）是指能够执行一般个人电脑无法处理的大量资料与高速运算的电脑。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding11Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding11Earned:ps]个比特币（占总产量的[varBuilding11Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding11Earned]个比特币<//></><.>购买性价比：产量每+1需花费<b>[varBuilding11Cost/varBuilding11Earned:ps/this]</b>比特币|]
 		icon:ccIcons[21,10]
 		cost:1000000000000 bitcoins
 		on tick:
 			yield 10000000 bitcoins
 			yield 10000000 varBuilding11Earned
-			varBuilding11Cost=1000000000000*pow(1.15,this-1)
+			varBuilding11Cost=1000000000000*pow(1.15,building11)
 		end
 		tag:tagBuilding11
 		req:have building10
 		on count:$total=$total+building11
 	*building12
 		name:量子计算机
-		desc:量子计算机求解数学算法高斯玻色取样只需200秒，而目前世界最快的超级计算机要用6亿年。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding12Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding12Earned:ps]个比特币（占总产量的[varBuilding12Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding12Earned]个比特币<//><.>购买性价比：产量每+1需花费<b>[varBuilding12Cost/varBuilding12Earned:ps/this]</b>比特币|]
+		desc:量子计算机求解数学算法高斯玻色取样只需200秒，而目前世界最快的超级计算机要用6亿年。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding12Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding12Earned:ps]个比特币（占总产量的[varBuilding12Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding12Earned]个比特币<//></><.>购买性价比：产量每+1需花费<b>[varBuilding12Cost/varBuilding12Earned:ps/this]</b>比特币|]
 		icon:ccIcons[12,10]
 		cost:14000000000000 bitcoins
 		on tick:
 			yield 65000000 bitcoins
 			yield 65000000 varBuilding12Earned
-			varBuilding12Cost=14000000000000*pow(1.15,this-1)
+			varBuilding12Cost=14000000000000*pow(1.15,building12)
 		end
 		tag:tagBuilding12
 		req:have building11
 		on count:$total=$total+building12
 	*building13
 		name:贾维斯
-		desc:全称为Just A Rather Very Intelligent System（只是一个相当聪明的智能系统），钢铁侠的私人管家，拥有超越时代的计算能力。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding13Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding13Earned:ps]个比特币（占总产量的[varBuilding13Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding13Earned]个比特币<//><.>购买性价比：产量每+1需花费<b>[varBuilding13Cost/varBuilding13Earned:ps/this]</b>比特币|]
+		desc:全称为Just A Rather Very Intelligent System（只是一个相当聪明的智能系统），钢铁侠的私人管家，拥有超越时代的计算能力。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding13Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding13Earned:ps]个比特币（占总产量的[varBuilding13Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding13Earned]个比特币<//></><.>购买性价比：产量每+1需花费<b>[varBuilding13Cost/varBuilding13Earned:ps/this]</b>比特币|]
 		icon:ccIcons[20,10]
 		cost:170000000000000 bitcoins
 		on tick:
 			yield 430000000 bitcoins
 			yield 430000000 varBuilding13Earned
-			varBuilding13Cost=170000000000000*pow(1.15,this-1)
+			varBuilding13Cost=170000000000000*pow(1.15,building13)
 		end
 		tag:tagBuilding13
 		req:have building12
 		on count:$total=$total+building13
 	*building14
 		name:时间机器
-		desc:穿越时间从过去带来比特币。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding14Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding14Earned:ps]个比特币（占总产量的[varBuilding14Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding14Earned]个比特币<//><.>购买性价比：产量每+1需花费<b>[varBuilding14Cost/varBuilding14Earned:ps/this]</b>比特币|]
+		desc:穿越时间从过去带来比特币。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding14Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding14Earned:ps]个比特币（占总产量的[varBuilding14Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding14Earned]个比特币<//></><.>购买性价比：产量每+1需花费<b>[varBuilding14Cost/varBuilding14Earned:ps/this]</b>比特币|]
 		icon:ccIcons[8,0]
 		cost:2100000000000000 bitcoins
 		on tick:
 			yield 2900000000 bitcoins
 			yield 2900000000 varBuilding14Earned
-			varBuilding14Cost=2100000000000000*pow(1.15,this-1)
+			varBuilding14Cost=2100000000000000*pow(1.15,building14)
 		end
 		tag:tagBuilding14
 		req:have building13
 		on count:$total=$total+building14
 	*building15
 		name:智子
-		desc:质子经过二维展开改造后的智能微观粒子，是十一维物体，可以在微观高维空间以匪夷所思的速度进行计算。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding15Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding15Earned:ps]个比特币（占总产量的[varBuilding15Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding15Earned]个比特币<//><.>购买性价比：产量每+1需花费<b>[varBuilding15Cost/varBuilding15Earned:ps/this]</b>比特币|]
+		desc:质子经过二维展开改造后的智能微观粒子，是十一维物体，可以在微观高维空间以匪夷所思的速度进行计算。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding15Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding15Earned:ps]个比特币（占总产量的[varBuilding15Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding15Earned]个比特币<//></><.>购买性价比：产量每+1需花费<b>[varBuilding15Cost/varBuilding15Earned:ps/this]</b>比特币|]
 		icon:ccIcons[5,12]
 		cost:26000000000000000 bitcoins
 		on tick:
 			yield 21000000000 bitcoins
 			yield 21000000000 varBuilding15Earned
-			varBuilding15Cost=26000000000000000*pow(1.15,this-1)
+			varBuilding15Cost=26000000000000000*pow(1.15,building15)
 		end
 		tag:tagBuilding15
 		req:have building14
 		on count:$total=$total+building15
 	*building16
 		name:分形引擎
-		desc:将比特币变成更多比特币。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding16Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding16Earned:ps]个比特币（占总产量的[varBuilding16Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding16Earned]个比特币<//><.>购买性价比：产量每+1需花费<b>[varBuilding16Cost/varBuilding16Earned:ps/this]</b>比特币|]
+		desc:将比特币变成更多比特币。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding16Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding16Earned:ps]个比特币（占总产量的[varBuilding16Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding16Earned]个比特币<//></><.>购买性价比：产量每+1需花费<b>[varBuilding16Cost/varBuilding16Earned:ps/this]</b>比特币|]
 		icon:ccIcons[14,12]
 		cost:310000000000000000 bitcoins
 		on tick:
 			yield 150000000000 bitcoins
 			yield 150000000000 varBuilding16Earned
-			varBuilding16Cost=310000000000000000*pow(1.15,this-1)
+			varBuilding16Cost=310000000000000000*pow(1.15,building16)
 		end
 		tag:tagBuilding16
 		req:have building15
 		on count:$total=$total+building16
 	*building17
 		name:克罗托系统
-		desc:从宏观上来说物质是一堆堆聚合的原子，而原子的运动都符合物理方程，就像你知道一个小球的速度、位置和所受的力，就能计算出他未来的运行轨迹。所以理论上来说只要确切地得知宇宙中每个原子的状态，再拥有足够的算力，我们就能计算出未来了！[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding17Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding17Earned:ps]个比特币（占总产量的[varBuilding17Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding17Earned]个比特币<//><.>购买性价比：产量每+1需花费<b>[varBuilding17Cost/varBuilding17Earned:ps/this]</b>比特币|]
+		desc:从宏观上来说物质是一堆堆聚合的原子，而原子的运动都符合物理方程，就像你知道一个小球的速度、位置和所受的力，就能计算出他未来的运行轨迹。所以理论上来说只要确切地得知宇宙中每个原子的状态，再拥有足够的算力，我们就能计算出未来了！[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding17Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding17Earned:ps]个比特币（占总产量的[varBuilding17Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding17Earned]个比特币<//></><.>购买性价比：产量每+1需花费<b>[varBuilding17Cost/varBuilding17Earned:ps/this]</b>比特币|]
 		icon:ccIcons[24,15]
 		cost:71000000000000000000 bitcoins
 		on tick:
 			yield 1100000000000 bitcoins
 			yield 1100000000000 varBuilding17Earned
-			varBuilding17Cost=71000000000000000000*pow(1.15,this-1)
+			varBuilding17Cost=71000000000000000000*pow(1.15,building17)
 		end
 		tag:tagBuilding17
 		req:have building16
 		on count:$total=$total+building17
 	*building18
 		name:空闲宇宙
-		desc:有无数其他空闲的宇宙与我们自己的宇宙一起运行。 你终于找到了一种方法来劫持他们的产品并将他们制作的任何东西转换成比特币！[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding18Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding18Earned:ps]个比特币（占总产量的[varBuilding18Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding18Earned]个比特币<//><.>购买性价比：产量每+1需花费<b>[varBuilding18Cost/varBuilding18Earned:ps/this]</b>比特币|]
+		desc:有无数其他空闲的宇宙与我们自己的宇宙一起运行。 你终于找到了一种方法来劫持他们的产品并将他们制作的任何东西转换成比特币！[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding18Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding18Earned:ps]个比特币（占总产量的[varBuilding18Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding18Earned]个比特币<//></><.>购买性价比：产量每+1需花费<b>[varBuilding18Cost/varBuilding18Earned:ps/this]</b>比特币|]
 		icon:ccIcons[9,9]
 		cost:12000000000000000000000 bitcoins
 		on tick:
 			yield 8300000000000 bitcoins
 			yield 8300000000000 varBuilding18Earned
-			varBuilding18Cost=12000000000000000000000*pow(1.15,this-1)
+			varBuilding18Cost=12000000000000000000000*pow(1.15,building18)
 		end
 		tag:tagBuilding18
 		req:have building17
