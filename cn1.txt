@@ -62,8 +62,8 @@ Includes
 		desc:nothing
 		icon:icons[0,0]
 		class:noBackground
-		show earned
-		// always hidden
+		hidden
+		// show earned
 
 Buttons
 	*bitcoinButton
