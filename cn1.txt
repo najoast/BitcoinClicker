@@ -136,15 +136,15 @@ Buildings
 		cost:15 bitcoins
 		on tick:
 			[include cursorClick]
-			yield 1+$addition bitcoins
-			yield 1+$addition varBuilding1Earned
+			yield (1+$addition) bitcoins
+			yield (1+$addition) varBuilding1Earned
 			log [$total] [$addition] [bitcoins:ps] [varBuilding1Earned:ps]
 		end
 		unlocked
         tag:tagBuilding1
         on count:$total=$total+building1
 	// 从第2个建筑开始，之后所有建筑都用工具生成的(因为它们的行为完全一致)
-		*building2
+	*building2
 		name:人列计算机
 		desc:顾名思义，人列计算机就是由人组成的计算机。但是人数需求庞大，由人组成计算机的的各个部位，由各种符号代替二进制进行运算。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding2Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding2Earned:ps]个比特币（占总产量的[varBuilding2Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding2Earned]个比特币|]
 		icon:ccIcons[16,0]
