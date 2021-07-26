@@ -136,8 +136,8 @@ Buildings
 		cost:15 bitcoins
 		on tick:
 			[include cursorClick]
-			yield (1+$addition) bitcoins
-			yield (1+$addition) varBuilding1Earned
+			yield $addition bitcoins
+			yield $addition varBuilding1Earned
 			log [$total] [$addition] [bitcoins:ps] [varBuilding1Earned:ps]
 		end
 		unlocked
