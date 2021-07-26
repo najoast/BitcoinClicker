@@ -63,13 +63,14 @@ Includes
 		icon:icons[0,0]
 		class:noBackground
 		show earned
-		// always hidden
+		always hidden
 	*varBuilding[%id]Earned
 		name:建筑[%id]Earned
 		desc:nothing
 		icon:icons[0,0]
 		class:noBackground
 		show earned
+		always hidden
 
 Buttons
 	*bitcoinButton
