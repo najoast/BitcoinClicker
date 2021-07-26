@@ -36,13 +36,6 @@ Includes
             if (have building1Upgrade12) $addition=$addition*20
             if (have building1Upgrade13) $addition=$addition*20
         end
-		// $amount=[%yield]+$addition
-        // yield $amount bitcoins
-        // log addition is [$addition]
-		// log name of building 1 is [i:bn %id="1"], [n:building1]
-
-//*include bn %id:&#60;&#35;F43F1A&#62;&#91;n:building[%id]&#93;&#60;/#&#62;
-// *include mn:鼠标点击
 
 // Common building upgrade: only have `twice` effect
 *include br2 %id %idx %name %desc %icon %cost %req
@@ -88,6 +81,12 @@ Resources
 		icon:icons[0,0]
 		class:noBackground
 		show earned
+	*building1Cps
+		name:建筑1Cps
+		desc:nothing
+		icon:icons[0,0]
+		class:noBackground
+		hidden
 	// 用来记录建筑的CPS和累积产量
 	[include newBuildingVarRes %id="1"]
 	[include newBuildingVarRes %id="2"]
@@ -136,8 +135,9 @@ Buildings
 		cost:15 bitcoins
 		on tick:
 			[include cursorClick]
-			yield 1+$addition bitcoins
-			yield 1+$addition varBuilding1Earned
+			building1Cps=1+$addition
+			yield building1Cps bitcoins
+			yield building1Cps varBuilding1Earned
 			log [$total] [$addition] [bitcoins:ps] [varBuilding1Earned:ps]
 		end
 		unlocked
