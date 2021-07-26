@@ -1,5 +1,5 @@
 Let's make a game!
-	desc:尽情的享受挖矿的乐趣吧！
+	desc:尽情的享受挖矿的乐趣吧！<br>QQ交流群：956107317
 	updated:24/07/2021
 	name:无尽的比特币
 	version:1
@@ -16,7 +16,7 @@ Settings
 
 Layout
 	use default
-    // contains:Log
+    contains:Log
 
 Includes
 // 鼠标点击和建筑1的科技加成效果
