@@ -70,19 +70,19 @@ Includes
         icon:[%icon]
         req:bitcoin:earned>=[%req]
 *include ac2 %name %desc %icon %req %i
-    *ac2i[%req]
+    *ac2i[%i]
         name:[%name]
         desc:[%desc]
         icon:[%icon]
         req:bitcoin:ps>=[%req]
 *include ac3 %name %desc %icon %req %i
-    *ac3i[%req]
+    *ac3i[%i]
         name:[%name]
         desc:[%desc]
         icon:[%icon]
         req:bitcoinButton:clicks>=[%req]
 *include ac4 %name %desc %icon %req %i
-    *ac4i[%req]
+    *ac4i[%i]
         name:[%name]
         desc:[%desc]
         icon:[%icon]
