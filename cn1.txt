@@ -146,7 +146,6 @@ Resources
 		// hidden
     *btnEarned
         name:buttonEarned
-		icon:icons[0,0]
 		class:noBackground
 		hidden
 	*building1Cps
