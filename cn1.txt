@@ -86,7 +86,7 @@ Includes
         name:[%name]
         desc:[%desc]
         icon:[%icon]
-        req:btnEarned:earned>=[%req]
+		req:bitcoin:earned-varBuilding1Earned+varBuilding2Earned+varBuilding3Earned+varBuilding4Earned+varBuilding5Earned+varBuilding6Earned+varBuilding7Earned+varBuilding8Earned+varBuilding9Earned+varBuilding10Earned+varBuilding11Earned+varBuilding12Earned+varBuilding13Earned+varBuilding14Earned+varBuilding15Earned+varBuilding16Earned+varBuilding17Earned+varBuilding18Earned>=[%req]
 *include ac5 %name %desc %icon %id %req
     *ac5r[%req]
         name:[%name]
@@ -112,25 +112,21 @@ Includes
         icon:[%icon]
         req:resAllUpgradesNum:earned>[%req]
 
-
 Buttons
 	*bitcoinButton
 		name:比特币实体
 		desc:点击这个比特币实体来生成更多比特币吧！
 		icon:https://gitee.com/Yancey/BitcoinClicker/raw/main/res/btn_bitcoin.png
 		class:bigButton hasFlares
-		on click:anim icon wobble
 		on click:
+			anim icon wobble
 			[include cursorClick]
 			yield 1+$addition bitcoins
-            yield 1+$addition btnEarned
-			// clear log
 		end
 		no text
 		icon class:shadowed
 		tooltip origin:bottom
 		tooltip class:red
-        show clicks
 
 Resources
 	*bitcoin|bitcoins
@@ -142,10 +138,6 @@ Resources
 	*resAllUpgradesNum
         name:resAllUpgradesNum
 		icon:icons[0,0]
-		class:noBackground
-		// hidden
-    *btnEarned
-        name:buttonEarned
 		class:noBackground
 		hidden
 	*building1Cps
