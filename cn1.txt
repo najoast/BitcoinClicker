@@ -63,6 +63,56 @@ Includes
 		class:noBackground
 		hidden
 
+*include ac1 %name %desc %icon %req
+    *ac1r[%req]
+        name:[%name]
+        desc:[%desc]
+        icon:[%icon]
+        req:bitcoin:earned>=[%req]
+*include ac2 %name %desc %icon %req
+    *ac2r[%req]
+        name:[%name]
+        desc:[%desc]
+        icon:[%icon]
+        req:bitcoin:ps>=[%req]
+*include ac3 %name %desc %icon %req
+    *ac3r[%req]
+        name:[%name]
+        desc:[%desc]
+        icon:[%icon]
+        req:bitcoinButton:clicks>=[%req]
+*include ac4 %name %desc %icon %req
+    *ac4r[%req]
+        name:[%name]
+        desc:[%desc]
+        icon:[%icon]
+        req:btnEarned:earned>=[%req]
+*include ac5 %name %desc %icon %id %req
+    *ac5r[%req]
+        name:[%name]
+        desc:[%desc]
+        icon:[%icon]
+        req:building[%id]>=[%req]
+*include ac6 %name %desc %icon %id %req
+    *ac6r[%req]
+        name:[%name]
+        desc:[%desc]
+        icon:[%icon]
+        req:varBuilding[%id]Earned>=[%req]
+*include ac7 %name %desc %icon %req
+    *ac7r[%req]
+        name:[%name]
+        desc:[%desc]
+        icon:[%icon]
+        req:building1+building2+building3+building4+building5+building6+building7+building8+building9+building10+building11+building12+building13+building14+building15+building16+building17+building18>=[%req]
+*include ac8 %name %desc %icon %req
+    *ac8r[%req]
+        name:[%name]
+        desc:[%desc]
+        icon:[%icon]
+        req:resAllUpgradesNum:earned>[%req]
+
+
 Buttons
 	*bitcoinButton
 		name:比特币实体
@@ -73,12 +123,14 @@ Buttons
 		on click:
 			[include cursorClick]
 			yield 1+$addition bitcoins
+            yield 1+$addition btnEarned
 			// clear log
 		end
 		no text
 		icon class:shadowed
 		tooltip origin:bottom
 		tooltip class:red
+        show clicks
 
 Resources
 	*bitcoin|bitcoins
@@ -87,9 +139,17 @@ Resources
 		icon:icons[0,0]
 		class:noBackground
 		show earned
+	*resAllUpgradesNum
+        name:resAllUpgradesNum
+		icon:icons[0,0]
+		class:noBackground
+		// hidden
+    *btnEarned
+        name:buttonEarned
+		class:noBackground
+		hidden
 	*building1Cps
 		name:建筑1Cps
-		desc:nothing
 		icon:icons[0,0]
 		class:noBackground
 		hidden
@@ -377,7 +437,10 @@ Buildings
 Upgrades
 	*TEMPLATE
 		on click:anim glow
-        on earn:hide this
+        on earn:
+			hide this
+			yield 1 resAllUpgradesNum
+		end
 
 	///////////////////////////////////////////////////////////////////////////////////
 	//                            Building Upgrades                                  //
@@ -391,7 +454,7 @@ Upgrades
         icon:ccIcons[0,0]
         cost:100 bitcoins
         req:building1 > 0
-        passive:multiply bitcoin yield of bitcoinButton by 2
+        passive:multiply yield of bitcoinButton by 2
         passive:multiply yield of building1 by 2
     *building1Upgrade2
         name:鼠标手隔离霜
@@ -400,7 +463,7 @@ Upgrades
         icon:ccIcons[0,1]
         cost:500 bitcoins
         req:building1 > 0
-        passive:multiply bitcoin yield of bitcoinButton by 2
+        passive:multiply yield of bitcoinButton by 2
         passive:multiply yield of building1 by 2
     *building1Upgrade3
         name:双手并用
@@ -409,7 +472,7 @@ Upgrades
         icon:ccIcons[0,2]
         cost:10000 bitcoins
         req:building1 > 10
-        passive:multiply bitcoin yield of bitcoinButton by 2
+        passive:multiply yield of bitcoinButton by 2
         passive:multiply yield of building1 by 2
     *building1Upgrade4
         name:金手指
