@@ -63,6 +63,17 @@ Includes
 		class:noBackground
 		hidden
 
+*include ac1 %name %desc %req
+    *ac1r[%req]
+        name:[%name]
+        desc:[%desc]
+        req:bitcoin:earned>=[%req]
+*include ac2 %name %desc %req
+    *ac2r[%req]
+        name:[%name]
+        desc:[%desc]
+        
+
 Buttons
 	*bitcoinButton
 		name:比特币实体
