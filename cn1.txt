@@ -16,7 +16,7 @@ Settings
 
 Layout
 	use default
-    contains:Log
+    // contains:Log
 
 Includes
 // 鼠标点击和建筑1的科技加成效果
@@ -25,7 +25,7 @@ Includes
         $total=0
         do count with :Buildings:notTag:tagBuilding1
         if ($total>0)
-			if (have building1Upgrade4) $addition=$total
+			if (have building1Upgrade4) $addition=0.1*$total
 			if (have building1Upgrade5) $addition=$addition*2
 			if (have building1Upgrade6) $addition=$addition*5
 			if (have building1Upgrade7) $addition=$addition*10
@@ -206,7 +206,7 @@ Buildings
 			yield building1Cps bitcoins
 			yield building1Cps varBuilding1Earned
 			varBuilding1Cost=15*pow(1.15,building1)
-			log [$total] [$addition] [bitcoins:ps] [varBuilding1Earned:ps] [varBuilding1Cost]
+			// log [$total] [$addition] [bitcoins:ps] [varBuilding1Earned:ps] [varBuilding1Cost]
 		end
 		unlocked
         tag:tagBuilding1
@@ -478,7 +478,7 @@ Upgrades
     *building1Upgrade4
         name:金手指
         // desc:每拥有一个非[n:building1]建筑，[i:mn]和[n:building1]的产量<b>+0.1比特币/秒</b>。<q>咔哒</q>
-        desc:每拥有一个非<#F43F1A>[n:building1]</#>建筑，鼠标点击和[n:building1]的产量<b>+0.1比特币/秒</b>。<q>咔哒</q>
+        desc:每10个非<#F43F1A>[n:building1]</#>建筑，鼠标点击和[n:building1]的产量<b>+1比特币/秒</b>。<q>咔哒</q>
         icon:ccIcons[0,13]
         cost:100000 bitcoins
         req:building1 >= 25
