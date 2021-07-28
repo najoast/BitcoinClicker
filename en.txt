@@ -462,7 +462,7 @@ Upgrades
 [i:br1 %id="1" %idx="8" %name="Quadrillion fingers" %desc="Multiplies the gain from <#000083>[n:building1Upgrade4]</#> by 20.clickityclickityclickityclickityclickity" %icon="[0,17]" %cost="10000000000" %req="200"]
 [i:br1 %id="1" %idx="9" %name="Quintillion fingers" %desc="Multiplies the gain from <#000083>[n:building1Upgrade4]</#> by 20.man, just go click click click click click, it’s real easy, man." %icon="[0,18]" %cost="10000000000000" %req="250"]
 [i:br1 %id="1" %idx="10" %name="Sextillion fingers" %desc="Multiplies the gain from <#000083>[n:building1Upgrade4]</#> by 20.sometimes<br>things just<br>click" %icon="[0,19]" %cost="10000000000000000" %req="300"]
-[i:br1 %id="1" %idx="11" %name="Septillion fingers" %desc="Multiplies the gain from <#000083>[n:building1Upgrade4]</#> by 20.[cursory flavor text]" %icon="[0,20]" %cost="10000000000000000000" %req="350"]
+[i:br1 %id="1" %idx="11" %name="Septillion fingers" %desc="Multiplies the gain from <#000083>[n:building1Upgrade4]</#> by 20.cursory flavor text" %icon="[0,20]" %cost="10000000000000000000" %req="350"]
 [i:br1 %id="1" %idx="12" %name="Octillion fingers" %desc="Multiplies the gain from <#000083>[n:building1Upgrade4]</#> by 20.Turns out you can quite put your finger on it." %icon="[0,21]" %cost="10000000000000000000000" %req="400"]
 [i:br1 %id="1" %idx="13" %name="Nonillion fingers" %desc="Multiplies the gain from <#000083>[n:building1Upgrade4]</#> by 20.Only for the freakiest handshakes." %icon="[0,22]" %cost="10000000000000000000000000" %req="450"]
 [i:br2 %id="2" %idx="1" %name="Hundreds arrays" %desc="[n:building2] are <b>twice</b> as efficient." %icon="[16,0]" %cost="1000" %req="1"]
