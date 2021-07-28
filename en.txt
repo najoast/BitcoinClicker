@@ -220,7 +220,7 @@ Buildings
 	*building2
 		name:Human Column Computer
 		desc:As the name suggests, a human column computer is a computer composed of people. However, the demand for the number of people is huge, and the various parts of the computer are composed of people, and various symbols are used to replace the binary system for calculation.[?(this>0)|<//></><.>Each <#F43F1A>[n:this]</#> produces [varBuilding2Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding2Earned:ps] bitcoins per second (<b>[varBuilding2Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding2Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding2Cost/(varBuilding2Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
-		icon:ccIcons[3,1]
+		icon:ccIcons[16,0]
 		cost:100 bitcoins
 		on tick:
 			yield 1 bitcoins
@@ -233,7 +233,7 @@ Buildings
 	*building3
 		name:Laptop
 		desc:Any computer can become a mining machine, but the profit will be relatively low, and it may not be possible to mine one in ten years.[?(this>0)|<//></><.>Each <#F43F1A>[n:this]</#> produces [varBuilding3Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding3Earned:ps] bitcoins per second (<b>[varBuilding3Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding3Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding3Cost/(varBuilding3Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
-		icon:ccIcons[3,2]
+		icon:icons[3,2]
 		cost:1100 bitcoins
 		on tick:
 			yield 8 bitcoins
@@ -246,7 +246,7 @@ Buildings
 	*building4
 		name:Desktop PC
 		desc:A mining machine composed of a lot of graphics cards, even if it is just a junk card like HD6770, the computing power after "grouping" can surpass most users' single graphics card.[?(this>0)|<//></><.>Each <#F43F1A>[n:this]</#> produces [varBuilding4Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding4Earned:ps] bitcoins per second (<b>[varBuilding4Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding4Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding4Cost/(varBuilding4Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
-		icon:ccIcons[3,3]
+		icon:ccIcons[4,0]
 		cost:12000 bitcoins
 		on tick:
 			yield 47 bitcoins
@@ -259,7 +259,7 @@ Buildings
 	*building5
 		name:Old Miner Machine
 		desc:The second-hand graphics card mining unit eliminated by the mine boss[?(this>0)|<//></><.>Each <#F43F1A>[n:this]</#> produces [varBuilding5Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding5Earned:ps] bitcoins per second (<b>[varBuilding5Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding5Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding5Cost/(varBuilding5Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
-		icon:ccIcons[3,4]
+		icon:icons[3,0]
 		cost:130000 bitcoins
 		on tick:
 			yield 260 bitcoins
@@ -272,7 +272,7 @@ Buildings
 	*building6
 		name:New Miner Machine
 		desc:Brand new graphics card mining machine, mining is not fast, but cost-effective[?(this>0)|<//></><.>Each <#F43F1A>[n:this]</#> produces [varBuilding6Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding6Earned:ps] bitcoins per second (<b>[varBuilding6Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding6Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding6Cost/(varBuilding6Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
-		icon:ccIcons[3,5]
+		icon:icons[3,1]
 		cost:1400000 bitcoins
 		on tick:
 			yield 1400 bitcoins
@@ -285,7 +285,7 @@ Buildings
 	*building7
 		name:ASIC Miner Machine
 		desc:The performance of ASIC miner chips exceeds the current top computer CPUs. Because ASIC mining machines have an absolute advantage in computing power, computers and graphics card mining machines have gradually been eliminated[?(this>0)|<//></><.>Each <#F43F1A>[n:this]</#> produces [varBuilding7Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding7Earned:ps] bitcoins per second (<b>[varBuilding7Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding7Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding7Cost/(varBuilding7Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
-		icon:ccIcons[3,6]
+		icon:icons[3,8]
 		cost:20000000 bitcoins
 		on tick:
 			yield 7800 bitcoins
@@ -298,7 +298,7 @@ Buildings
 	*building8
 		name:Cloud Server
 		desc:Using elastic computing power, the number of servers can be increased as needed[?(this>0)|<//></><.>Each <#F43F1A>[n:this]</#> produces [varBuilding8Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding8Earned:ps] bitcoins per second (<b>[varBuilding8Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding8Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding8Cost/(varBuilding8Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
-		icon:ccIcons[3,7]
+		icon:icons[3,6]
 		cost:330000000 bitcoins
 		on tick:
 			yield 44000 bitcoins
@@ -311,7 +311,7 @@ Buildings
 	*building9
 		name:Miner Machine Array
 		desc:An array composed of dozens of mining machines, greatly improving efficiency[?(this>0)|<//></><.>Each <#F43F1A>[n:this]</#> produces [varBuilding9Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding9Earned:ps] bitcoins per second (<b>[varBuilding9Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding9Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding9Cost/(varBuilding9Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
-		icon:ccIcons[3,8]
+		icon:ccIcons[18,7]
 		cost:5100000000 bitcoins
 		on tick:
 			yield 260000 bitcoins
@@ -324,7 +324,7 @@ Buildings
 	*building10
 		name:Miner Machine Cluster
 		desc:A large array cluster composed of hundreds to thousands of mining machines, with amazing efficiency[?(this>0)|<//></><.>Each <#F43F1A>[n:this]</#> produces [varBuilding10Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding10Earned:ps] bitcoins per second (<b>[varBuilding10Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding10Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding10Cost/(varBuilding10Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
-		icon:ccIcons[3,8]
+		icon:ccIcons[17,7]
 		cost:75000000000 bitcoins
 		on tick:
 			yield 1600000 bitcoins
@@ -337,7 +337,7 @@ Buildings
 	*building11
 		name:Supercomputer
 		desc:A supercomputer refers to a computer that can execute large amounts of data and high-speed operations that ordinary personal computers cannot process.[?(this>0)|<//></><.>Each <#F43F1A>[n:this]</#> produces [varBuilding11Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding11Earned:ps] bitcoins per second (<b>[varBuilding11Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding11Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding11Cost/(varBuilding11Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
-		icon:ccIcons[3,8]
+		icon:ccIcons[21,10]
 		cost:1000000000000 bitcoins
 		on tick:
 			yield 10000000 bitcoins
@@ -350,7 +350,7 @@ Buildings
 	*building12
 		name:Quantum Computer
 		desc:It takes only 200 seconds for a quantum computer to solve the mathematical algorithm Gaussian Bose sampling, while the fastest supercomputer in the world currently takes 600 million years.[?(this>0)|<//></><.>Each <#F43F1A>[n:this]</#> produces [varBuilding12Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding12Earned:ps] bitcoins per second (<b>[varBuilding12Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding12Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding12Cost/(varBuilding12Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
-		icon:ccIcons[3,8]
+		icon:ccIcons[12,10]
 		cost:14000000000000 bitcoins
 		on tick:
 			yield 65000000 bitcoins
@@ -363,7 +363,7 @@ Buildings
 	*building13
 		name:JARVIS
 		desc:The full name is Just A Rather Very Intelligent System, Iron Man's personal butler, with computing power beyond the times[?(this>0)|<//></><.>Each <#F43F1A>[n:this]</#> produces [varBuilding13Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]</#> producing [varBuilding13Earned:ps] bitcoins per second (<b>[varBuilding13Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding13Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding13Cost/(varBuilding13Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
-		icon:ccIcons[3,8]
+		icon:ccIcons[20,10]
 		cost:170000000000000 bitcoins
 		on tick:
 			yield 430000000 bitcoins
@@ -376,7 +376,7 @@ Buildings
 	*building14
 		name:Time Machine
 		desc:Bringing Bitcoin from the past through time[?(this>0)|<//></><.>Each <#F43F1A>[n:this]</#> produces [varBuilding14Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding14Earned:ps] bitcoins per second (<b>[varBuilding14Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding14Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding14Cost/(varBuilding14Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
-		icon:ccIcons[3,8]
+		icon:ccIcons[8,0]
 		cost:2100000000000000 bitcoins
 		on tick:
 			yield 2900000000 bitcoins
@@ -389,7 +389,7 @@ Buildings
 	*building15
 		name:Sophon
 		desc:The intelligent microscopic particles after the two-dimensional expansion and transformation of protons are eleven-dimensional objects and can be quickly calculated in the microscopic high-dimensional space.[?(this>0)|<//></><.>Each <#F43F1A>[n:this]</#> produces [varBuilding15Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding15Earned:ps] bitcoins per second (<b>[varBuilding15Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding15Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding15Cost/(varBuilding15Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
-		icon:ccIcons[3,8]
+		icon:ccIcons[5,12]
 		cost:26000000000000000 bitcoins
 		on tick:
 			yield 21000000000 bitcoins
@@ -402,7 +402,7 @@ Buildings
 	*building16
 		name:Fractal Engine
 		desc:Turn Bitcoins into more Bitcoins.[?(this>0)|<//></><.>Each <#F43F1A>[n:this]</#> produces [varBuilding16Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding16Earned:ps] bitcoins per second (<b>[varBuilding16Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding16Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding16Cost/(varBuilding16Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
-		icon:ccIcons[3,8]
+		icon:ccIcons[14,12]
 		cost:310000000000000000 bitcoins
 		on tick:
 			yield 150000000000 bitcoins
@@ -415,7 +415,7 @@ Buildings
 	*building17
 		name:Croto System
 		desc:From a macro point of view, matter is a bunch of aggregated atoms, and the motion of atoms conforms to physical equations. Just as you know the speed, position and force of a small ball, you can calculate its future trajectory. So in theory, as long as we know exactly the state of each atom in the universe and have enough computing power, we can calculate the future![?(this>0)|<//></><.>Each <#F43F1A>[n:this]</#> produces [varBuilding17Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding17Earned:ps] bitcoins per second (<b>[varBuilding17Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding17Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding17Cost/(varBuilding17Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
-		icon:ccIcons[3,8]
+		icon:ccIcons[24,15]
 		cost:71000000000000000000 bitcoins
 		on tick:
 			yield 1100000000000 bitcoins
@@ -428,7 +428,7 @@ Buildings
 	*building18
 		name:Idleverse
 		desc:There's been countless other idle universes running alongside our own. You've finally found a way to hijack their production and convert whatever they've been making into bitcoins![?(this>0)|<//></><.>Each <#F43F1A>[n:this]</#> produces [varBuilding18Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding18Earned:ps] bitcoins per second (<b>[varBuilding18Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding18Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding18Cost/(varBuilding18Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
-		icon:ccIcons[3,8]
+		icon:ccIcons[9,9]
 		cost:12000000000000000000000 bitcoins
 		on tick:
 			yield 8300000000000 bitcoins
