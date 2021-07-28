@@ -8,7 +8,7 @@ Let's make a game!
 
 Settings
 	building cost increase:115%
-	background:https://i.imgur.com/ko1yDMX.jpg
+	background:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/bg.png
 	stylesheet:stuff/bigBlue.css
 	building cost refund:50%
 	spritesheet:icons, 48 by 48, https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/icons.png
