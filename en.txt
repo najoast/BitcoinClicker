@@ -223,8 +223,8 @@ Buildings
 		icon:ccIcons[16,0]
 		cost:100 bitcoins
 		on tick:
-			yield 1 bitcoins
-			yield 1 varBuilding2Earned
+			yield 4 bitcoins
+			yield 4 varBuilding2Earned
 			varBuilding2Cost=100*pow(1.15,building2)
 		end
 		tag:tagBuilding2
