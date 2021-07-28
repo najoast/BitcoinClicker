@@ -8,7 +8,7 @@ Let's make a game!
 
 Settings
 	building cost increase:115%
-	background:https://i.imgur.com/ko1yDMX.jpg
+	background:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/starbg.jpg
 	stylesheet:stuff/bigBlue.css
 	building cost refund:50%
 	spritesheet:icons, 48 by 48, https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/icons.png
@@ -36,7 +36,7 @@ Includes
             if (have building1Upgrade13) $addition=$addition*20
         end
 
-*include br1 %id %idx %name %desc %icon %cost %req
+*include br0 %id %idx %name %desc %icon %cost %req
 	*building[%id]Upgrade[%idx]
 		name:[%name]
 		desc:[%desc]
