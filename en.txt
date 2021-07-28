@@ -416,11 +416,11 @@ Buildings
 		name:Croto System
 		desc:From a macro point of view, matter is a bunch of aggregated atoms, and the motion of atoms conforms to physical equations. Just as you know the speed, position and force of a small ball, you can calculate its future trajectory. So in theory, as long as we know exactly the state of each atom in the universe and have enough computing power, we can calculate the future![?(this>0)|<//></><.>each <#F43F1A>[n:this]</#>produces [varBuilding17Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding17Earned:ps] bitcoins per second (<b>[varBuilding17Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding17Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding17Cost/(varBuilding17Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
 		icon:ccIcons[24,15]
-		cost:7.1e+19 bitcoins
+		cost:71000000000000000000 bitcoins
 		on tick:
 			yield 1100000000000 bitcoins
 			yield 1100000000000 varBuilding17Earned
-			varBuilding17Cost=7.1e+19*pow(1.15,building17)
+			varBuilding17Cost=71000000000000000000*pow(1.15,building17)
 		end
 		tag:tagBuilding17
 		req:have building16
@@ -429,11 +429,11 @@ Buildings
 		name:Idleverse
 		desc:There's been countless other idle universes running alongside our own. You've finally found a way to hijack their production and convert whatever they've been making into bitcoins![?(this>0)|<//></><.>each <#F43F1A>[n:this]</#>produces [varBuilding18Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding18Earned:ps] bitcoins per second (<b>[varBuilding18Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding18Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding18Cost/(varBuilding18Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
 		icon:ccIcons[9,9]
-		cost:1.2e+22 bitcoins
+		cost:12000000000000000000000 bitcoins
 		on tick:
 			yield 8300000000000 bitcoins
 			yield 8300000000000 varBuilding18Earned
-			varBuilding18Cost=1.2e+22*pow(1.15,building18)
+			varBuilding18Cost=12000000000000000000000*pow(1.15,building18)
 		end
 		tag:tagBuilding18
 		req:have building17
