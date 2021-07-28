@@ -1,8 +1,8 @@
 Let's make a game!
-	desc:尽情的享受挖矿的乐趣吧！QQ交流群：956107317
-	updated:24/07/2021
+	desc:尽情地享受挖矿的乐趣吧！QQ交流群：956107317
+	updated:28/07/2021
 	name:无尽的比特币
-	version:1
+	version:1.2
 	created:23/7/2021
 	by:Ares Studio
 
@@ -11,8 +11,8 @@ Settings
 	background:https://i.imgur.com/ko1yDMX.jpg
 	stylesheet:stuff/bigBlue.css
 	building cost refund:50%
-	spritesheet:icons, 48 by 48, https://gitee.com/Yancey/BitcoinClicker/raw/main/res/icons.png
-	spritesheet:ccIcons, 48 by 48, https://gitee.com/Yancey/BitcoinClicker/raw/main/res/ccIcons.png
+	spritesheet:icons, 48 by 48, https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/icons.png
+	spritesheet:ccIcons, 48 by 48, https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/ccIcons.png
 
 Layout
 	use default
@@ -116,7 +116,7 @@ Buttons
 	*bitcoinButton
 		name:比特币实体
 		desc:点击这个比特币实体来生成更多比特币吧！
-		icon:https://gitee.com/Yancey/BitcoinClicker/raw/main/res/btn_bitcoin.png
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/btn_bitcoin.png
 		class:bigButton hasFlares
 		on click:
 			anim icon wobble
@@ -180,7 +180,7 @@ Shinies
 		end
 		frequency:60
 		class:bigButton
-		icon:https://gitee.com/Yancey/BitcoinClicker/raw/main/res/btn_bitcoin.png
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/btn_bitcoin.png
 
 Buildings
 	*TEMPLATE
