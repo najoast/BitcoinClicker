@@ -1,0 +1,1120 @@
+Let's make a game!
+	desc:Enjoy the fun of mining!
+	updated:28/07/2021
+	name:Bitcoin Clickers
+	version:1.2
+	created:23/7/2021
+	by:Ares Studio
+
+Settings
+	building cost increase:115%
+	background:https://i.imgur.com/ko1yDMX.jpg
+	stylesheet:stuff/bigBlue.css
+	building cost refund:50%
+	spritesheet:icons, 48 by 48, https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/icons.png
+	spritesheet:ccIcons, 48 by 48, https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/ccIcons.png
+
+Layout
+	use default
+    // contains:Log
+
+Includes
+*include cursorClick
+        $addition=0
+        $total=0
+        do count with :Buildings:notTag:tagBuilding1
+        if ($total>0)
+			if (have building1Upgrade4) $addition=0.1*$total
+			if (have building1Upgrade5) $addition=$addition*2
+			if (have building1Upgrade6) $addition=$addition*5
+			if (have building1Upgrade7) $addition=$addition*10
+            if (have building1Upgrade8) $addition=$addition*20
+            if (have building1Upgrade9) $addition=$addition*20
+            if (have building1Upgrade10) $addition=$addition*20
+            if (have building1Upgrade11) $addition=$addition*20
+            if (have building1Upgrade12) $addition=$addition*20
+            if (have building1Upgrade13) $addition=$addition*20
+        end
+
+*include br1 %id %idx %name %desc %icon %cost %req
+	*building[%id]Upgrade[%idx]
+		name:[%name]
+		desc:[%desc]
+		icon:ccIcons[%icon]
+		cost:[%cost] bitcoins
+		req:building[%id]>=[%req]
+		tag:tagBuilding[%id]Upgrade
+        passive:multiply yield of bitcoinButton by 2
+        passive:multiply yield of building1 by 2
+*include br1 %id %idx %name %desc %icon %cost %req
+	*building[%id]Upgrade[%idx]
+		name:[%name]
+		desc:[%desc]
+		icon:ccIcons[%icon]
+		cost:[%cost] bitcoins
+		req:building[%id]>=[%req]
+		tag:tagBuilding[%id]Upgrade
+// Common building upgrade: only have `twice` effect
+*include br2 %id %idx %name %desc %icon %cost %req
+	*building[%id]Upgrade[%idx]
+		name:[%name]
+		desc:[%desc]
+		icon:ccIcons[%icon]
+		cost:[%cost] bitcoins
+		req:building[%id]>=[%req]
+		passive:multiply yield of building[%id] by 2
+		tag:tagBuilding[%id]Upgrade
+
+*include newBuildingVarRes %id
+	*varBuilding[%id]Earned
+		name:building[%id]Earned
+		desc:nothing
+		icon:icons[0,0]
+		class:noBackground
+		hidden
+		// show earned
+	*varBuilding[%id]Cost
+		name:building[%id]Cost
+		desc:nothing
+		icon:icons[0,0]
+		class:noBackground
+		hidden
+
+*include ac1 %name %desc %icon %req %i
+    *ac1i[%i]
+        name:[%name]
+        desc:[%desc]
+        icon:[%icon]
+        req:bitcoin:earned>=[%req]
+*include ac2 %name %desc %icon %req %i
+    *ac2i[%i]
+        name:[%name]
+        desc:[%desc]
+        icon:[%icon]
+        req:bitcoin:ps>=[%req]
+*include ac3 %name %desc %icon %req %i
+    *ac3i[%i]
+        name:[%name]
+        desc:[%desc]
+        icon:[%icon]
+        req:bitcoinButton:clicks>=[%req]
+*include ac4 %name %desc %icon %req %i
+    *ac4i[%i]
+        name:[%name]
+        desc:[%desc]
+        icon:[%icon]
+		req:bitcoin:earned-varBuilding1Earned+varBuilding2Earned+varBuilding3Earned+varBuilding4Earned+varBuilding5Earned+varBuilding6Earned+varBuilding7Earned+varBuilding8Earned+varBuilding9Earned+varBuilding10Earned+varBuilding11Earned+varBuilding12Earned+varBuilding13Earned+varBuilding14Earned+varBuilding15Earned+varBuilding16Earned+varBuilding17Earned+varBuilding18Earned>=[%req]
+*include ac5 %name %desc %icon %id %req %i
+    *ac5b[%id]i[%i]
+        name:[%name]
+        desc:[%desc]
+        icon:[%icon]
+        req:building[%id]>=[%req]
+*include ac6 %name %desc %icon %id %req %i
+    *ac6b[%id]i[%i]
+        name:[%name]
+        desc:[%desc]
+        icon:[%icon]
+        req:varBuilding[%id]Earned>=[%req]
+*include ac7 %name %desc %icon %req %i
+    *ac7i[%i]
+        name:[%name]
+        desc:[%desc]
+        icon:[%icon]
+        req:building1+building2+building3+building4+building5+building6+building7+building8+building9+building10+building11+building12+building13+building14+building15+building16+building17+building18>=[%req]
+*include ac8 %name %desc %icon %req %i
+    *ac8i[%i]
+        name:[%name]
+        desc:[%desc]
+        icon:[%icon]
+        req:resAllUpgradesNum:earned>[%req]
+
+Buttons
+	*bitcoinButton
+		name:Bitcoin
+		desc:Click this Bitcoin to generate more bitcoins!
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/btn_bitcoin.png
+		class:bigButton hasFlares
+		on click:
+			anim icon wobble
+			[include cursorClick]
+			yield 1+$addition bitcoins
+		end
+		no text
+		icon class:shadowed
+		tooltip origin:bottom
+		tooltip class:red
+
+Resources
+	*bitcoin|bitcoins
+		name:Bitcoins
+		desc:This is the bitcoins you own, and you can use them to buy things. Your goal is to get as many bitcoins as possible!
+		icon:icons[0,0]
+		class:noBackground
+		show earned
+	*resAllUpgradesNum
+        name:resAllUpgradesNum
+		icon:icons[0,0]
+		class:noBackground
+		hidden
+	*building1Cps
+		name:b1Cps
+		icon:icons[0,0]
+		class:noBackground
+		hidden
+	[include newBuildingVarRes %id="1"]
+	[include newBuildingVarRes %id="2"]
+	[include newBuildingVarRes %id="3"]
+	[include newBuildingVarRes %id="4"]
+	[include newBuildingVarRes %id="5"]
+	[include newBuildingVarRes %id="6"]
+	[include newBuildingVarRes %id="7"]
+	[include newBuildingVarRes %id="8"]
+	[include newBuildingVarRes %id="9"]
+	[include newBuildingVarRes %id="10"]
+	[include newBuildingVarRes %id="11"]
+	[include newBuildingVarRes %id="12"]
+	[include newBuildingVarRes %id="13"]
+	[include newBuildingVarRes %id="14"]
+	[include newBuildingVarRes %id="15"]
+	[include newBuildingVarRes %id="16"]
+	[include newBuildingVarRes %id="17"]
+	[include newBuildingVarRes %id="18"]
+
+Shinies
+	*luckyBitcoin
+		frequency variation:30
+		movement:onRight moveLeft fade bounce:0.05
+		on click:log Woop
+		on click:
+			$boost=1
+			if (have clover) $boost=4
+			//get at least 7, or between 1 and 3 minutes of our bitcoin production
+            $amount=max(7,random(bitcoins:ps*60*1,bitcoins:ps*60*3))*$boost
+			toast +<b>[$amount]</b> bitcoins
+			yield $amount bitcoins
+		end
+		frequency:60
+		class:bigButton
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/btn_bitcoin.png
+
+Buildings
+	*TEMPLATE
+		on click:anim glow
+		
+	*building1
+		name:人工计算
+        desc:想通过一个人的大脑计算sha256，几乎是不可能的事情。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding1Earned:ps/this]个比特币<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding1Earned:ps]个比特币（占总产量的[varBuilding1Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding1Earned]个比特币<//><.>购买性价比：产量每+1需花费<b>[varBuilding1Cost/(varBuilding1Earned:ps/building1)]</b>比特币|]
+		icon:ccIcons[0,0]
+		cost:15 bitcoins
+		on tick:
+			[include cursorClick]
+			building1Cps=1+$addition
+			yield building1Cps bitcoins
+			yield building1Cps varBuilding1Earned
+			varBuilding1Cost=15*pow(1.15,building1)
+			// log [$total] [$addition] [bitcoins:ps] [varBuilding1Earned:ps] [varBuilding1Cost]
+		end
+		unlocked
+        tag:tagBuilding1
+        on count:$total=$total+building1
+    *building1
+		name:Manual Calculation
+		desc:It is almost impossible to calculate sha256 through a person’s brain[?(this>0)|<//></><.>each <#F43F1A>[n:this]</#>produces [varBuilding1Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding1Earned:ps] bitcoins per second (<b>[varBuilding1Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding1Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding1Cost/(varBuilding1Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
+		icon:ccIcons[3,0]
+		cost:15 bitcoins
+		on tick:
+			yield 1 bitcoins
+			yield 1 varBuilding1Earned
+			varBuilding1Cost=15*pow(1.15,building1)
+		end
+		tag:tagBuilding1
+		req:have building0
+		on count:$total=$total+building1
+		unlocked
+	// 从第2个建筑开始，之后所有建筑都用工具生成的(因为它们的行为完全一致)
+	*building2
+		name:Human Column Computer
+		desc:As the name suggests, a human column computer is a computer composed of people. However, the demand for the number of people is huge, and the various parts of the computer are composed of people, and various symbols are used to replace the binary system for calculation.[?(this>0)|<//></><.>each <#F43F1A>[n:this]</#>produces [varBuilding2Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding2Earned:ps] bitcoins per second (<b>[varBuilding2Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding2Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding2Cost/(varBuilding2Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
+		icon:ccIcons[3,1]
+		cost:100 bitcoins
+		on tick:
+			yield 1 bitcoins
+			yield 1 varBuilding2Earned
+			varBuilding2Cost=100*pow(1.15,building2)
+		end
+		tag:tagBuilding2
+		req:have building1
+		on count:$total=$total+building2
+	*building3
+		name:Laptop
+		desc:Any computer can become a mining machine, but the profit will be relatively low, and it may not be possible to mine one in ten years.[?(this>0)|<//></><.>each <#F43F1A>[n:this]</#>produces [varBuilding3Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding3Earned:ps] bitcoins per second (<b>[varBuilding3Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding3Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding3Cost/(varBuilding3Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
+		icon:ccIcons[3,2]
+		cost:1100 bitcoins
+		on tick:
+			yield 8 bitcoins
+			yield 8 varBuilding3Earned
+			varBuilding3Cost=1100*pow(1.15,building3)
+		end
+		tag:tagBuilding3
+		req:have building2
+		on count:$total=$total+building3
+	*building4
+		name:Desktop PC
+		desc:A mining machine composed of a lot of graphics cards, even if it is just a junk card like HD6770, the computing power after "grouping" can surpass most users' single graphics card.[?(this>0)|<//></><.>each <#F43F1A>[n:this]</#>produces [varBuilding4Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding4Earned:ps] bitcoins per second (<b>[varBuilding4Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding4Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding4Cost/(varBuilding4Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
+		icon:ccIcons[3,3]
+		cost:12000 bitcoins
+		on tick:
+			yield 47 bitcoins
+			yield 47 varBuilding4Earned
+			varBuilding4Cost=12000*pow(1.15,building4)
+		end
+		tag:tagBuilding4
+		req:have building3
+		on count:$total=$total+building4
+	*building5
+		name:Old Miner Machine
+		desc:The second-hand graphics card mining unit eliminated by the mine boss[?(this>0)|<//></><.>each <#F43F1A>[n:this]</#>produces [varBuilding5Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding5Earned:ps] bitcoins per second (<b>[varBuilding5Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding5Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding5Cost/(varBuilding5Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
+		icon:ccIcons[3,4]
+		cost:130000 bitcoins
+		on tick:
+			yield 260 bitcoins
+			yield 260 varBuilding5Earned
+			varBuilding5Cost=130000*pow(1.15,building5)
+		end
+		tag:tagBuilding5
+		req:have building4
+		on count:$total=$total+building5
+	*building6
+		name:New Miner Machine
+		desc:Brand new graphics card mining machine, mining is not fast, but cost-effective[?(this>0)|<//></><.>each <#F43F1A>[n:this]</#>produces [varBuilding6Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding6Earned:ps] bitcoins per second (<b>[varBuilding6Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding6Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding6Cost/(varBuilding6Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
+		icon:ccIcons[3,5]
+		cost:1400000 bitcoins
+		on tick:
+			yield 1400 bitcoins
+			yield 1400 varBuilding6Earned
+			varBuilding6Cost=1400000*pow(1.15,building6)
+		end
+		tag:tagBuilding6
+		req:have building5
+		on count:$total=$total+building6
+	*building7
+		name:ASIC Miner Machine
+		desc:The performance of ASIC miner chips exceeds the current top computer CPUs. Because ASIC mining machines have an absolute advantage in computing power, computers and graphics card mining machines have gradually been eliminated[?(this>0)|<//></><.>each <#F43F1A>[n:this]</#>produces [varBuilding7Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding7Earned:ps] bitcoins per second (<b>[varBuilding7Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding7Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding7Cost/(varBuilding7Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
+		icon:ccIcons[3,6]
+		cost:20000000 bitcoins
+		on tick:
+			yield 7800 bitcoins
+			yield 7800 varBuilding7Earned
+			varBuilding7Cost=20000000*pow(1.15,building7)
+		end
+		tag:tagBuilding7
+		req:have building6
+		on count:$total=$total+building7
+	*building8
+		name:Cloud Server
+		desc:Using elastic computing power, the number of servers can be increased as needed[?(this>0)|<//></><.>each <#F43F1A>[n:this]</#>produces [varBuilding8Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding8Earned:ps] bitcoins per second (<b>[varBuilding8Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding8Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding8Cost/(varBuilding8Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
+		icon:ccIcons[3,7]
+		cost:330000000 bitcoins
+		on tick:
+			yield 44000 bitcoins
+			yield 44000 varBuilding8Earned
+			varBuilding8Cost=330000000*pow(1.15,building8)
+		end
+		tag:tagBuilding8
+		req:have building7
+		on count:$total=$total+building8
+	*building9
+		name:Miner Machine Array
+		desc:An array composed of dozens of mining machines, greatly improving efficiency[?(this>0)|<//></><.>each <#F43F1A>[n:this]</#>produces [varBuilding9Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding9Earned:ps] bitcoins per second (<b>[varBuilding9Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding9Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding9Cost/(varBuilding9Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
+		icon:ccIcons[3,8]
+		cost:5100000000 bitcoins
+		on tick:
+			yield 260000 bitcoins
+			yield 260000 varBuilding9Earned
+			varBuilding9Cost=5100000000*pow(1.15,building9)
+		end
+		tag:tagBuilding9
+		req:have building8
+		on count:$total=$total+building9
+	*building10
+		name:Miner Machine Cluster
+		desc:A large array cluster composed of hundreds to thousands of mining machines, with amazing efficiency[?(this>0)|<//></><.>each <#F43F1A>[n:this]</#>produces [varBuilding10Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding10Earned:ps] bitcoins per second (<b>[varBuilding10Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding10Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding10Cost/(varBuilding10Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
+		icon:ccIcons[3,8]
+		cost:75000000000 bitcoins
+		on tick:
+			yield 1600000 bitcoins
+			yield 1600000 varBuilding10Earned
+			varBuilding10Cost=75000000000*pow(1.15,building10)
+		end
+		tag:tagBuilding10
+		req:have building9
+		on count:$total=$total+building10
+	*building11
+		name:Supercomputer
+		desc:A supercomputer refers to a computer that can execute large amounts of data and high-speed operations that ordinary personal computers cannot process.[?(this>0)|<//></><.>each <#F43F1A>[n:this]</#>produces [varBuilding11Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding11Earned:ps] bitcoins per second (<b>[varBuilding11Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding11Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding11Cost/(varBuilding11Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
+		icon:ccIcons[3,8]
+		cost:1000000000000 bitcoins
+		on tick:
+			yield 10000000 bitcoins
+			yield 10000000 varBuilding11Earned
+			varBuilding11Cost=1000000000000*pow(1.15,building11)
+		end
+		tag:tagBuilding11
+		req:have building10
+		on count:$total=$total+building11
+	*building12
+		name:Quantum Computer
+		desc:It takes only 200 seconds for a quantum computer to solve the mathematical algorithm Gaussian Bose sampling, while the fastest supercomputer in the world currently takes 600 million years.[?(this>0)|<//></><.>each <#F43F1A>[n:this]</#>produces [varBuilding12Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding12Earned:ps] bitcoins per second (<b>[varBuilding12Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding12Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding12Cost/(varBuilding12Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
+		icon:ccIcons[3,8]
+		cost:14000000000000 bitcoins
+		on tick:
+			yield 65000000 bitcoins
+			yield 65000000 varBuilding12Earned
+			varBuilding12Cost=14000000000000*pow(1.15,building12)
+		end
+		tag:tagBuilding12
+		req:have building11
+		on count:$total=$total+building12
+	*building13
+		name:JARVIS
+		desc:The full name is Just A Rather Very Intelligent System, Iron Man's personal butler, with computing power beyond the times[?(this>0)|<//></><.>each <#F43F1A>[n:this]</#>produces [varBuilding13Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]</#> producing [varBuilding13Earned:ps] bitcoins per second (<b>[varBuilding13Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding13Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding13Cost/(varBuilding13Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
+		icon:ccIcons[3,8]
+		cost:170000000000000 bitcoins
+		on tick:
+			yield 430000000 bitcoins
+			yield 430000000 varBuilding13Earned
+			varBuilding13Cost=170000000000000*pow(1.15,building13)
+		end
+		tag:tagBuilding13
+		req:have building12
+		on count:$total=$total+building13
+	*building14
+		name:Time Machine
+		desc:Bringing Bitcoin from the past through time[?(this>0)|<//></><.>each <#F43F1A>[n:this]</#>produces [varBuilding14Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding14Earned:ps] bitcoins per second (<b>[varBuilding14Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding14Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding14Cost/(varBuilding14Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
+		icon:ccIcons[3,8]
+		cost:2100000000000000 bitcoins
+		on tick:
+			yield 2900000000 bitcoins
+			yield 2900000000 varBuilding14Earned
+			varBuilding14Cost=2100000000000000*pow(1.15,building14)
+		end
+		tag:tagBuilding14
+		req:have building13
+		on count:$total=$total+building14
+	*building15
+		name:Sophon
+		desc:The intelligent microscopic particles after the two-dimensional expansion and transformation of protons are eleven-dimensional objects and can be quickly calculated in the microscopic high-dimensional space.[?(this>0)|<//></><.>each <#F43F1A>[n:this]</#>produces [varBuilding15Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding15Earned:ps] bitcoins per second (<b>[varBuilding15Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding15Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding15Cost/(varBuilding15Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
+		icon:ccIcons[3,8]
+		cost:26000000000000000 bitcoins
+		on tick:
+			yield 21000000000 bitcoins
+			yield 21000000000 varBuilding15Earned
+			varBuilding15Cost=26000000000000000*pow(1.15,building15)
+		end
+		tag:tagBuilding15
+		req:have building14
+		on count:$total=$total+building15
+	*building16
+		name:Fractal Engine
+		desc:Turn Bitcoins into more Bitcoins.[?(this>0)|<//></><.>each <#F43F1A>[n:this]</#>produces [varBuilding16Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding16Earned:ps] bitcoins per second (<b>[varBuilding16Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding16Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding16Cost/(varBuilding16Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
+		icon:ccIcons[3,8]
+		cost:310000000000000000 bitcoins
+		on tick:
+			yield 150000000000 bitcoins
+			yield 150000000000 varBuilding16Earned
+			varBuilding16Cost=310000000000000000*pow(1.15,building16)
+		end
+		tag:tagBuilding16
+		req:have building15
+		on count:$total=$total+building16
+	*building17
+		name:Croto System
+		desc:From a macro point of view, matter is a bunch of aggregated atoms, and the motion of atoms conforms to physical equations. Just as you know the speed, position and force of a small ball, you can calculate its future trajectory. So in theory, as long as we know exactly the state of each atom in the universe and have enough computing power, we can calculate the future![?(this>0)|<//></><.>each <#F43F1A>[n:this]</#>produces [varBuilding17Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding17Earned:ps] bitcoins per second (<b>[varBuilding17Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding17Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding17Cost/(varBuilding17Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
+		icon:ccIcons[3,8]
+		cost:7.1e+19 bitcoins
+		on tick:
+			yield 1100000000000 bitcoins
+			yield 1100000000000 varBuilding17Earned
+			varBuilding17Cost=7.1e+19*pow(1.15,building17)
+		end
+		tag:tagBuilding17
+		req:have building16
+		on count:$total=$total+building17
+	*building18
+		name:Idleverse
+		desc:There's been countless other idle universes running alongside our own. You've finally found a way to hijack their production and convert whatever they've been making into bitcoins![?(this>0)|<//></><.>each <#F43F1A>[n:this]</#>produces [varBuilding18Earned:ps/this] bitcoins per second<.>[this] <#F43F1A>[n:this]s</#> producing [varBuilding18Earned:ps] bitcoins per second (<b>[varBuilding18Earned:ps*100/bitcoin:ps]%</b> of total BpS)<.>[varBuilding18Earned] bitcoins mined so far<//><.>Cost-effective: <b>[varBuilding18Cost/(varBuilding18Earned:ps/this)]</b> bitcoins cost for 1 BpS|]
+		icon:ccIcons[3,8]
+		cost:1.2e+22 bitcoins
+		on tick:
+			yield 8300000000000 bitcoins
+			yield 8300000000000 varBuilding18Earned
+			varBuilding18Cost=1.2e+22*pow(1.15,building18)
+		end
+		tag:tagBuilding18
+		req:have building17
+		on count:$total=$total+building18
+
+
+Upgrades
+	*TEMPLATE
+		on click:anim glow
+        on earn:
+			hide this
+			yield 1 resAllUpgradesNum
+		end
+
+	///////////////////////////////////////////////////////////////////////////////////
+	//                            Building Upgrades                                  //
+	///////////////////////////////////////////////////////////////////////////////////
+
+[i:br0 %id="1" %idx="1" %name="Reinforced index finger" %desc="The mouse and [n:building1] are <b>twice</b> as efficient.prod prod" %icon="[0,0]" %cost="100" %req="1"]
+[i:br0 %id="1" %idx="2" %name="Carpal tunnel prevention cream" %desc="The mouse and [n:building1] are <b>twice</b> as efficient.it... it hurts to click..." %icon="[0,1]" %cost="500" %req="1"]
+[i:br0 %id="1" %idx="3" %name="Ambidextrous" %desc="The mouse and [n:building1] are <b>twice</b> as efficient.Look ma, both hands!" %icon="[0,2]" %cost="10000" %req="10"]
+[i:br1 %id="1" %idx="4" %name="Thousand fingers" %desc="The mouse and [n:building1] gain <b>+0.1</b> cookies for each non-cursor object owned.clickity" %icon="[0,13]" %cost="100000" %req="25"]
+[i:br1 %id="1" %idx="5" %name="Million fingers" %desc="Multiplies the gain from <#000083>[n:building1Upgrade4]</#> by 5.clickityclickity" %icon="[0,14]" %cost="10000000" %req="50"]
+[i:br1 %id="1" %idx="6" %name="Billion fingers" %desc="Multiplies the gain from <#000083>[n:building1Upgrade4]</#> by 10.clickityclickityclickity" %icon="[0,15]" %cost="100000000" %req="100"]
+[i:br1 %id="1" %idx="7" %name="Trillion fingers" %desc="Multiplies the gain from <#000083>[n:building1Upgrade4]</#> by 20.clickityclickityclickityclickity" %icon="[0,16]" %cost="1000000000" %req="150"]
+[i:br1 %id="1" %idx="8" %name="Quadrillion fingers" %desc="Multiplies the gain from <#000083>[n:building1Upgrade4]</#> by 20.clickityclickityclickityclickityclickity" %icon="[0,17]" %cost="10000000000" %req="200"]
+[i:br1 %id="1" %idx="9" %name="Quintillion fingers" %desc="Multiplies the gain from <#000083>[n:building1Upgrade4]</#> by 20.man, just go click click click click click, it’s real easy, man." %icon="[0,18]" %cost="10000000000000" %req="250"]
+[i:br1 %id="1" %idx="10" %name="Sextillion fingers" %desc="Multiplies the gain from <#000083>[n:building1Upgrade4]</#> by 20.sometimes<br>things just<br>click" %icon="[0,19]" %cost="10000000000000000" %req="300"]
+[i:br1 %id="1" %idx="11" %name="Septillion fingers" %desc="Multiplies the gain from <#000083>[n:building1Upgrade4]</#> by 20.[cursory flavor text]" %icon="[0,20]" %cost="10000000000000000000" %req="350"]
+[i:br1 %id="1" %idx="12" %name="Octillion fingers" %desc="Multiplies the gain from <#000083>[n:building1Upgrade4]</#> by 20.Turns out you can quite put your finger on it." %icon="[0,21]" %cost="10000000000000000000000" %req="400"]
+[i:br1 %id="1" %idx="13" %name="Nonillion fingers" %desc="Multiplies the gain from <#000083>[n:building1Upgrade4]</#> by 20.Only for the freakiest handshakes." %icon="[0,22]" %cost="10000000000000000000000000" %req="450"]
+[i:br2 %id="2" %idx="1" %name="Hundreds arrays" %desc="[n:building2] are <b>twice</b> as efficient." %icon="[16,0]" %cost="1000" %req="1"]
+[i:br2 %id="2" %idx="2" %name="Thousand arrays" %desc="[n:building2] are <b>twice</b> as efficient." %icon="[16,1]" %cost="5000" %req="5"]
+[i:br2 %id="2" %idx="3" %name="Million arrays" %desc="[n:building2] are <b>twice</b> as efficient." %icon="[16,2]" %cost="50000" %req="25"]
+[i:br2 %id="2" %idx="4" %name="Billion arrays" %desc="[n:building2] are <b>twice</b> as efficient." %icon="[16,13]" %cost="5000000" %req="50"]
+[i:br2 %id="2" %idx="5" %name="Trillion arrays" %desc="[n:building2] are <b>twice</b> as efficient." %icon="[16,14]" %cost="500000000" %req="100"]
+[i:br2 %id="2" %idx="6" %name="Quadrillion arrays" %desc="[n:building2] are <b>twice</b> as efficient." %icon="[16,15]" %cost="50000000000" %req="150"]
+[i:br2 %id="2" %idx="7" %name="Quintillion arrays" %desc="[n:building2] are <b>twice</b> as efficient." %icon="[16,16]" %cost="50000000000000" %req="200"]
+[i:br2 %id="2" %idx="8" %name="Sextillion arrays" %desc="[n:building2] are <b>twice</b> as efficient." %icon="[16,17]" %cost="50000000000000000" %req="250"]
+[i:br2 %id="2" %idx="9" %name="Septillion arrays" %desc="[n:building2] are <b>twice</b> as efficient." %icon="[16,18]" %cost="50000000000000000000" %req="300"]
+[i:br2 %id="2" %idx="10" %name="Octillion arrays" %desc="[n:building2] are <b>twice</b> as efficient." %icon="[16,19]" %cost="50000000000000000000000" %req="350"]
+[i:br2 %id="2" %idx="11" %name="Nonillion arrays" %desc="[n:building2] are <b>twice</b> as efficient." %icon="[16,20]" %cost="500000000000000000000000000" %req="400"]
+[i:br2 %id="2" %idx="12" %name="decillion arrays" %desc="[n:building2] are <b>twice</b> as efficient." %icon="[16,21]" %cost="5000000000000000000000000000000" %req="450"]
+[i:br2 %id="2" %idx="13" %name="undecillion arrays" %desc="[n:building2] are <b>twice</b> as efficient." %icon="[16,22]" %cost="50000000000000000000000000000000000" %req="500"]
+[i:br2 %id="3" %idx="1" %name="Reinforced Laptop I" %desc="[n:building3] are <b>twice</b> as efficient." %icon="[15,0]" %cost="11000" %req="1"]
+[i:br2 %id="3" %idx="2" %name="Reinforced Laptop II" %desc="[n:building3] are <b>twice</b> as efficient." %icon="[15,1]" %cost="55000" %req="5"]
+[i:br2 %id="3" %idx="3" %name="Reinforced Laptop III" %desc="[n:building3] are <b>twice</b> as efficient." %icon="[15,2]" %cost="550000" %req="25"]
+[i:br2 %id="3" %idx="4" %name="Reinforced Laptop IV" %desc="[n:building3] are <b>twice</b> as efficient." %icon="[15,13]" %cost="55000000" %req="50"]
+[i:br2 %id="3" %idx="5" %name="Reinforced Laptop V" %desc="[n:building3] are <b>twice</b> as efficient." %icon="[15,14]" %cost="5500000000" %req="100"]
+[i:br2 %id="3" %idx="6" %name="Reinforced Laptop VI" %desc="[n:building3] are <b>twice</b> as efficient." %icon="[15,15]" %cost="550000000000" %req="150"]
+[i:br2 %id="3" %idx="7" %name="Reinforced Laptop VII" %desc="[n:building3] are <b>twice</b> as efficient." %icon="[15,16]" %cost="550000000000000" %req="200"]
+[i:br2 %id="3" %idx="8" %name="Reinforced Laptop VIII" %desc="[n:building3] are <b>twice</b> as efficient." %icon="[15,17]" %cost="550000000000000000" %req="250"]
+[i:br2 %id="3" %idx="9" %name="Reinforced Laptop IX" %desc="[n:building3] are <b>twice</b> as efficient." %icon="[15,18]" %cost="550000000000000000000" %req="300"]
+[i:br2 %id="3" %idx="10" %name="Reinforced Laptop X" %desc="[n:building3] are <b>twice</b> as efficient." %icon="[15,19]" %cost="550000000000000000000000" %req="350"]
+[i:br2 %id="3" %idx="11" %name="Reinforced Laptop XI" %desc="[n:building3] are <b>twice</b> as efficient." %icon="[15,20]" %cost="5500000000000000000000000000" %req="400"]
+[i:br2 %id="3" %idx="12" %name="Reinforced Laptop XII" %desc="[n:building3] are <b>twice</b> as efficient." %icon="[15,21]" %cost="55000000000000000000000000000000" %req="450"]
+[i:br2 %id="3" %idx="13" %name="Reinforced Laptop XIII" %desc="[n:building3] are <b>twice</b> as efficient." %icon="[15,22]" %cost="550000000000000000000000000000000000" %req="500"]
+[i:br2 %id="4" %idx="1" %name="Reinforced Desktop PC I" %desc="[n:building4] are <b>twice</b> as efficient." %icon="[4,0]" %cost="120000" %req="1"]
+[i:br2 %id="4" %idx="2" %name="Reinforced Desktop PC II" %desc="[n:building4] are <b>twice</b> as efficient." %icon="[4,1]" %cost="600000" %req="5"]
+[i:br2 %id="4" %idx="3" %name="Reinforced Desktop PC III" %desc="[n:building4] are <b>twice</b> as efficient." %icon="[4,2]" %cost="6000000" %req="25"]
+[i:br2 %id="4" %idx="4" %name="Reinforced Desktop PC IV" %desc="[n:building4] are <b>twice</b> as efficient." %icon="[4,13]" %cost="600000000" %req="50"]
+[i:br2 %id="4" %idx="5" %name="Reinforced Desktop PC V" %desc="[n:building4] are <b>twice</b> as efficient." %icon="[4,14]" %cost="60000000000" %req="100"]
+[i:br2 %id="4" %idx="6" %name="Reinforced Desktop PC VI" %desc="[n:building4] are <b>twice</b> as efficient." %icon="[4,15]" %cost="6000000000000" %req="150"]
+[i:br2 %id="4" %idx="7" %name="Reinforced Desktop PC VII" %desc="[n:building4] are <b>twice</b> as efficient." %icon="[4,16]" %cost="6000000000000000" %req="200"]
+[i:br2 %id="4" %idx="8" %name="Reinforced Desktop PC VIII" %desc="[n:building4] are <b>twice</b> as efficient." %icon="[4,17]" %cost="6000000000000000000" %req="250"]
+[i:br2 %id="4" %idx="9" %name="Reinforced Desktop PC IX" %desc="[n:building4] are <b>twice</b> as efficient." %icon="[4,18]" %cost="6000000000000000000000" %req="300"]
+[i:br2 %id="4" %idx="10" %name="Reinforced Desktop PC X" %desc="[n:building4] are <b>twice</b> as efficient." %icon="[4,19]" %cost="6000000000000000000000000" %req="350"]
+[i:br2 %id="4" %idx="11" %name="Reinforced Desktop PC XI" %desc="[n:building4] are <b>twice</b> as efficient." %icon="[4,20]" %cost="60000000000000000000000000000" %req="400"]
+[i:br2 %id="4" %idx="12" %name="Reinforced Desktop PC XII" %desc="[n:building4] are <b>twice</b> as efficient." %icon="[4,21]" %cost="600000000000000000000000000000000" %req="450"]
+[i:br2 %id="4" %idx="13" %name="Reinforced Desktop PC XIII" %desc="[n:building4] are <b>twice</b> as efficient." %icon="[4,22]" %cost="6000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="5" %idx="1" %name="Reinforced Old Miner Machine I" %desc="[n:building5] are <b>twice</b> as efficient." %icon="[3,0]" %cost="1300000" %req="1"]
+[i:br2 %id="5" %idx="2" %name="Reinforced Old Miner Machine II" %desc="[n:building5] are <b>twice</b> as efficient." %icon="[3,1]" %cost="6500000" %req="5"]
+[i:br2 %id="5" %idx="3" %name="Reinforced Old Miner Machine III" %desc="[n:building5] are <b>twice</b> as efficient." %icon="[3,2]" %cost="65000000" %req="25"]
+[i:br2 %id="5" %idx="4" %name="Reinforced Old Miner Machine IV" %desc="[n:building5] are <b>twice</b> as efficient." %icon="[3,13]" %cost="6500000000" %req="50"]
+[i:br2 %id="5" %idx="5" %name="Reinforced Old Miner Machine V" %desc="[n:building5] are <b>twice</b> as efficient." %icon="[3,14]" %cost="650000000000" %req="100"]
+[i:br2 %id="5" %idx="6" %name="Reinforced Old Miner Machine VI" %desc="[n:building5] are <b>twice</b> as efficient." %icon="[3,15]" %cost="65000000000000" %req="150"]
+[i:br2 %id="5" %idx="7" %name="Reinforced Old Miner Machine VII" %desc="[n:building5] are <b>twice</b> as efficient." %icon="[3,16]" %cost="65000000000000000" %req="200"]
+[i:br2 %id="5" %idx="8" %name="Reinforced Old Miner Machine VIII" %desc="[n:building5] are <b>twice</b> as efficient." %icon="[3,17]" %cost="65000000000000000000" %req="250"]
+[i:br2 %id="5" %idx="9" %name="Reinforced Old Miner Machine IX" %desc="[n:building5] are <b>twice</b> as efficient." %icon="[3,18]" %cost="65000000000000000000000" %req="300"]
+[i:br2 %id="5" %idx="10" %name="Reinforced Old Miner Machine X" %desc="[n:building5] are <b>twice</b> as efficient." %icon="[3,19]" %cost="65000000000000000000000000" %req="350"]
+[i:br2 %id="5" %idx="11" %name="Reinforced Old Miner Machine XI" %desc="[n:building5] are <b>twice</b> as efficient." %icon="[3,20]" %cost="650000000000000000000000000000" %req="400"]
+[i:br2 %id="5" %idx="12" %name="Reinforced Old Miner Machine XII" %desc="[n:building5] are <b>twice</b> as efficient." %icon="[3,21]" %cost="6500000000000000000000000000000000" %req="450"]
+[i:br2 %id="5" %idx="13" %name="Reinforced Old Miner Machine XIII" %desc="[n:building5] are <b>twice</b> as efficient." %icon="[3,22]" %cost="6000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="6" %idx="1" %name="Reinforced New Miner Machine I" %desc="[n:building6] are <b>twice</b> as efficient." %icon="[19,0]" %cost="14000000" %req="1"]
+[i:br2 %id="6" %idx="2" %name="Reinforced New Miner Machine II" %desc="[n:building6] are <b>twice</b> as efficient." %icon="[19,1]" %cost="70000000" %req="5"]
+[i:br2 %id="6" %idx="3" %name="Reinforced New Miner Machine III" %desc="[n:building6] are <b>twice</b> as efficient." %icon="[19,2]" %cost="700000000" %req="25"]
+[i:br2 %id="6" %idx="4" %name="Reinforced New Miner Machine IV" %desc="[n:building6] are <b>twice</b> as efficient." %icon="[19,13]" %cost="70000000000" %req="50"]
+[i:br2 %id="6" %idx="5" %name="Reinforced New Miner Machine V" %desc="[n:building6] are <b>twice</b> as efficient." %icon="[19,14]" %cost="7000000000000" %req="100"]
+[i:br2 %id="6" %idx="6" %name="Reinforced New Miner Machine VI" %desc="[n:building6] are <b>twice</b> as efficient." %icon="[19,15]" %cost="700000000000000" %req="150"]
+[i:br2 %id="6" %idx="7" %name="Reinforced New Miner Machine VII" %desc="[n:building6] are <b>twice</b> as efficient." %icon="[19,16]" %cost="700000000000000000" %req="200"]
+[i:br2 %id="6" %idx="8" %name="Reinforced New Miner Machine VIII" %desc="[n:building6] are <b>twice</b> as efficient." %icon="[19,17]" %cost="700000000000000000000" %req="250"]
+[i:br2 %id="6" %idx="9" %name="Reinforced New Miner Machine IX" %desc="[n:building6] are <b>twice</b> as efficient." %icon="[19,18]" %cost="700000000000000000000000" %req="300"]
+[i:br2 %id="6" %idx="10" %name="Reinforced New Miner Machine X" %desc="[n:building6] are <b>twice</b> as efficient." %icon="[19,19]" %cost="700000000000000000000000000" %req="350"]
+[i:br2 %id="6" %idx="11" %name="Reinforced New Miner Machine XI" %desc="[n:building6] are <b>twice</b> as efficient." %icon="[19,20]" %cost="7000000000000000000000000000000" %req="400"]
+[i:br2 %id="6" %idx="12" %name="Reinforced New Miner Machine XII" %desc="[n:building6] are <b>twice</b> as efficient." %icon="[19,21]" %cost="70000000000000000000000000000000000" %req="450"]
+[i:br2 %id="6" %idx="13" %name="Reinforced New Miner Machine XIII" %desc="[n:building6] are <b>twice</b> as efficient." %icon="[19,22]" %cost="700000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="7" %idx="1" %name="Reinforced ASIC Miner Machine I" %desc="[n:building7] are <b>twice</b> as efficient." %icon="[1,0]" %cost="200000000" %req="1"]
+[i:br2 %id="7" %idx="2" %name="Reinforced ASIC Miner Machine II" %desc="[n:building7] are <b>twice</b> as efficient." %icon="[1,1]" %cost="1000000000" %req="5"]
+[i:br2 %id="7" %idx="3" %name="Reinforced ASIC Miner Machine III" %desc="[n:building7] are <b>twice</b> as efficient." %icon="[1,2]" %cost="10000000000" %req="25"]
+[i:br2 %id="7" %idx="4" %name="Reinforced ASIC Miner Machine IV" %desc="[n:building7] are <b>twice</b> as efficient." %icon="[1,13]" %cost="1000000000000" %req="50"]
+[i:br2 %id="7" %idx="5" %name="Reinforced ASIC Miner Machine V" %desc="[n:building7] are <b>twice</b> as efficient." %icon="[1,14]" %cost="100000000000000" %req="100"]
+[i:br2 %id="7" %idx="6" %name="Reinforced ASIC Miner Machine VI" %desc="[n:building7] are <b>twice</b> as efficient." %icon="[1,15]" %cost="10000000000000000" %req="150"]
+[i:br2 %id="7" %idx="7" %name="Reinforced ASIC Miner Machine VII" %desc="[n:building7] are <b>twice</b> as efficient." %icon="[1,16]" %cost="10000000000000000000" %req="200"]
+[i:br2 %id="7" %idx="8" %name="Reinforced ASIC Miner Machine VIII" %desc="[n:building7] are <b>twice</b> as efficient." %icon="[1,17]" %cost="10000000000000000000000" %req="250"]
+[i:br2 %id="7" %idx="9" %name="Reinforced ASIC Miner Machine IX" %desc="[n:building7] are <b>twice</b> as efficient." %icon="[1,18]" %cost="10000000000000000000000000" %req="300"]
+[i:br2 %id="7" %idx="10" %name="Reinforced ASIC Miner Machine X" %desc="[n:building7] are <b>twice</b> as efficient." %icon="[1,19]" %cost="10000000000000000000000000000" %req="350"]
+[i:br2 %id="7" %idx="11" %name="Reinforced ASIC Miner Machine XI" %desc="[n:building7] are <b>twice</b> as efficient." %icon="[1,20]" %cost="100000000000000000000000000000000" %req="400"]
+[i:br2 %id="7" %idx="12" %name="Reinforced ASIC Miner Machine XII" %desc="[n:building7] are <b>twice</b> as efficient." %icon="[1,21]" %cost="1000000000000000000000000000000000000" %req="450"]
+[i:br2 %id="7" %idx="13" %name="Reinforced ASIC Miner Machine XIII" %desc="[n:building7] are <b>twice</b> as efficient." %icon="[1,22]" %cost="10000000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="8" %idx="1" %name="Reinforced Cloud Server I" %desc="[n:building8] are <b>twice</b> as efficient." %icon="[11,0]" %cost="3300000000" %req="1"]
+[i:br2 %id="8" %idx="2" %name="Reinforced Cloud Server II" %desc="[n:building8] are <b>twice</b> as efficient." %icon="[11,1]" %cost="16500000000" %req="5"]
+[i:br2 %id="8" %idx="3" %name="Reinforced Cloud Server III" %desc="[n:building8] are <b>twice</b> as efficient." %icon="[11,2]" %cost="165000000000" %req="25"]
+[i:br2 %id="8" %idx="4" %name="Reinforced Cloud Server IV" %desc="[n:building8] are <b>twice</b> as efficient." %icon="[11,13]" %cost="16500000000000" %req="50"]
+[i:br2 %id="8" %idx="5" %name="Reinforced Cloud Server V" %desc="[n:building8] are <b>twice</b> as efficient." %icon="[11,14]" %cost="1650000000000000" %req="100"]
+[i:br2 %id="8" %idx="6" %name="Reinforced Cloud Server VI" %desc="[n:building8] are <b>twice</b> as efficient." %icon="[11,15]" %cost="165000000000000000" %req="150"]
+[i:br2 %id="8" %idx="7" %name="Reinforced Cloud Server VII" %desc="[n:building8] are <b>twice</b> as efficient." %icon="[11,16]" %cost="165000000000000000000" %req="200"]
+[i:br2 %id="8" %idx="8" %name="Reinforced Cloud Server VIII" %desc="[n:building8] are <b>twice</b> as efficient." %icon="[11,17]" %cost="165000000000000000000000" %req="250"]
+[i:br2 %id="8" %idx="9" %name="Reinforced Cloud Server IX" %desc="[n:building8] are <b>twice</b> as efficient." %icon="[11,18]" %cost="165000000000000000000000000" %req="300"]
+[i:br2 %id="8" %idx="10" %name="Reinforced Cloud Server X" %desc="[n:building8] are <b>twice</b> as efficient." %icon="[11,19]" %cost="165000000000000000000000000000" %req="350"]
+[i:br2 %id="8" %idx="11" %name="Reinforced Cloud Server XI" %desc="[n:building8] are <b>twice</b> as efficient." %icon="[11,20]" %cost="1650000000000000000000000000000000" %req="400"]
+[i:br2 %id="8" %idx="12" %name="Reinforced Cloud Server XII" %desc="[n:building8] are <b>twice</b> as efficient." %icon="[11,21]" %cost="16500000000000000000000000000000000000" %req="450"]
+[i:br2 %id="8" %idx="13" %name="Reinforced Cloud Server XIII" %desc="[n:building8] are <b>twice</b> as efficient." %icon="[11,22]" %cost="165000000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="9" %idx="1" %name="Reinforced Miner Machine Array I" %desc="[n:building9] are <b>twice</b> as efficient." %icon="[12,0]" %cost="51000000000" %req="1"]
+[i:br2 %id="9" %idx="2" %name="Reinforced Miner Machine Array II" %desc="[n:building9] are <b>twice</b> as efficient." %icon="[12,1]" %cost="255000000000" %req="5"]
+[i:br2 %id="9" %idx="3" %name="Reinforced Miner Machine Array III" %desc="[n:building9] are <b>twice</b> as efficient." %icon="[12,2]" %cost="2550000000000" %req="25"]
+[i:br2 %id="9" %idx="4" %name="Reinforced Miner Machine Array IV" %desc="[n:building9] are <b>twice</b> as efficient." %icon="[12,13]" %cost="255000000000000" %req="50"]
+[i:br2 %id="9" %idx="5" %name="Reinforced Miner Machine Array V" %desc="[n:building9] are <b>twice</b> as efficient." %icon="[12,14]" %cost="25500000000000000" %req="100"]
+[i:br2 %id="9" %idx="6" %name="Reinforced Miner Machine Array VI" %desc="[n:building9] are <b>twice</b> as efficient." %icon="[12,15]" %cost="2550000000000000000" %req="150"]
+[i:br2 %id="9" %idx="7" %name="Reinforced Miner Machine Array VII" %desc="[n:building9] are <b>twice</b> as efficient." %icon="[12,16]" %cost="2550000000000000000000" %req="200"]
+[i:br2 %id="9" %idx="8" %name="Reinforced Miner Machine Array VIII" %desc="[n:building9] are <b>twice</b> as efficient." %icon="[12,17]" %cost="2550000000000000000000000" %req="250"]
+[i:br2 %id="9" %idx="9" %name="Reinforced Miner Machine Array IX" %desc="[n:building9] are <b>twice</b> as efficient." %icon="[12,18]" %cost="2550000000000000000000000000" %req="300"]
+[i:br2 %id="9" %idx="10" %name="Reinforced Miner Machine Array X" %desc="[n:building9] are <b>twice</b> as efficient." %icon="[12,19]" %cost="2550000000000000000000000000000" %req="350"]
+[i:br2 %id="9" %idx="11" %name="Reinforced Miner Machine Array XI" %desc="[n:building9] are <b>twice</b> as efficient." %icon="[12,20]" %cost="25500000000000000000000000000000000" %req="400"]
+[i:br2 %id="9" %idx="12" %name="Reinforced Miner Machine Array XII" %desc="[n:building9] are <b>twice</b> as efficient." %icon="[12,21]" %cost="255000000000000000000000000000000000000" %req="450"]
+[i:br2 %id="9" %idx="13" %name="Reinforced Miner Machine Array XIII" %desc="[n:building9] are <b>twice</b> as efficient." %icon="[12,22]" %cost="2550000000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="10" %idx="1" %name="Reinforced Miner Machine Cluster I" %desc="[n:building10] are <b>twice</b> as efficient." %icon="[17,0]" %cost="750000000000" %req="1"]
+[i:br2 %id="10" %idx="2" %name="Reinforced Miner Machine Cluster II" %desc="[n:building10] are <b>twice</b> as efficient." %icon="[17,1]" %cost="3750000000000" %req="5"]
+[i:br2 %id="10" %idx="3" %name="Reinforced Miner Machine Cluster III" %desc="[n:building10] are <b>twice</b> as efficient." %icon="[17,2]" %cost="37500000000000" %req="25"]
+[i:br2 %id="10" %idx="4" %name="Reinforced Miner Machine Cluster IV" %desc="[n:building10] are <b>twice</b> as efficient." %icon="[17,13]" %cost="3750000000000000" %req="50"]
+[i:br2 %id="10" %idx="5" %name="Reinforced Miner Machine Cluster V" %desc="[n:building10] are <b>twice</b> as efficient." %icon="[17,14]" %cost="375000000000000000" %req="100"]
+[i:br2 %id="10" %idx="6" %name="Reinforced Miner Machine Cluster VI" %desc="[n:building10] are <b>twice</b> as efficient." %icon="[17,15]" %cost="37500000000000000000" %req="150"]
+[i:br2 %id="10" %idx="7" %name="Reinforced Miner Machine Cluster VII" %desc="[n:building10] are <b>twice</b> as efficient." %icon="[17,16]" %cost="37500000000000000000000" %req="200"]
+[i:br2 %id="10" %idx="8" %name="Reinforced Miner Machine Cluster VIII" %desc="[n:building10] are <b>twice</b> as efficient." %icon="[17,17]" %cost="37500000000000000000000000" %req="250"]
+[i:br2 %id="10" %idx="9" %name="Reinforced Miner Machine Cluster IX" %desc="[n:building10] are <b>twice</b> as efficient." %icon="[17,18]" %cost="37500000000000000000000000000" %req="300"]
+[i:br2 %id="10" %idx="10" %name="Reinforced Miner Machine Cluster X" %desc="[n:building10] are <b>twice</b> as efficient." %icon="[17,19]" %cost="37500000000000000000000000000000" %req="350"]
+[i:br2 %id="10" %idx="11" %name="Reinforced Miner Machine Cluster XI" %desc="[n:building10] are <b>twice</b> as efficient." %icon="[17,20]" %cost="375000000000000000000000000000000000" %req="400"]
+[i:br2 %id="10" %idx="12" %name="Reinforced Miner Machine Cluster XII" %desc="[n:building10] are <b>twice</b> as efficient." %icon="[17,21]" %cost="3750000000000000000000000000000000000000" %req="450"]
+[i:br2 %id="10" %idx="13" %name="Reinforced Miner Machine Cluster XIII" %desc="[n:building10] are <b>twice</b> as efficient." %icon="[17,22]" %cost="37500000000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="11" %idx="1" %name="Reinforced Supercomputer I" %desc="[n:building11] are <b>twice</b> as efficient." %icon="[9,0]" %cost="10000000000000" %req="1"]
+[i:br2 %id="11" %idx="2" %name="Reinforced Supercomputer II" %desc="[n:building11] are <b>twice</b> as efficient." %icon="[9,1]" %cost="50000000000000" %req="5"]
+[i:br2 %id="11" %idx="3" %name="Reinforced Supercomputer III" %desc="[n:building11] are <b>twice</b> as efficient." %icon="[9,2]" %cost="500000000000000" %req="25"]
+[i:br2 %id="11" %idx="4" %name="Reinforced Supercomputer IV" %desc="[n:building11] are <b>twice</b> as efficient." %icon="[9,13]" %cost="50000000000000000" %req="50"]
+[i:br2 %id="11" %idx="5" %name="Reinforced Supercomputer V" %desc="[n:building11] are <b>twice</b> as efficient." %icon="[9,14]" %cost="5000000000000000000" %req="100"]
+[i:br2 %id="11" %idx="6" %name="Reinforced Supercomputer VI" %desc="[n:building11] are <b>twice</b> as efficient." %icon="[9,15]" %cost="500000000000000000000" %req="150"]
+[i:br2 %id="11" %idx="7" %name="Reinforced Supercomputer VII" %desc="[n:building11] are <b>twice</b> as efficient." %icon="[9,16]" %cost="500000000000000000000000" %req="200"]
+[i:br2 %id="11" %idx="8" %name="Reinforced Supercomputer VIII" %desc="[n:building11] are <b>twice</b> as efficient." %icon="[9,17]" %cost="500000000000000000000000000" %req="250"]
+[i:br2 %id="11" %idx="9" %name="Reinforced Supercomputer IX" %desc="[n:building11] are <b>twice</b> as efficient." %icon="[9,18]" %cost="500000000000000000000000000000" %req="300"]
+[i:br2 %id="11" %idx="10" %name="Reinforced Supercomputer X" %desc="[n:building11] are <b>twice</b> as efficient." %icon="[9,19]" %cost="500000000000000000000000000000000" %req="350"]
+[i:br2 %id="11" %idx="11" %name="Reinforced Supercomputer XI" %desc="[n:building11] are <b>twice</b> as efficient." %icon="[9,20]" %cost="5000000000000000000000000000000000000" %req="400"]
+[i:br2 %id="11" %idx="12" %name="Reinforced Supercomputer XII" %desc="[n:building11] are <b>twice</b> as efficient." %icon="[9,21]" %cost="50000000000000000000000000000000000000000" %req="450"]
+[i:br2 %id="11" %idx="13" %name="Reinforced Supercomputer XIII" %desc="[n:building11] are <b>twice</b> as efficient." %icon="[9,22]" %cost="500000000000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="12" %idx="1" %name="Reinforced Quantum Computer I" %desc="[n:building12] are <b>twice</b> as efficient." %icon="[18,5]" %cost="140000000000000" %req="1"]
+[i:br2 %id="12" %idx="2" %name="Reinforced Quantum Computer II" %desc="[n:building12] are <b>twice</b> as efficient." %icon="[19,5]" %cost="700000000000000" %req="5"]
+[i:br2 %id="12" %idx="3" %name="Reinforced Quantum Computer III" %desc="[n:building12] are <b>twice</b> as efficient." %icon="[20,5]" %cost="7000000000000000" %req="25"]
+[i:br2 %id="12" %idx="4" %name="Reinforced Quantum Computer IV" %desc="[n:building12] are <b>twice</b> as efficient." %icon="[21,5]" %cost="700000000000000000" %req="50"]
+[i:br2 %id="12" %idx="5" %name="Reinforced Quantum Computer V" %desc="[n:building12] are <b>twice</b> as efficient." %icon="[22,5]" %cost="70000000000000000000" %req="100"]
+[i:br2 %id="12" %idx="6" %name="Reinforced Quantum Computer VI" %desc="[n:building12] are <b>twice</b> as efficient." %icon="[23,5]" %cost="7000000000000000000000" %req="150"]
+[i:br2 %id="12" %idx="7" %name="Reinforced Quantum Computer VII" %desc="[n:building12] are <b>twice</b> as efficient." %icon="[24,5]" %cost="7000000000000000000000000" %req="200"]
+[i:br2 %id="12" %idx="8" %name="Reinforced Quantum Computer VIII" %desc="[n:building12] are <b>twice</b> as efficient." %icon="[25,5]" %cost="7000000000000000000000000000" %req="250"]
+[i:br2 %id="12" %idx="9" %name="Reinforced Quantum Computer IX" %desc="[n:building12] are <b>twice</b> as efficient." %icon="[26,5]" %cost="7000000000000000000000000000000" %req="300"]
+[i:br2 %id="12" %idx="10" %name="Reinforced Quantum Computer X" %desc="[n:building12] are <b>twice</b> as efficient." %icon="[24,6]" %cost="7000000000000000000000000000000000" %req="350"]
+[i:br2 %id="12" %idx="11" %name="Reinforced Quantum Computer XI" %desc="[n:building12] are <b>twice</b> as efficient." %icon="[25,6]" %cost="70000000000000000000000000000000000000" %req="400"]
+[i:br2 %id="12" %idx="12" %name="Reinforced Quantum Computer XII" %desc="[n:building12] are <b>twice</b> as efficient." %icon="[26,6]" %cost="700000000000000000000000000000000000000000" %req="450"]
+[i:br2 %id="12" %idx="13" %name="Reinforced Quantum Computer XIII" %desc="[n:building12] are <b>twice</b> as efficient." %icon="[11,5]" %cost="7000000000000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="13" %idx="1" %name="Reinforced JARVIS I" %desc="[n:building13] are <b>twice</b> as efficient." %icon="[5,0]" %cost="1700000000000000" %req="1"]
+[i:br2 %id="13" %idx="2" %name="Reinforced JARVIS II" %desc="[n:building13] are <b>twice</b> as efficient." %icon="[5,1]" %cost="8500000000000000" %req="5"]
+[i:br2 %id="13" %idx="3" %name="Reinforced JARVIS III" %desc="[n:building13] are <b>twice</b> as efficient." %icon="[5,2]" %cost="85000000000000000" %req="25"]
+[i:br2 %id="13" %idx="4" %name="Reinforced JARVIS IV" %desc="[n:building13] are <b>twice</b> as efficient." %icon="[5,13]" %cost="8500000000000000000" %req="50"]
+[i:br2 %id="13" %idx="5" %name="Reinforced JARVIS V" %desc="[n:building13] are <b>twice</b> as efficient." %icon="[5,14]" %cost="850000000000000000000" %req="100"]
+[i:br2 %id="13" %idx="6" %name="Reinforced JARVIS VI" %desc="[n:building13] are <b>twice</b> as efficient." %icon="[5,15]" %cost="85000000000000000000000" %req="150"]
+[i:br2 %id="13" %idx="7" %name="Reinforced JARVIS VII" %desc="[n:building13] are <b>twice</b> as efficient." %icon="[5,16]" %cost="85000000000000000000000000" %req="200"]
+[i:br2 %id="13" %idx="8" %name="Reinforced JARVIS VIII" %desc="[n:building13] are <b>twice</b> as efficient." %icon="[5,17]" %cost="85000000000000000000000000000" %req="250"]
+[i:br2 %id="13" %idx="9" %name="Reinforced JARVIS IX" %desc="[n:building13] are <b>twice</b> as efficient." %icon="[5,18]" %cost="85000000000000000000000000000000" %req="300"]
+[i:br2 %id="13" %idx="10" %name="Reinforced JARVIS X" %desc="[n:building13] are <b>twice</b> as efficient." %icon="[5,19]" %cost="85000000000000000000000000000000000" %req="350"]
+[i:br2 %id="13" %idx="11" %name="Reinforced JARVIS XI" %desc="[n:building13] are <b>twice</b> as efficient." %icon="[5,20]" %cost="850000000000000000000000000000000000000" %req="400"]
+[i:br2 %id="13" %idx="12" %name="Reinforced JARVIS XII" %desc="[n:building13] are <b>twice</b> as efficient." %icon="[5,21]" %cost="8500000000000000000000000000000000000000000" %req="450"]
+[i:br2 %id="13" %idx="13" %name="Reinforced JARVIS XIII" %desc="[n:building13] are <b>twice</b> as efficient." %icon="[5,22]" %cost="85000000000000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="14" %idx="1" %name="Reinforced Time Machine I" %desc="[n:building14] are <b>twice</b> as efficient." %icon="[8,0]" %cost="21000000000000000" %req="1"]
+[i:br2 %id="14" %idx="2" %name="Reinforced Time Machine II" %desc="[n:building14] are <b>twice</b> as efficient." %icon="[8,1]" %cost="105000000000000000" %req="5"]
+[i:br2 %id="14" %idx="3" %name="Reinforced Time Machine III" %desc="[n:building14] are <b>twice</b> as efficient." %icon="[8,2]" %cost="1050000000000000000" %req="25"]
+[i:br2 %id="14" %idx="4" %name="Reinforced Time Machine IV" %desc="[n:building14] are <b>twice</b> as efficient." %icon="[8,13]" %cost="105000000000000000000" %req="50"]
+[i:br2 %id="14" %idx="5" %name="Reinforced Time Machine V" %desc="[n:building14] are <b>twice</b> as efficient." %icon="[8,14]" %cost="10500000000000000000000" %req="100"]
+[i:br2 %id="14" %idx="6" %name="Reinforced Time Machine VI" %desc="[n:building14] are <b>twice</b> as efficient." %icon="[8,15]" %cost="1050000000000000000000000" %req="150"]
+[i:br2 %id="14" %idx="7" %name="Reinforced Time Machine VII" %desc="[n:building14] are <b>twice</b> as efficient." %icon="[8,16]" %cost="1050000000000000000000000000" %req="200"]
+[i:br2 %id="14" %idx="8" %name="Reinforced Time Machine VIII" %desc="[n:building14] are <b>twice</b> as efficient." %icon="[8,17]" %cost="1050000000000000000000000000000" %req="250"]
+[i:br2 %id="14" %idx="9" %name="Reinforced Time Machine IX" %desc="[n:building14] are <b>twice</b> as efficient." %icon="[8,18]" %cost="1050000000000000000000000000000000" %req="300"]
+[i:br2 %id="14" %idx="10" %name="Reinforced Time Machine X" %desc="[n:building14] are <b>twice</b> as efficient." %icon="[8,19]" %cost="1050000000000000000000000000000000000" %req="350"]
+[i:br2 %id="14" %idx="11" %name="Reinforced Time Machine XI" %desc="[n:building14] are <b>twice</b> as efficient." %icon="[8,20]" %cost="10500000000000000000000000000000000000000" %req="400"]
+[i:br2 %id="14" %idx="12" %name="Reinforced Time Machine XII" %desc="[n:building14] are <b>twice</b> as efficient." %icon="[8,21]" %cost="105000000000000000000000000000000000000000000" %req="450"]
+[i:br2 %id="14" %idx="13" %name="Reinforced Time Machine XIII" %desc="[n:building14] are <b>twice</b> as efficient." %icon="[8,22]" %cost="1050000000000000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="15" %idx="1" %name="Reinforced Sophon I" %desc="[n:building15] are <b>twice</b> as efficient." %icon="[14,0]" %cost="260000000000000000" %req="1"]
+[i:br2 %id="15" %idx="2" %name="Reinforced Sophon II" %desc="[n:building15] are <b>twice</b> as efficient." %icon="[14,1]" %cost="1300000000000000000" %req="5"]
+[i:br2 %id="15" %idx="3" %name="Reinforced Sophon III" %desc="[n:building15] are <b>twice</b> as efficient." %icon="[14,2]" %cost="13000000000000000000" %req="25"]
+[i:br2 %id="15" %idx="4" %name="Reinforced Sophon IV" %desc="[n:building15] are <b>twice</b> as efficient." %icon="[14,13]" %cost="1300000000000000000000" %req="50"]
+[i:br2 %id="15" %idx="5" %name="Reinforced Sophon V" %desc="[n:building15] are <b>twice</b> as efficient." %icon="[14,14]" %cost="130000000000000000000000" %req="100"]
+[i:br2 %id="15" %idx="6" %name="Reinforced Sophon VI" %desc="[n:building15] are <b>twice</b> as efficient." %icon="[14,15]" %cost="13000000000000000000000000" %req="150"]
+[i:br2 %id="15" %idx="7" %name="Reinforced Sophon VII" %desc="[n:building15] are <b>twice</b> as efficient." %icon="[14,16]" %cost="13000000000000000000000000000" %req="200"]
+[i:br2 %id="15" %idx="8" %name="Reinforced Sophon VIII" %desc="[n:building15] are <b>twice</b> as efficient." %icon="[14,17]" %cost="13000000000000000000000000000000" %req="250"]
+[i:br2 %id="15" %idx="9" %name="Reinforced Sophon IX" %desc="[n:building15] are <b>twice</b> as efficient." %icon="[14,18]" %cost="13000000000000000000000000000000000" %req="300"]
+[i:br2 %id="15" %idx="10" %name="Reinforced Sophon X" %desc="[n:building15] are <b>twice</b> as efficient." %icon="[14,19]" %cost="13000000000000000000000000000000000000" %req="350"]
+[i:br2 %id="15" %idx="11" %name="Reinforced Sophon XI" %desc="[n:building15] are <b>twice</b> as efficient." %icon="[14,20]" %cost="130000000000000000000000000000000000000000" %req="400"]
+[i:br2 %id="15" %idx="12" %name="Reinforced Sophon XII" %desc="[n:building15] are <b>twice</b> as efficient." %icon="[14,21]" %cost="1300000000000000000000000000000000000000000000" %req="450"]
+[i:br2 %id="15" %idx="13" %name="Reinforced Sophon XIII" %desc="[n:building15] are <b>twice</b> as efficient." %icon="[14,22]" %cost="13000000000000000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="16" %idx="1" %name="Reinforced Fractal Engine I" %desc="[n:building16] are <b>twice</b> as efficient." %icon="[6,0]" %cost="3100000000000000000" %req="1"]
+[i:br2 %id="16" %idx="2" %name="Reinforced Fractal Engine II" %desc="[n:building16] are <b>twice</b> as efficient." %icon="[6,1]" %cost="15500000000000000000" %req="5"]
+[i:br2 %id="16" %idx="3" %name="Reinforced Fractal Engine III" %desc="[n:building16] are <b>twice</b> as efficient." %icon="[6,2]" %cost="155000000000000000000" %req="25"]
+[i:br2 %id="16" %idx="4" %name="Reinforced Fractal Engine IV" %desc="[n:building16] are <b>twice</b> as efficient." %icon="[6,13]" %cost="15500000000000000000000" %req="50"]
+[i:br2 %id="16" %idx="5" %name="Reinforced Fractal Engine V" %desc="[n:building16] are <b>twice</b> as efficient." %icon="[6,14]" %cost="1550000000000000000000000" %req="100"]
+[i:br2 %id="16" %idx="6" %name="Reinforced Fractal Engine VI" %desc="[n:building16] are <b>twice</b> as efficient." %icon="[6,15]" %cost="155000000000000000000000000" %req="150"]
+[i:br2 %id="16" %idx="7" %name="Reinforced Fractal Engine VII" %desc="[n:building16] are <b>twice</b> as efficient." %icon="[6,16]" %cost="155000000000000000000000000000" %req="200"]
+[i:br2 %id="16" %idx="8" %name="Reinforced Fractal Engine VIII" %desc="[n:building16] are <b>twice</b> as efficient." %icon="[6,17]" %cost="155000000000000000000000000000000" %req="250"]
+[i:br2 %id="16" %idx="9" %name="Reinforced Fractal Engine IX" %desc="[n:building16] are <b>twice</b> as efficient." %icon="[6,18]" %cost="155000000000000000000000000000000000" %req="300"]
+[i:br2 %id="16" %idx="10" %name="Reinforced Fractal Engine X" %desc="[n:building16] are <b>twice</b> as efficient." %icon="[6,19]" %cost="155000000000000000000000000000000000000" %req="350"]
+[i:br2 %id="16" %idx="11" %name="Reinforced Fractal Engine XI" %desc="[n:building16] are <b>twice</b> as efficient." %icon="[6,20]" %cost="1550000000000000000000000000000000000000000" %req="400"]
+[i:br2 %id="16" %idx="12" %name="Reinforced Fractal Engine XII" %desc="[n:building16] are <b>twice</b> as efficient." %icon="[6,21]" %cost="15000000000000000000000000000000000000000000000" %req="450"]
+[i:br2 %id="16" %idx="13" %name="Reinforced Fractal Engine XIII" %desc="[n:building16] are <b>twice</b> as efficient." %icon="[6,22]" %cost="155000000000000000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="17" %idx="1" %name="Reinforced Croto System I" %desc="[n:building17] are <b>twice</b> as efficient." %icon="[13,0]" %cost="710000000000000000000" %req="1"]
+[i:br2 %id="17" %idx="2" %name="Reinforced Croto System II" %desc="[n:building17] are <b>twice</b> as efficient." %icon="[13,1]" %cost="3550000000000000000000" %req="5"]
+[i:br2 %id="17" %idx="3" %name="Reinforced Croto System III" %desc="[n:building17] are <b>twice</b> as efficient." %icon="[13,2]" %cost="35500000000000000000000" %req="25"]
+[i:br2 %id="17" %idx="4" %name="Reinforced Croto System IV" %desc="[n:building17] are <b>twice</b> as efficient." %icon="[13,13]" %cost="3550000000000000000000000" %req="50"]
+[i:br2 %id="17" %idx="5" %name="Reinforced Croto System V" %desc="[n:building17] are <b>twice</b> as efficient." %icon="[13,14]" %cost="355000000000000000000000000" %req="100"]
+[i:br2 %id="17" %idx="6" %name="Reinforced Croto System VI" %desc="[n:building17] are <b>twice</b> as efficient." %icon="[13,15]" %cost="35500000000000000000000000000" %req="150"]
+[i:br2 %id="17" %idx="7" %name="Reinforced Croto System VII" %desc="[n:building17] are <b>twice</b> as efficient." %icon="[13,16]" %cost="35500000000000000000000000000000" %req="200"]
+[i:br2 %id="17" %idx="8" %name="Reinforced Croto System VIII" %desc="[n:building17] are <b>twice</b> as efficient." %icon="[13,17]" %cost="35500000000000000000000000000000000" %req="250"]
+[i:br2 %id="17" %idx="9" %name="Reinforced Croto System IX" %desc="[n:building17] are <b>twice</b> as efficient." %icon="[13,18]" %cost="35500000000000000000000000000000000000" %req="300"]
+[i:br2 %id="17" %idx="10" %name="Reinforced Croto System X" %desc="[n:building17] are <b>twice</b> as efficient." %icon="[13,19]" %cost="35500000000000000000000000000000000000000" %req="350"]
+[i:br2 %id="17" %idx="11" %name="Reinforced Croto System XI" %desc="[n:building17] are <b>twice</b> as efficient." %icon="[13,20]" %cost="355000000000000000000000000000000000000000000" %req="400"]
+[i:br2 %id="17" %idx="12" %name="Reinforced Croto System XII" %desc="[n:building17] are <b>twice</b> as efficient." %icon="[13,21]" %cost="3550000000000000000000000000000000000000000000000" %req="450"]
+[i:br2 %id="17" %idx="13" %name="Reinforced Croto System XIII" %desc="[n:building17] are <b>twice</b> as efficient." %icon="[13,22]" %cost="35500000000000000000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="18" %idx="1" %name="Reinforced Idleverse I" %desc="[n:building18] are <b>twice</b> as efficient." %icon="[7,0]" %cost="120000000000000000000000" %req="1"]
+[i:br2 %id="18" %idx="2" %name="Reinforced Idleverse II" %desc="[n:building18] are <b>twice</b> as efficient." %icon="[7,1]" %cost="600000000000000000000000" %req="5"]
+[i:br2 %id="18" %idx="3" %name="Reinforced Idleverse III" %desc="[n:building18] are <b>twice</b> as efficient." %icon="[7,2]" %cost="6000000000000000000000000" %req="25"]
+[i:br2 %id="18" %idx="4" %name="Reinforced Idleverse IV" %desc="[n:building18] are <b>twice</b> as efficient." %icon="[7,13]" %cost="600000000000000000000000000" %req="50"]
+[i:br2 %id="18" %idx="5" %name="Reinforced Idleverse V" %desc="[n:building18] are <b>twice</b> as efficient." %icon="[7,14]" %cost="60000000000000000000000000000" %req="100"]
+[i:br2 %id="18" %idx="6" %name="Reinforced Idleverse VI" %desc="[n:building18] are <b>twice</b> as efficient." %icon="[7,15]" %cost="6000000000000000000000000000000" %req="150"]
+[i:br2 %id="18" %idx="7" %name="Reinforced Idleverse VII" %desc="[n:building18] are <b>twice</b> as efficient." %icon="[7,16]" %cost="6000000000000000000000000000000000" %req="200"]
+[i:br2 %id="18" %idx="8" %name="Reinforced Idleverse VIII" %desc="[n:building18] are <b>twice</b> as efficient." %icon="[7,17]" %cost="6000000000000000000000000000000000000" %req="250"]
+[i:br2 %id="18" %idx="9" %name="Reinforced Idleverse IX" %desc="[n:building18] are <b>twice</b> as efficient." %icon="[7,18]" %cost="6000000000000000000000000000000000000000" %req="300"]
+[i:br2 %id="18" %idx="10" %name="Reinforced Idleverse X" %desc="[n:building18] are <b>twice</b> as efficient." %icon="[7,19]" %cost="6000000000000000000000000000000000000000000" %req="350"]
+[i:br2 %id="18" %idx="11" %name="Reinforced Idleverse XI" %desc="[n:building18] are <b>twice</b> as efficient." %icon="[7,20]" %cost="60000000000000000000000000000000000000000000000" %req="400"]
+[i:br2 %id="18" %idx="12" %name="Reinforced Idleverse XII" %desc="[n:building18] are <b>twice</b> as efficient." %icon="[7,21]" %cost="600000000000000000000000000000000000000000000000000" %req="450"]
+[i:br2 %id="18" %idx="13" %name="Reinforced Idleverse XIII" %desc="[n:building18] are <b>twice</b> as efficient." %icon="[7,22]" %cost="6000000000000000000000000000000000000000000000000000000" %req="500"]
+
+	*clover
+		name:Clover
+		desc:A delicious herb that tastes lucky.<//><b>效果：</b><.>lucky bitcoin effects are 4 times more powerful
+		icon:icons[2,8]
+		cost:1000000000 bitcoins
+		req:500000000 bitcoins:earned
+
+Achievements
+[i:ac1 %name="Mined 1 bitcoin" %desc="First entry into mining" %icon="ccIcons[3,0]" %req="1" %i="1"]
+[i:ac1 %name="Mined 1000 bitcoins" %desc="Manual mining" %icon="ccIcons[3,1]" %req="1000" %i="2"]
+[i:ac1 %name="Mined 100000 bitcoins" %desc="Automatic mining" %icon="ccIcons[3,2]" %req="100000" %i="3"]
+[i:ac1 %name="Mined 1 million bitcoins" %desc="New Miners" %icon="ccIcons[3,3]" %req="1000000" %i="4"]
+[i:ac1 %name="Mined 100 million bitcoins" %desc="Mining Pioneer" %icon="ccIcons[3,4]" %req="100000000" %i="5"]
+[i:ac1 %name="Mined 1 billion bitcoins" %desc="Mining expert" %icon="ccIcons[3,5]" %req="1000000000" %i="6"]
+[i:ac1 %name="Mined 100 billion bitcoins" %desc="Mine boss" %icon="ccIcons[6,5]" %req="100000000000" %i="7"]
+[i:ac1 %name="Mined 1 trillion bitcoins" %desc="Asian mine owner" %icon="ccIcons[7,5]" %req="1000000000000" %i="8"]
+[i:ac1 %name="Mined 100 trillion bitcoins" %desc="European mine owner" %icon="ccIcons[8,5]" %req="100000000000000" %i="9"]
+[i:ac1 %name="Mined 1 quadrillion bitcoins" %desc="American Miner" %icon="ccIcons[9,5]" %req="1000000000000000" %i="10"]
+[i:ac1 %name="Mined 100 quadrillion bitcoins" %desc="African mine owner" %icon="ccIcons[10,5]" %req="100000000000000000" %i="11"]
+[i:ac1 %name="Mined 1 quintillion bitcoins" %desc="Arctic mine owner" %icon="ccIcons[11,5]" %req="1000000000000000000" %i="12"]
+[i:ac1 %name="Mined 100 quintillion bitcoins" %desc="Antarctic mine owner" %icon="ccIcons[18,5]" %req="100000000000000000000" %i="13"]
+[i:ac1 %name="Mined 1 sextillion bitcoins" %desc="Earth mine owner" %icon="ccIcons[19,5]" %req="1000000000000000000000" %i="14"]
+[i:ac1 %name="Mined 100 sextillion bitcoins" %desc="Venus Mine Owner" %icon="ccIcons[20,5]" %req="100000000000000000000000" %i="15"]
+[i:ac1 %name="Mined 1 septillion bitcoins" %desc="Jupiter Mine Owner" %icon="ccIcons[21,5]" %req="1000000000000000000000000" %i="16"]
+[i:ac1 %name="Mined 100 septillion bitcoins" %desc="Mercury Mine Owner" %icon="ccIcons[22,5]" %req="100000000000000000000000000" %i="17"]
+[i:ac1 %name="Mined 1 octillion bitcoins" %desc="Martian Mine Owner" %icon="ccIcons[23,5]" %req="1000000000000000000000000000" %i="18"]
+[i:ac1 %name="Mined 100 octillion bitcoins" %desc="Saturn Mine Owner" %icon="ccIcons[24,5]" %req="100000000000000000000000000000" %i="19"]
+[i:ac1 %name="Mined 1 nonillion bitcoins" %desc="Uranus Mine Owner" %icon="ccIcons[25,5]" %req="1000000000000000000000000000000" %i="20"]
+[i:ac1 %name="Mined 100 nonillion bitcoins" %desc="Neptune Mine Owner" %icon="ccIcons[26,5]" %req="100000000000000000000000000000000" %i="21"]
+[i:ac1 %name="Mined 1 decillion bitcoins" %desc="Solar System Mine Owner" %icon="ccIcons[27,5]" %req="1000000000000000000000000000000000" %i="22"]
+[i:ac1 %name="Mined 100 decillion bitcoins" %desc="Galactic Mine Owner" %icon="ccIcons[28,5]" %req="100000000000000000000000000000000000" %i="23"]
+[i:ac1 %name="Mined 1 undecillion bitcoins" %desc="Miner of the Andromeda Galaxy" %icon="ccIcons[29,5]" %req="1000000000000000000000000000000000000" %i="24"]
+[i:ac1 %name="Mined 100 undecillion bitcoins" %desc="Centaur Mine Owner" %icon="ccIcons[21,2]" %req="100000000000000000000000000000000000000" %i="25"]
+[i:ac1 %name="Mined 1 duodecillion bitcoins" %desc="Owner of the Pod Galaxy" %icon="ccIcons[22,2]" %req="1000000000000000000000000000000000000000" %i="26"]
+[i:ac1 %name="Mined 100 duodecillion bitcoins" %desc="Black Eye Galaxy Miner" %icon="ccIcons[23,2]" %req="100000000000000000000000000000000000000000" %i="27"]
+[i:ac1 %name="Mined 1 tredecillion bitcoins" %desc="Cosmic Mine Owner" %icon="ccIcons[24,2]" %req="1000000000000000000000000000000000000000000" %i="28"]
+[i:ac1 %name="Mined 100 tredecillion bitcoins" %desc="Parallel universe mine owner" %icon="ccIcons[25,2]" %req="100000000000000000000000000000000000000000000" %i="29"]
+[i:ac1 %name="Mined 1 quattuordecillion bitcoins" %desc="Super-Space Miner" %icon="ccIcons[26,2]" %req="1000000000000000000000000000000000000000000000" %i="30"]
+[i:ac1 %name="Mined 100 quattuordecillion bitcoins" %desc="Four-dimensional space mine owner" %icon="ccIcons[27,2]" %req="100000000000000000000000000000000000000000000000" %i="31"]
+[i:ac1 %name="Mined 1 quindecillion bitcoins" %desc="Five-dimensional space mine owner" %icon="ccIcons[28,2]" %req="1000000000000000000000000000000000000000000000000" %i="32"]
+[i:ac1 %name="Mined 100 quindecillion bitcoins" %desc="Six-dimensional space mine owner" %icon="ccIcons[29,2]" %req="100000000000000000000000000000000000000000000000000" %i="33"]
+[i:ac1 %name="Mined 1 sexdecillion bitcoins" %desc="Seven-dimensional space mine owner" %icon="ccIcons[21,1]" %req="1000000000000000000000000000000000000000000000000000" %i="34"]
+[i:ac1 %name="Mined 100 sexdecillion bitcoins" %desc="Eight-dimensional space mine owner" %icon="ccIcons[22,1]" %req="100000000000000000000000000000000000000000000000000000" %i="35"]
+[i:ac1 %name="Mined 1 septendecillion bitcoins" %desc="Nine-dimensional space mine owner" %icon="ccIcons[23,1]" %req="1000000000000000000000000000000000000000000000000000000" %i="36"]
+[i:ac1 %name="Mined 100 septendecillion bitcoins" %desc="Ten-dimensional space mine owner" %icon="ccIcons[24,1]" %req="100000000000000000000000000000000000000000000000000000000" %i="37"]
+[i:ac1 %name="Mined 1 octodecillion bitcoins" %desc="Eleven-dimensional space mine owner" %icon="ccIcons[25,1]" %req="1000000000000000000000000000000000000000000000000000000000" %i="38"]
+[i:ac1 %name="Mined 100 octodecillion bitcoins" %desc="Twelve-dimensional space mine owner" %icon="ccIcons[26,1]" %req="100000000000000000000000000000000000000000000000000000000000" %i="39"]
+[i:ac1 %name="Mined 1 novemdecillion bitcoins" %desc="Void Mine Owner" %icon="ccIcons[27,1]" %req="1000000000000000000000000000000000000000000000000000000000000" %i="40"]
+[i:ac1 %name="Mined 100 novemdecillion bitcoins" %desc="Eternal Mine Owner" %icon="ccIcons[28,1]" %req="100000000000000000000000000000000000000000000000000000000000000" %i="41"]
+[i:ac1 %name="Mined 1 vigintillion bitcoins" %desc="Immortal Miner" %icon="ccIcons[29,1]" %req="1000000000000000000000000000000000000000000000000000000000000000" %i="42"]
+[i:ac2 %name="Mine 1 bitcoins per second" %desc="Temporary mining" %icon="ccIcons[3,0]" %req="1" %i="1"]
+[i:ac2 %name="Mine 10 bitcoins per second" %desc="Hardcore mining" %icon="ccIcons[3,1]" %req="10" %i="2"]
+[i:ac2 %name="Mine 100 bitcoins per second" %desc="Crazy mining" %icon="ccIcons[3,2]" %req="100" %i="3"]
+[i:ac2 %name="Mine 1000 bitcoins per second" %desc="Mining overnight" %icon="ccIcons[3,3]" %req="1000" %i="4"]
+[i:ac2 %name="Mine 10000 bitcoins per second" %desc="Mining in a dream" %icon="ccIcons[3,4]" %req="10000" %i="5"]
+[i:ac2 %name="Mine 1 million bitcoins per second" %desc="Mining workshop" %icon="ccIcons[3,5]" %req="1000000" %i="6"]
+[i:ac2 %name="Mine 10 million bitcoins per second" %desc="996 mining" %icon="ccIcons[6,5]" %req="10000000" %i="7"]
+[i:ac2 %name="Mine 100 million bitcoins per second" %desc="007 mining" %icon="ccIcons[7,5]" %req="100000000" %i="8"]
+[i:ac2 %name="Mine 1 billion bitcoins per second" %desc="Fubao Mining" %icon="ccIcons[8,5]" %req="1000000000" %i="9"]
+[i:ac2 %name="Mine 10 billion bitcoins per second" %desc="Mining expert" %icon="ccIcons[9,5]" %req="10000000000" %i="10"]
+[i:ac2 %name="Mine 1 trillion bitcoins per second" %desc="Mining elite" %icon="ccIcons[10,5]" %req="1000000000000" %i="11"]
+[i:ac2 %name="Mine 10 trillion bitcoins per second" %desc="Mining monster" %icon="ccIcons[11,5]" %req="10000000000000" %i="12"]
+[i:ac2 %name="Mine 100 trillion bitcoins per second" %desc="Master mining" %icon="ccIcons[18,5]" %req="100000000000000" %i="13"]
+[i:ac2 %name="Mine 1 quadrillion bitcoins per second" %desc="Mining laboratory" %icon="ccIcons[19,5]" %req="1000000000000000" %i="14"]
+[i:ac2 %name="Mine 10 quadrillion bitcoins per second" %desc="ASIC mining" %icon="ccIcons[20,5]" %req="10000000000000000" %i="15"]
+[i:ac2 %name="Mine 1 quintillion bitcoins per second" %desc="Server mining" %icon="ccIcons[21,5]" %req="1000000000000000000" %i="16"]
+[i:ac2 %name="Mine 10 quintillion bitcoins per second" %desc="Array mining" %icon="ccIcons[22,5]" %req="10000000000000000000" %i="17"]
+[i:ac2 %name="Mine 100 quintillion bitcoins per second" %desc="Cluster mining" %icon="ccIcons[23,5]" %req="100000000000000000000" %i="18"]
+[i:ac2 %name="Mine 1 sextillion bitcoins per second" %desc="Mining pipeline" %icon="ccIcons[24,5]" %req="1000000000000000000000" %i="19"]
+[i:ac2 %name="Mine 10 sextillion bitcoins per second" %desc="Mining factory" %icon="ccIcons[25,5]" %req="10000000000000000000000" %i="20"]
+[i:ac2 %name="Mine 1 septillion bitcoins per second" %desc="Large-scale mining" %icon="ccIcons[26,5]" %req="1000000000000000000000000" %i="21"]
+[i:ac2 %name="Mine 10 septillion bitcoins per second" %desc="Industrial grade mining" %icon="ccIcons[27,5]" %req="10000000000000000000000000" %i="22"]
+[i:ac2 %name="Mine 100 septillion bitcoins per second" %desc="World-class mining" %icon="ccIcons[28,5]" %req="100000000000000000000000000" %i="23"]
+[i:ac2 %name="Mine 1 octillion bitcoins per second" %desc="Supercomputer mining" %icon="ccIcons[29,5]" %req="1000000000000000000000000000" %i="24"]
+[i:ac2 %name="Mine 10 octillion bitcoins per second" %desc="Micro mining" %icon="ccIcons[21,2]" %req="10000000000000000000000000000" %i="25"]
+[i:ac2 %name="Mine 1 nonillion bitcoins per second" %desc="Quantum mining" %icon="ccIcons[22,2]" %req="1000000000000000000000000000000" %i="26"]
+[i:ac2 %name="Mine 10 nonillion bitcoins per second" %desc="Jarvis mining" %icon="ccIcons[23,2]" %req="10000000000000000000000000000000" %i="27"]
+[i:ac2 %name="Mine 100 nonillion bitcoins per second" %desc="4D mining" %icon="ccIcons[24,2]" %req="100000000000000000000000000000000" %i="28"]
+[i:ac2 %name="Mine 1 decillion bitcoins per second" %desc="Five-dimensional mining" %icon="ccIcons[25,2]" %req="1000000000000000000000000000000000" %i="29"]
+[i:ac2 %name="Mine 10 decillion bitcoins per second" %desc="Ten-dimensional mining" %icon="ccIcons[26,2]" %req="10000000000000000000000000000000000" %i="30"]
+[i:ac2 %name="Mine 1 undecillion bitcoins per second" %desc="Sophon Mining" %icon="ccIcons[27,2]" %req="1000000000000000000000000000000000000" %i="31"]
+[i:ac2 %name="Mine 10 undecillion bitcoins per second" %desc="Time machine mining" %icon="ccIcons[28,2]" %req="10000000000000000000000000000000000000" %i="32"]
+[i:ac2 %name="Mine 100 undecillion bitcoins per second" %desc="Fractal engine mining" %icon="ccIcons[29,2]" %req="100000000000000000000000000000000000000" %i="33"]
+[i:ac2 %name="Mine 1 duodecillion bitcoins per second" %desc="Croto system mining" %icon="ccIcons[21,1]" %req="1000000000000000000000000000000000000000" %i="34"]
+[i:ac2 %name="Mine 10 duodecillion bitcoins per second" %desc="Time and space mining" %icon="ccIcons[22,1]" %req="10000000000000000000000000000000000000000" %i="35"]
+[i:ac2 %name="Mine 1 tredecillion bitcoins per second" %desc="Void mining" %icon="ccIcons[23,1]" %req="1000000000000000000000000000000000000000000" %i="36"]
+[i:ac2 %name="Mine 10 tredecillion bitcoins per second" %desc="Eternal mining" %icon="ccIcons[24,1]" %req="10000000000000000000000000000000000000000000" %i="37"]
+[i:ac2 %name="Mine 100 tredecillion bitcoins per second" %desc="Immortal mining" %icon="ccIcons[25,1]" %req="100000000000000000000000000000000000000000000" %i="38"]
+[i:ac2 %name="Mine 1 quattuordecillion bitcoins per second" %desc="Bitcoin whirlpool" %icon="ccIcons[26,1]" %req="1000000000000000000000000000000000000000000000" %i="39"]
+[i:ac2 %name="Mine 10 quattuordecillion bitcoins per second" %desc="Bitcoin pulse" %icon="ccIcons[27,1]" %req="10000000000000000000000000000000000000000000000" %i="40"]
+[i:ac2 %name="Mine 1 quindecillion bitcoins per second" %desc="Bitcoin conqueror" %icon="ccIcons[28,1]" %req="1000000000000000000000000000000000000000000000000" %i="41"]
+[i:ac2 %name="Mine 10 quindecillion bitcoins per second" %desc="Free universe mining" %icon="ccIcons[29,1]" %req="10000000000000000000000000000000000000000000000000" %i="42"]
+[i:ac3 %name="Click Bitcoin button 100 times" %desc="One-handed click" %icon="ccIcons[11,0]" %req="100" %i="1"]
+[i:ac3 %name="Click Bitcoin button 1000 times" %desc="Click" %icon="ccIcons[11,1]" %req="1000" %i="2"]
+[i:ac3 %name="Click Bitcoin button 2000 times" %desc="Click with both hands" %icon="ccIcons[11,2]" %req="2000" %i="3"]
+[i:ac3 %name="Click Bitcoin button 3000 times" %desc="Click click" %icon="ccIcons[11,13]" %req="3000" %i="4"]
+[i:ac3 %name="Click Bitcoin button 4000 times" %desc="Mouse hand" %icon="ccIcons[11,14]" %req="4000" %i="5"]
+[i:ac3 %name="Click Bitcoin button 5000 times" %desc="Click, click, click" %icon="ccIcons[11,15]" %req="5000" %i="6"]
+[i:ac3 %name="Click Bitcoin button 6000 times" %desc="Click Elite" %icon="ccIcons[11,16]" %req="6000" %i="7"]
+[i:ac3 %name="Click Bitcoin button 8000 times" %desc="Click master" %icon="ccIcons[11,17]" %req="8000" %i="8"]
+[i:ac3 %name="Click Bitcoin button 9000 times" %desc="Crazy click" %icon="ccIcons[11,18]" %req="9000" %i="9"]
+[i:ac3 %name="Click Bitcoin button 10000 times" %desc="Click master" %icon="ccIcons[11,19]" %req="10000" %i="10"]
+[i:ac3 %name="Click Bitcoin button 15000 times" %desc="Click athlete" %icon="ccIcons[11,20]" %req="15000" %i="11"]
+[i:ac3 %name="Click Bitcoin button 20000 times" %desc="Click monster" %icon="ccIcons[11,21]" %req="20000" %i="12"]
+[i:ac3 %name="Click Bitcoin button 30000 times" %desc="Mouse destroyer" %icon="ccIcons[11,22]" %req="30000" %i="13"]
+[i:ac4 %name="Mine 1000 bitcoins from clicking" %desc="Happy click" %icon="ccIcons[0,0]" %req="1000" %i="1"]
+[i:ac4 %name="Mine 100000 bitcoins from clicking" %desc="Happy click" %icon="ccIcons[0,1]" %req="100000" %i="2"]
+[i:ac4 %name="Mine 10 million bitcoins from clicking" %desc="Click without emotion" %icon="ccIcons[0,2]" %req="10000000" %i="3"]
+[i:ac4 %name="Mine 1 billion bitcoins from clicking" %desc="Click on the machine" %icon="ccIcons[0,13]" %req="1000000000" %i="4"]
+[i:ac4 %name="Mine 100 billion bitcoins from clicking" %desc="Click in dream" %icon="ccIcons[0,14]" %req="100000000000" %i="5"]
+[i:ac4 %name="Mine 10 trillion bitcoins from clicking" %desc="Automatic click" %icon="ccIcons[0,15]" %req="10000000000000" %i="6"]
+[i:ac4 %name="Mine 1 quadrillion bitcoins from clicking" %desc="On-hook click" %icon="ccIcons[0,16]" %req="1000000000000000" %i="7"]
+[i:ac4 %name="Mine 100 quadrillion bitcoins from clicking" %desc="Click overnight" %icon="ccIcons[0,17]" %req="100000000000000000" %i="8"]
+[i:ac4 %name="Mine 10 quintillion bitcoins from clicking" %desc="Billions of hits" %icon="ccIcons[0,18]" %req="10000000000000000000" %i="9"]
+[i:ac4 %name="Mine 1 sextillion bitcoins from clicking" %desc="Silver finger" %icon="ccIcons[0,19]" %req="1000000000000000000000" %i="10"]
+[i:ac4 %name="Mine 100 sextillion bitcoins from clicking" %desc="Golden finger" %icon="ccIcons[0,20]" %req="100000000000000000000000" %i="11"]
+[i:ac4 %name="Mine 10 septillion bitcoins from clicking" %desc="One positive finger" %icon="ccIcons[0,21]" %req="10000000000000000000000000" %i="12"]
+[i:ac4 %name="Mine 1 octillion bitcoins from clicking" %desc="hand of God" %icon="ccIcons[0,22]" %req="1000000000000000000000000000" %i="13"]
+[i:ac5 %name="Have 1 Manual Calculation" %desc="Manual Calculation I" %icon="ccIcons[0,0]" %id="1" %req="1" %i="1"]
+[i:ac5 %name="Have 10 Manual Calculations" %desc="Manual Calculation II" %icon="ccIcons[0,1]" %id="1" %req="10" %i="2"]
+[i:ac5 %name="Have 50 Manual Calculations" %desc="Manual Calculation III" %icon="ccIcons[0,2]" %id="1" %req="50" %i="3"]
+[i:ac5 %name="Have 100 Manual Calculations" %desc="Manual Calculation IV" %icon="ccIcons[0,13]" %id="1" %req="100" %i="4"]
+[i:ac5 %name="Have 200 Manual Calculations" %desc="Manual Calculation V" %icon="ccIcons[0,14]" %id="1" %req="200" %i="5"]
+[i:ac5 %name="Have 300 Manual Calculations" %desc="Manual Calculation VI" %icon="ccIcons[0,15]" %id="1" %req="300" %i="6"]
+[i:ac5 %name="Have 400 Manual Calculations" %desc="Manual Calculation VII" %icon="ccIcons[0,16]" %id="1" %req="400" %i="7"]
+[i:ac5 %name="Have 500 Manual Calculations" %desc="Manual Calculation VIII" %icon="ccIcons[0,17]" %id="1" %req="500" %i="8"]
+[i:ac5 %name="Have 600 Manual Calculations" %desc="Manual Calculation IX" %icon="ccIcons[0,18]" %id="1" %req="600" %i="9"]
+[i:ac5 %name="Have 700 Manual Calculations" %desc="Manual Calculation X" %icon="ccIcons[0,19]" %id="1" %req="700" %i="10"]
+[i:ac5 %name="Have 800 Manual Calculations" %desc="Manual Calculation XI" %icon="ccIcons[0,20]" %id="1" %req="800" %i="11"]
+[i:ac5 %name="Have 1 Human Column Computer" %desc="Human Column Computer I" %icon="ccIcons[1,0]" %id="2" %req="1" %i="1"]
+[i:ac5 %name="Have 50 Human Column Computers" %desc="Human Column Computer II" %icon="ccIcons[1,1]" %id="2" %req="50" %i="2"]
+[i:ac5 %name="Have 100 Human Column Computers" %desc="Human Column Computer III" %icon="ccIcons[1,2]" %id="2" %req="100" %i="3"]
+[i:ac5 %name="Have 150 Human Column Computers" %desc="Human Column Computer IV" %icon="ccIcons[1,13]" %id="2" %req="150" %i="4"]
+[i:ac5 %name="Have 200 Human Column Computers" %desc="Human Column Computer V" %icon="ccIcons[1,14]" %id="2" %req="200" %i="5"]
+[i:ac5 %name="Have 250 Human Column Computers" %desc="Human Column Computer VI" %icon="ccIcons[1,15]" %id="2" %req="250" %i="6"]
+[i:ac5 %name="Have 300 Human Column Computers" %desc="Human Column Computer VII" %icon="ccIcons[1,16]" %id="2" %req="300" %i="7"]
+[i:ac5 %name="Have 350 Human Column Computers" %desc="Human Column Computer VIII" %icon="ccIcons[1,17]" %id="2" %req="350" %i="8"]
+[i:ac5 %name="Have 400 Human Column Computers" %desc="Human Column Computer IX" %icon="ccIcons[1,18]" %id="2" %req="400" %i="9"]
+[i:ac5 %name="Have 450 Human Column Computers" %desc="Human Column Computer X" %icon="ccIcons[1,19]" %id="2" %req="450" %i="10"]
+[i:ac5 %name="Have 500 Human Column Computers" %desc="Human Column Computer XI" %icon="ccIcons[1,20]" %id="2" %req="500" %i="11"]
+[i:ac5 %name="Have 550 Human Column Computers" %desc="Human Column Computer XII" %icon="ccIcons[1,21]" %id="2" %req="550" %i="12"]
+[i:ac5 %name="Have 600 Human Column Computers" %desc="Human Column Computer XIII" %icon="ccIcons[1,22]" %id="2" %req="600" %i="13"]
+[i:ac5 %name="Have 1 Laptop" %desc="Laptop I" %icon="ccIcons[2,0]" %id="3" %req="1" %i="1"]
+[i:ac5 %name="Have 50 Laptops" %desc="Laptop II" %icon="ccIcons[2,1]" %id="3" %req="50" %i="2"]
+[i:ac5 %name="Have 100 Laptops" %desc="Laptop III" %icon="ccIcons[2,2]" %id="3" %req="100" %i="3"]
+[i:ac5 %name="Have 150 Laptops" %desc="Laptop IV" %icon="ccIcons[2,13]" %id="3" %req="150" %i="4"]
+[i:ac5 %name="Have 200 Laptops" %desc="Laptop V" %icon="ccIcons[2,14]" %id="3" %req="200" %i="5"]
+[i:ac5 %name="Have 250 Laptops" %desc="Laptop VI" %icon="ccIcons[2,15]" %id="3" %req="250" %i="6"]
+[i:ac5 %name="Have 300 Laptops" %desc="Laptop VII" %icon="ccIcons[2,16]" %id="3" %req="300" %i="7"]
+[i:ac5 %name="Have 350 Laptops" %desc="Laptop VIII" %icon="ccIcons[2,17]" %id="3" %req="350" %i="8"]
+[i:ac5 %name="Have 400 Laptops" %desc="Laptop IX" %icon="ccIcons[2,18]" %id="3" %req="400" %i="9"]
+[i:ac5 %name="Have 450 Laptops" %desc="Laptop X" %icon="ccIcons[2,19]" %id="3" %req="450" %i="10"]
+[i:ac5 %name="Have 500 Laptops" %desc="Laptop XI" %icon="ccIcons[2,20]" %id="3" %req="500" %i="11"]
+[i:ac5 %name="Have 550 Laptops" %desc="Laptop XII" %icon="ccIcons[2,21]" %id="3" %req="550" %i="12"]
+[i:ac5 %name="Have 600 Laptops" %desc="Laptop XIII" %icon="ccIcons[2,22]" %id="3" %req="600" %i="13"]
+[i:ac5 %name="Have 1 Desktop PC" %desc="Desktop PC I" %icon="ccIcons[3,0]" %id="4" %req="1" %i="1"]
+[i:ac5 %name="Have 50 Desktop PCs" %desc="Desktop PC II" %icon="ccIcons[3,1]" %id="4" %req="50" %i="2"]
+[i:ac5 %name="Have 100 Desktop PCs" %desc="Desktop PC III" %icon="ccIcons[3,2]" %id="4" %req="100" %i="3"]
+[i:ac5 %name="Have 150 Desktop PCs" %desc="Desktop PC IV" %icon="ccIcons[3,13]" %id="4" %req="150" %i="4"]
+[i:ac5 %name="Have 200 Desktop PCs" %desc="Desktop PC V" %icon="ccIcons[3,14]" %id="4" %req="200" %i="5"]
+[i:ac5 %name="Have 250 Desktop PCs" %desc="Desktop PC VI" %icon="ccIcons[3,15]" %id="4" %req="250" %i="6"]
+[i:ac5 %name="Have 300 Desktop PCs" %desc="Desktop PC VII" %icon="ccIcons[3,16]" %id="4" %req="300" %i="7"]
+[i:ac5 %name="Have 350 Desktop PCs" %desc="Desktop PC VIII" %icon="ccIcons[3,17]" %id="4" %req="350" %i="8"]
+[i:ac5 %name="Have 400 Desktop PCs" %desc="Desktop PC IX" %icon="ccIcons[3,18]" %id="4" %req="400" %i="9"]
+[i:ac5 %name="Have 450 Desktop PCs" %desc="Desktop PC X" %icon="ccIcons[3,19]" %id="4" %req="450" %i="10"]
+[i:ac5 %name="Have 500 Desktop PCs" %desc="Desktop PC XI" %icon="ccIcons[3,20]" %id="4" %req="500" %i="11"]
+[i:ac5 %name="Have 550 Desktop PCs" %desc="Desktop PC XII" %icon="ccIcons[3,21]" %id="4" %req="550" %i="12"]
+[i:ac5 %name="Have 600 Desktop PCs" %desc="Desktop PC XIII" %icon="ccIcons[3,22]" %id="4" %req="600" %i="13"]
+[i:ac5 %name="Have 1 Old Miner Machine" %desc="Old Miner Machine I" %icon="ccIcons[4,0]" %id="5" %req="1" %i="1"]
+[i:ac5 %name="Have 50 Old Miner Machines" %desc="Old Miner Machine II" %icon="ccIcons[4,1]" %id="5" %req="50" %i="2"]
+[i:ac5 %name="Have 100 Old Miner Machines" %desc="Old Miner Machine III" %icon="ccIcons[4,2]" %id="5" %req="100" %i="3"]
+[i:ac5 %name="Have 150 Old Miner Machines" %desc="Old Miner Machine IV" %icon="ccIcons[4,13]" %id="5" %req="150" %i="4"]
+[i:ac5 %name="Have 200 Old Miner Machines" %desc="Old Miner Machine V" %icon="ccIcons[4,14]" %id="5" %req="200" %i="5"]
+[i:ac5 %name="Have 250 Old Miner Machines" %desc="Old Miner Machine VI" %icon="ccIcons[4,15]" %id="5" %req="250" %i="6"]
+[i:ac5 %name="Have 300 Old Miner Machines" %desc="Old Miner Machine VII" %icon="ccIcons[4,16]" %id="5" %req="300" %i="7"]
+[i:ac5 %name="Have 350 Old Miner Machines" %desc="Old Miner Machine VIII" %icon="ccIcons[4,17]" %id="5" %req="350" %i="8"]
+[i:ac5 %name="Have 400 Old Miner Machines" %desc="Old Miner Machine IX" %icon="ccIcons[4,18]" %id="5" %req="400" %i="9"]
+[i:ac5 %name="Have 450 Old Miner Machines" %desc="Old Miner Machine X" %icon="ccIcons[4,19]" %id="5" %req="450" %i="10"]
+[i:ac5 %name="Have 500 Old Miner Machines" %desc="Old Miner Machine XI" %icon="ccIcons[4,20]" %id="5" %req="500" %i="11"]
+[i:ac5 %name="Have 550 Old Miner Machines" %desc="Old Miner Machine XII" %icon="ccIcons[4,21]" %id="5" %req="550" %i="12"]
+[i:ac5 %name="Have 600 Old Miner Machines" %desc="Old Miner Machine XIII" %icon="ccIcons[4,22]" %id="5" %req="600" %i="13"]
+[i:ac5 %name="Have 1 New Miner Machine" %desc="New Miner Machine I" %icon="ccIcons[5,0]" %id="6" %req="1" %i="1"]
+[i:ac5 %name="Have 50 New Miner Machines" %desc="New Miner Machine II" %icon="ccIcons[5,1]" %id="6" %req="50" %i="2"]
+[i:ac5 %name="Have 100 New Miner Machines" %desc="New Miner Machine III" %icon="ccIcons[5,2]" %id="6" %req="100" %i="3"]
+[i:ac5 %name="Have 150 New Miner Machines" %desc="New Miner Machine IV" %icon="ccIcons[5,13]" %id="6" %req="150" %i="4"]
+[i:ac5 %name="Have 200 New Miner Machines" %desc="New Miner Machine V" %icon="ccIcons[5,14]" %id="6" %req="200" %i="5"]
+[i:ac5 %name="Have 250 New Miner Machines" %desc="New Miner Machine VI" %icon="ccIcons[5,15]" %id="6" %req="250" %i="6"]
+[i:ac5 %name="Have 300 New Miner Machines" %desc="New Miner Machine VII" %icon="ccIcons[5,16]" %id="6" %req="300" %i="7"]
+[i:ac5 %name="Have 350 New Miner Machines" %desc="New Miner Machine VIII" %icon="ccIcons[5,17]" %id="6" %req="350" %i="8"]
+[i:ac5 %name="Have 400 New Miner Machines" %desc="New Miner Machine IX" %icon="ccIcons[5,18]" %id="6" %req="400" %i="9"]
+[i:ac5 %name="Have 450 New Miner Machines" %desc="New Miner Machine X" %icon="ccIcons[5,19]" %id="6" %req="450" %i="10"]
+[i:ac5 %name="Have 500 New Miner Machines" %desc="New Miner Machine XI" %icon="ccIcons[5,20]" %id="6" %req="500" %i="11"]
+[i:ac5 %name="Have 550 New Miner Machines" %desc="New Miner Machine XII" %icon="ccIcons[5,21]" %id="6" %req="550" %i="12"]
+[i:ac5 %name="Have 600 New Miner Machines" %desc="New Miner Machine XIII" %icon="ccIcons[5,22]" %id="6" %req="600" %i="13"]
+[i:ac5 %name="Have 1 ASIC Miner Machine" %desc="ASIC Miner Machine I" %icon="ccIcons[6,0]" %id="7" %req="1" %i="1"]
+[i:ac5 %name="Have 50 ASIC Miner Machines" %desc="ASIC Miner Machine II" %icon="ccIcons[6,1]" %id="7" %req="50" %i="2"]
+[i:ac5 %name="Have 100 ASIC Miner Machines" %desc="ASIC Miner Machine III" %icon="ccIcons[6,2]" %id="7" %req="100" %i="3"]
+[i:ac5 %name="Have 150 ASIC Miner Machines" %desc="ASIC Miner Machine IV" %icon="ccIcons[6,13]" %id="7" %req="150" %i="4"]
+[i:ac5 %name="Have 200 ASIC Miner Machines" %desc="ASIC Miner Machine V" %icon="ccIcons[6,14]" %id="7" %req="200" %i="5"]
+[i:ac5 %name="Have 250 ASIC Miner Machines" %desc="ASIC Miner Machine VI" %icon="ccIcons[6,15]" %id="7" %req="250" %i="6"]
+[i:ac5 %name="Have 300 ASIC Miner Machines" %desc="ASIC Miner Machine VII" %icon="ccIcons[6,16]" %id="7" %req="300" %i="7"]
+[i:ac5 %name="Have 350 ASIC Miner Machines" %desc="ASIC Miner Machine VIII" %icon="ccIcons[6,17]" %id="7" %req="350" %i="8"]
+[i:ac5 %name="Have 400 ASIC Miner Machines" %desc="ASIC Miner Machine IX" %icon="ccIcons[6,18]" %id="7" %req="400" %i="9"]
+[i:ac5 %name="Have 450 ASIC Miner Machines" %desc="ASIC Miner Machine X" %icon="ccIcons[6,19]" %id="7" %req="450" %i="10"]
+[i:ac5 %name="Have 500 ASIC Miner Machines" %desc="ASIC Miner Machine XI" %icon="ccIcons[6,20]" %id="7" %req="500" %i="11"]
+[i:ac5 %name="Have 550 ASIC Miner Machines" %desc="ASIC Miner Machine XII" %icon="ccIcons[6,21]" %id="7" %req="550" %i="12"]
+[i:ac5 %name="Have 600 ASIC Miner Machines" %desc="ASIC Miner Machine XIII" %icon="ccIcons[6,22]" %id="7" %req="600" %i="13"]
+[i:ac5 %name="Have 1 Cloud Server" %desc="Cloud Server I" %icon="ccIcons[7,0]" %id="8" %req="1" %i="1"]
+[i:ac5 %name="Have 50 Cloud Servers" %desc="Cloud Server II" %icon="ccIcons[7,1]" %id="8" %req="50" %i="2"]
+[i:ac5 %name="Have 100 Cloud Servers" %desc="Cloud Server III" %icon="ccIcons[7,2]" %id="8" %req="100" %i="3"]
+[i:ac5 %name="Have 150 Cloud Servers" %desc="Cloud Server IV" %icon="ccIcons[7,13]" %id="8" %req="150" %i="4"]
+[i:ac5 %name="Have 200 Cloud Servers" %desc="Cloud Server V" %icon="ccIcons[7,14]" %id="8" %req="200" %i="5"]
+[i:ac5 %name="Have 250 Cloud Servers" %desc="Cloud Server VI" %icon="ccIcons[7,15]" %id="8" %req="250" %i="6"]
+[i:ac5 %name="Have 300 Cloud Servers" %desc="Cloud Server VII" %icon="ccIcons[7,16]" %id="8" %req="300" %i="7"]
+[i:ac5 %name="Have 350 Cloud Servers" %desc="Cloud Server VIII" %icon="ccIcons[7,17]" %id="8" %req="350" %i="8"]
+[i:ac5 %name="Have 400 Cloud Servers" %desc="Cloud Server IX" %icon="ccIcons[7,18]" %id="8" %req="400" %i="9"]
+[i:ac5 %name="Have 450 Cloud Servers" %desc="Cloud Server X" %icon="ccIcons[7,19]" %id="8" %req="450" %i="10"]
+[i:ac5 %name="Have 500 Cloud Servers" %desc="Cloud Server XI" %icon="ccIcons[7,20]" %id="8" %req="500" %i="11"]
+[i:ac5 %name="Have 550 Cloud Servers" %desc="Cloud Server XII" %icon="ccIcons[7,21]" %id="8" %req="550" %i="12"]
+[i:ac5 %name="Have 600 Cloud Servers" %desc="Cloud Server XIII" %icon="ccIcons[7,22]" %id="8" %req="600" %i="13"]
+[i:ac5 %name="Have 1 Miner Machine Array" %desc="Miner Machine Array I" %icon="ccIcons[8,0]" %id="9" %req="1" %i="1"]
+[i:ac5 %name="Have 50 Miner Machine Arrays" %desc="Miner Machine Array II" %icon="ccIcons[8,1]" %id="9" %req="50" %i="2"]
+[i:ac5 %name="Have 100 Miner Machine Arrays" %desc="Miner Machine Array III" %icon="ccIcons[8,2]" %id="9" %req="100" %i="3"]
+[i:ac5 %name="Have 150 Miner Machine Arrays" %desc="Miner Machine Array IV" %icon="ccIcons[8,13]" %id="9" %req="150" %i="4"]
+[i:ac5 %name="Have 200 Miner Machine Arrays" %desc="Miner Machine Array V" %icon="ccIcons[8,14]" %id="9" %req="200" %i="5"]
+[i:ac5 %name="Have 250 Miner Machine Arrays" %desc="Miner Machine Array VI" %icon="ccIcons[8,15]" %id="9" %req="250" %i="6"]
+[i:ac5 %name="Have 300 Miner Machine Arrays" %desc="Miner Machine Array VII" %icon="ccIcons[8,16]" %id="9" %req="300" %i="7"]
+[i:ac5 %name="Have 350 Miner Machine Arrays" %desc="Miner Machine Array VIII" %icon="ccIcons[8,17]" %id="9" %req="350" %i="8"]
+[i:ac5 %name="Have 400 Miner Machine Arrays" %desc="Miner Machine Array IX" %icon="ccIcons[8,18]" %id="9" %req="400" %i="9"]
+[i:ac5 %name="Have 450 Miner Machine Arrays" %desc="Miner Machine Array X" %icon="ccIcons[8,19]" %id="9" %req="450" %i="10"]
+[i:ac5 %name="Have 500 Miner Machine Arrays" %desc="Miner Machine Array XI" %icon="ccIcons[8,20]" %id="9" %req="500" %i="11"]
+[i:ac5 %name="Have 550 Miner Machine Arrays" %desc="Miner Machine Array XII" %icon="ccIcons[8,21]" %id="9" %req="550" %i="12"]
+[i:ac5 %name="Have 600 Miner Machine Arrays" %desc="Miner Machine Array XIII" %icon="ccIcons[8,22]" %id="9" %req="600" %i="13"]
+[i:ac5 %name="Have 1 Miner Machine Cluster" %desc="Miner Machine Cluster I" %icon="ccIcons[9,0]" %id="10" %req="1" %i="1"]
+[i:ac5 %name="Have 50 Miner Machine Clusters" %desc="Miner Machine Cluster II" %icon="ccIcons[9,1]" %id="10" %req="50" %i="2"]
+[i:ac5 %name="Have 100 Miner Machine Clusters" %desc="Miner Machine Cluster III" %icon="ccIcons[9,2]" %id="10" %req="100" %i="3"]
+[i:ac5 %name="Have 150 Miner Machine Clusters" %desc="Miner Machine Cluster IV" %icon="ccIcons[9,13]" %id="10" %req="150" %i="4"]
+[i:ac5 %name="Have 200 Miner Machine Clusters" %desc="Miner Machine Cluster V" %icon="ccIcons[9,14]" %id="10" %req="200" %i="5"]
+[i:ac5 %name="Have 250 Miner Machine Clusters" %desc="Miner Machine Cluster VI" %icon="ccIcons[9,15]" %id="10" %req="250" %i="6"]
+[i:ac5 %name="Have 300 Miner Machine Clusters" %desc="Miner Machine Cluster VII" %icon="ccIcons[9,16]" %id="10" %req="300" %i="7"]
+[i:ac5 %name="Have 350 Miner Machine Clusters" %desc="Miner Machine Cluster VIII" %icon="ccIcons[9,17]" %id="10" %req="350" %i="8"]
+[i:ac5 %name="Have 400 Miner Machine Clusters" %desc="Miner Machine Cluster IX" %icon="ccIcons[9,18]" %id="10" %req="400" %i="9"]
+[i:ac5 %name="Have 450 Miner Machine Clusters" %desc="Miner Machine Cluster X" %icon="ccIcons[9,19]" %id="10" %req="450" %i="10"]
+[i:ac5 %name="Have 500 Miner Machine Clusters" %desc="Miner Machine Cluster XI" %icon="ccIcons[9,20]" %id="10" %req="500" %i="11"]
+[i:ac5 %name="Have 550 Miner Machine Clusters" %desc="Miner Machine Cluster XII" %icon="ccIcons[9,21]" %id="10" %req="550" %i="12"]
+[i:ac5 %name="Have 600 Miner Machine Clusters" %desc="Miner Machine Cluster XIII" %icon="ccIcons[9,22]" %id="10" %req="600" %i="13"]
+[i:ac5 %name="Have 1 Supercomputer" %desc="Supercomputer I" %icon="ccIcons[10,0]" %id="11" %req="1" %i="1"]
+[i:ac5 %name="Have 50 Supercomputers" %desc="Supercomputer II" %icon="ccIcons[10,1]" %id="11" %req="50" %i="2"]
+[i:ac5 %name="Have 100 Supercomputers" %desc="Supercomputer III" %icon="ccIcons[10,2]" %id="11" %req="100" %i="3"]
+[i:ac5 %name="Have 150 Supercomputers" %desc="Supercomputer IV" %icon="ccIcons[10,13]" %id="11" %req="150" %i="4"]
+[i:ac5 %name="Have 200 Supercomputers" %desc="Supercomputer V" %icon="ccIcons[10,14]" %id="11" %req="200" %i="5"]
+[i:ac5 %name="Have 250 Supercomputers" %desc="Supercomputer VI" %icon="ccIcons[10,15]" %id="11" %req="250" %i="6"]
+[i:ac5 %name="Have 300 Supercomputers" %desc="Supercomputer VII" %icon="ccIcons[10,16]" %id="11" %req="300" %i="7"]
+[i:ac5 %name="Have 350 Supercomputers" %desc="Supercomputer VIII" %icon="ccIcons[10,17]" %id="11" %req="350" %i="8"]
+[i:ac5 %name="Have 400 Supercomputers" %desc="Supercomputer IX" %icon="ccIcons[10,18]" %id="11" %req="400" %i="9"]
+[i:ac5 %name="Have 450 Supercomputers" %desc="Supercomputer X" %icon="ccIcons[10,19]" %id="11" %req="450" %i="10"]
+[i:ac5 %name="Have 500 Supercomputers" %desc="Supercomputer XI" %icon="ccIcons[10,20]" %id="11" %req="500" %i="11"]
+[i:ac5 %name="Have 550 Supercomputers" %desc="Supercomputer XII" %icon="ccIcons[10,21]" %id="11" %req="550" %i="12"]
+[i:ac5 %name="Have 600 Supercomputers" %desc="Supercomputer XIII" %icon="ccIcons[10,22]" %id="11" %req="600" %i="13"]
+[i:ac5 %name="Have 1 Quantum Computer" %desc="Quantum Computer I" %icon="ccIcons[11,0]" %id="12" %req="1" %i="1"]
+[i:ac5 %name="Have 50 Quantum Computers" %desc="Quantum Computer II" %icon="ccIcons[11,1]" %id="12" %req="50" %i="2"]
+[i:ac5 %name="Have 100 Quantum Computers" %desc="Quantum Computer III" %icon="ccIcons[11,2]" %id="12" %req="100" %i="3"]
+[i:ac5 %name="Have 150 Quantum Computers" %desc="Quantum Computer IV" %icon="ccIcons[11,13]" %id="12" %req="150" %i="4"]
+[i:ac5 %name="Have 200 Quantum Computers" %desc="Quantum Computer V" %icon="ccIcons[11,14]" %id="12" %req="200" %i="5"]
+[i:ac5 %name="Have 250 Quantum Computers" %desc="Quantum Computer VI" %icon="ccIcons[11,15]" %id="12" %req="250" %i="6"]
+[i:ac5 %name="Have 300 Quantum Computers" %desc="Quantum Computer VII" %icon="ccIcons[11,16]" %id="12" %req="300" %i="7"]
+[i:ac5 %name="Have 350 Quantum Computers" %desc="Quantum Computer VIII" %icon="ccIcons[11,17]" %id="12" %req="350" %i="8"]
+[i:ac5 %name="Have 400 Quantum Computers" %desc="Quantum Computer IX" %icon="ccIcons[11,18]" %id="12" %req="400" %i="9"]
+[i:ac5 %name="Have 450 Quantum Computers" %desc="Quantum Computer X" %icon="ccIcons[11,19]" %id="12" %req="450" %i="10"]
+[i:ac5 %name="Have 500 Quantum Computers" %desc="Quantum Computer XI" %icon="ccIcons[11,20]" %id="12" %req="500" %i="11"]
+[i:ac5 %name="Have 550 Quantum Computers" %desc="Quantum Computer XII" %icon="ccIcons[11,21]" %id="12" %req="550" %i="12"]
+[i:ac5 %name="Have 600 Quantum Computers" %desc="Quantum Computer XIII" %icon="ccIcons[11,22]" %id="12" %req="600" %i="13"]
+[i:ac5 %name="Have 1 JARVIS" %desc="JARVIS I" %icon="ccIcons[12,0]" %id="13" %req="1" %i="1"]
+[i:ac5 %name="Have 50 JARVIS" %desc="JARVIS II" %icon="ccIcons[12,1]" %id="13" %req="50" %i="2"]
+[i:ac5 %name="Have 100 JARVIS" %desc="JARVIS III" %icon="ccIcons[12,2]" %id="13" %req="100" %i="3"]
+[i:ac5 %name="Have 150 JARVIS" %desc="JARVIS IV" %icon="ccIcons[12,13]" %id="13" %req="150" %i="4"]
+[i:ac5 %name="Have 200 JARVIS" %desc="JARVIS V" %icon="ccIcons[12,14]" %id="13" %req="200" %i="5"]
+[i:ac5 %name="Have 250 JARVIS" %desc="JARVIS VI" %icon="ccIcons[12,15]" %id="13" %req="250" %i="6"]
+[i:ac5 %name="Have 300 JARVIS" %desc="JARVIS VII" %icon="ccIcons[12,16]" %id="13" %req="300" %i="7"]
+[i:ac5 %name="Have 350 JARVIS" %desc="JARVIS VIII" %icon="ccIcons[12,17]" %id="13" %req="350" %i="8"]
+[i:ac5 %name="Have 400 JARVIS" %desc="JARVIS IX" %icon="ccIcons[12,18]" %id="13" %req="400" %i="9"]
+[i:ac5 %name="Have 450 JARVIS" %desc="JARVIS X" %icon="ccIcons[12,19]" %id="13" %req="450" %i="10"]
+[i:ac5 %name="Have 500 JARVIS" %desc="JARVIS XI" %icon="ccIcons[12,20]" %id="13" %req="500" %i="11"]
+[i:ac5 %name="Have 550 JARVIS" %desc="JARVIS XII" %icon="ccIcons[12,21]" %id="13" %req="550" %i="12"]
+[i:ac5 %name="Have 600 JARVIS" %desc="JARVIS XIII" %icon="ccIcons[12,22]" %id="13" %req="600" %i="13"]
+[i:ac5 %name="Have 1 Time Machine" %desc="Time Machine I" %icon="ccIcons[13,0]" %id="14" %req="1" %i="1"]
+[i:ac5 %name="Have 50 Time Machines" %desc="Time Machine II" %icon="ccIcons[13,1]" %id="14" %req="50" %i="2"]
+[i:ac5 %name="Have 100 Time Machines" %desc="Time Machine III" %icon="ccIcons[13,2]" %id="14" %req="100" %i="3"]
+[i:ac5 %name="Have 150 Time Machines" %desc="Time Machine IV" %icon="ccIcons[13,13]" %id="14" %req="150" %i="4"]
+[i:ac5 %name="Have 200 Time Machines" %desc="Time Machine V" %icon="ccIcons[13,14]" %id="14" %req="200" %i="5"]
+[i:ac5 %name="Have 250 Time Machines" %desc="Time Machine VI" %icon="ccIcons[13,15]" %id="14" %req="250" %i="6"]
+[i:ac5 %name="Have 300 Time Machines" %desc="Time Machine VII" %icon="ccIcons[13,16]" %id="14" %req="300" %i="7"]
+[i:ac5 %name="Have 350 Time Machines" %desc="Time Machine VIII" %icon="ccIcons[13,17]" %id="14" %req="350" %i="8"]
+[i:ac5 %name="Have 400 Time Machines" %desc="Time Machine IX" %icon="ccIcons[13,18]" %id="14" %req="400" %i="9"]
+[i:ac5 %name="Have 450 Time Machines" %desc="Time Machine X" %icon="ccIcons[13,19]" %id="14" %req="450" %i="10"]
+[i:ac5 %name="Have 500 Time Machines" %desc="Time Machine XI" %icon="ccIcons[13,20]" %id="14" %req="500" %i="11"]
+[i:ac5 %name="Have 550 Time Machines" %desc="Time Machine XII" %icon="ccIcons[13,21]" %id="14" %req="550" %i="12"]
+[i:ac5 %name="Have 600 Time Machines" %desc="Time Machine XIII" %icon="ccIcons[13,22]" %id="14" %req="600" %i="13"]
+[i:ac5 %name="Have 1 Sophon" %desc="Sophon I" %icon="ccIcons[14,0]" %id="15" %req="1" %i="1"]
+[i:ac5 %name="Have 50 Sophons" %desc="Sophon II" %icon="ccIcons[14,1]" %id="15" %req="50" %i="2"]
+[i:ac5 %name="Have 100 Sophons" %desc="Sophon III" %icon="ccIcons[14,2]" %id="15" %req="100" %i="3"]
+[i:ac5 %name="Have 150 Sophons" %desc="Sophon IV" %icon="ccIcons[14,13]" %id="15" %req="150" %i="4"]
+[i:ac5 %name="Have 200 Sophons" %desc="Sophon V" %icon="ccIcons[14,14]" %id="15" %req="200" %i="5"]
+[i:ac5 %name="Have 250 Sophons" %desc="Sophon VI" %icon="ccIcons[14,15]" %id="15" %req="250" %i="6"]
+[i:ac5 %name="Have 300 Sophons" %desc="Sophon VII" %icon="ccIcons[14,16]" %id="15" %req="300" %i="7"]
+[i:ac5 %name="Have 350 Sophons" %desc="Sophon VIII" %icon="ccIcons[14,17]" %id="15" %req="350" %i="8"]
+[i:ac5 %name="Have 400 Sophons" %desc="Sophon IX" %icon="ccIcons[14,18]" %id="15" %req="400" %i="9"]
+[i:ac5 %name="Have 450 Sophons" %desc="Sophon X" %icon="ccIcons[14,19]" %id="15" %req="450" %i="10"]
+[i:ac5 %name="Have 500 Sophons" %desc="Sophon XI" %icon="ccIcons[14,20]" %id="15" %req="500" %i="11"]
+[i:ac5 %name="Have 550 Sophons" %desc="Sophon XII" %icon="ccIcons[14,21]" %id="15" %req="550" %i="12"]
+[i:ac5 %name="Have 600 Sophons" %desc="Sophon XIII" %icon="ccIcons[14,22]" %id="15" %req="600" %i="13"]
+[i:ac5 %name="Have 1 Fractal Engine" %desc="Fractal Engine I" %icon="ccIcons[15,0]" %id="16" %req="1" %i="1"]
+[i:ac5 %name="Have 50 Fractal Engines" %desc="Fractal Engine II" %icon="ccIcons[15,1]" %id="16" %req="50" %i="2"]
+[i:ac5 %name="Have 100 Fractal Engines" %desc="Fractal Engine III" %icon="ccIcons[15,2]" %id="16" %req="100" %i="3"]
+[i:ac5 %name="Have 150 Fractal Engines" %desc="Fractal Engine IV" %icon="ccIcons[15,13]" %id="16" %req="150" %i="4"]
+[i:ac5 %name="Have 200 Fractal Engines" %desc="Fractal Engine V" %icon="ccIcons[15,14]" %id="16" %req="200" %i="5"]
+[i:ac5 %name="Have 250 Fractal Engines" %desc="Fractal Engine VI" %icon="ccIcons[15,15]" %id="16" %req="250" %i="6"]
+[i:ac5 %name="Have 300 Fractal Engines" %desc="Fractal Engine VII" %icon="ccIcons[15,16]" %id="16" %req="300" %i="7"]
+[i:ac5 %name="Have 350 Fractal Engines" %desc="Fractal Engine VIII" %icon="ccIcons[15,17]" %id="16" %req="350" %i="8"]
+[i:ac5 %name="Have 400 Fractal Engines" %desc="Fractal Engine IX" %icon="ccIcons[15,18]" %id="16" %req="400" %i="9"]
+[i:ac5 %name="Have 450 Fractal Engines" %desc="Fractal Engine X" %icon="ccIcons[15,19]" %id="16" %req="450" %i="10"]
+[i:ac5 %name="Have 500 Fractal Engines" %desc="Fractal Engine XI" %icon="ccIcons[15,20]" %id="16" %req="500" %i="11"]
+[i:ac5 %name="Have 550 Fractal Engines" %desc="Fractal Engine XII" %icon="ccIcons[15,21]" %id="16" %req="550" %i="12"]
+[i:ac5 %name="Have 600 Fractal Engines" %desc="Fractal Engine XIII" %icon="ccIcons[15,22]" %id="16" %req="600" %i="13"]
+[i:ac5 %name="Have 1 Croto System" %desc="Croto System I" %icon="ccIcons[16,0]" %id="17" %req="1" %i="1"]
+[i:ac5 %name="Have 50 Croto Systems" %desc="Croto System II" %icon="ccIcons[16,1]" %id="17" %req="50" %i="2"]
+[i:ac5 %name="Have 100 Croto Systems" %desc="Croto System III" %icon="ccIcons[16,2]" %id="17" %req="100" %i="3"]
+[i:ac5 %name="Have 150 Croto Systems" %desc="Croto System IV" %icon="ccIcons[16,13]" %id="17" %req="150" %i="4"]
+[i:ac5 %name="Have 200 Croto Systems" %desc="Croto System V" %icon="ccIcons[16,14]" %id="17" %req="200" %i="5"]
+[i:ac5 %name="Have 250 Croto Systems" %desc="Croto System VI" %icon="ccIcons[16,15]" %id="17" %req="250" %i="6"]
+[i:ac5 %name="Have 300 Croto Systems" %desc="Croto System VII" %icon="ccIcons[16,16]" %id="17" %req="300" %i="7"]
+[i:ac5 %name="Have 350 Croto Systems" %desc="Croto System VIII" %icon="ccIcons[16,17]" %id="17" %req="350" %i="8"]
+[i:ac5 %name="Have 400 Croto Systems" %desc="Croto System IX" %icon="ccIcons[16,18]" %id="17" %req="400" %i="9"]
+[i:ac5 %name="Have 450 Croto Systems" %desc="Croto System X" %icon="ccIcons[16,19]" %id="17" %req="450" %i="10"]
+[i:ac5 %name="Have 500 Croto Systems" %desc="Croto System XI" %icon="ccIcons[16,20]" %id="17" %req="500" %i="11"]
+[i:ac5 %name="Have 550 Croto Systems" %desc="Croto System XII" %icon="ccIcons[16,21]" %id="17" %req="550" %i="12"]
+[i:ac5 %name="Have 600 Croto Systems" %desc="Croto System XIII" %icon="ccIcons[16,22]" %id="17" %req="600" %i="13"]
+[i:ac5 %name="Have 1 Idleverse" %desc="Idleverse I" %icon="ccIcons[17,0]" %id="18" %req="1" %i="1"]
+[i:ac5 %name="Have 50 Idleverses" %desc="Idleverse II" %icon="ccIcons[17,1]" %id="18" %req="50" %i="2"]
+[i:ac5 %name="Have 100 Idleverses" %desc="Idleverse III" %icon="ccIcons[17,2]" %id="18" %req="100" %i="3"]
+[i:ac5 %name="Have 150 Idleverses" %desc="Idleverse IV" %icon="ccIcons[17,13]" %id="18" %req="150" %i="4"]
+[i:ac5 %name="Have 200 Idleverses" %desc="Idleverse V" %icon="ccIcons[17,14]" %id="18" %req="200" %i="5"]
+[i:ac5 %name="Have 250 Idleverses" %desc="Idleverse VI" %icon="ccIcons[17,15]" %id="18" %req="250" %i="6"]
+[i:ac5 %name="Have 300 Idleverses" %desc="Idleverse VII" %icon="ccIcons[17,16]" %id="18" %req="300" %i="7"]
+[i:ac5 %name="Have 350 Idleverses" %desc="Idleverse VIII" %icon="ccIcons[17,17]" %id="18" %req="350" %i="8"]
+[i:ac5 %name="Have 400 Idleverses" %desc="Idleverse IX" %icon="ccIcons[17,18]" %id="18" %req="400" %i="9"]
+[i:ac5 %name="Have 450 Idleverses" %desc="Idleverse X" %icon="ccIcons[17,19]" %id="18" %req="450" %i="10"]
+[i:ac5 %name="Have 500 Idleverses" %desc="Idleverse XI" %icon="ccIcons[17,20]" %id="18" %req="500" %i="11"]
+[i:ac5 %name="Have 550 Idleverses" %desc="Idleverse XII" %icon="ccIcons[17,21]" %id="18" %req="550" %i="12"]
+[i:ac5 %name="Have 600 Idleverses" %desc="Idleverse XIII" %icon="ccIcons[17,22]" %id="18" %req="600" %i="13"]
+[i:ac6 %name="Mine 10 quintillion bitcoins just from Manual Calculation" %desc="Manual Calculation BPS I" %icon="ccIcons[0,26]" %id="1" %req="10000000000000000000" %i="1"]
+[i:ac6 %name="Mine 100 septillion bitcoins just from Manual Calculation" %desc="Manual Calculation BPS II" %icon="ccIcons[0,27]" %id="1" %req="100000000000000000000000000" %i="2"]
+[i:ac6 %name="Mine 1 decillion bitcoins just from Manual Calculation" %desc="Manual Calculation BPS III" %icon="ccIcons[0,30]" %id="1" %req="1000000000000000000000000000000000" %i="3"]
+[i:ac6 %name="Mine 10 quintillion bitcoins just from Human Column Computer" %desc="Human Column Computer BPS I" %icon="ccIcons[1,26]" %id="2" %req="10000000000000000000" %i="1"]
+[i:ac6 %name="Mine 100 septillion bitcoins just from Human Column Computer" %desc="Human Column Computer BPS II" %icon="ccIcons[1,27]" %id="2" %req="100000000000000000000000000" %i="2"]
+[i:ac6 %name="Mine 1 decillion bitcoins just from Human Column Computer" %desc="Human Column Computer BPS III" %icon="ccIcons[1,30]" %id="2" %req="1000000000000000000000000000000000" %i="3"]
+[i:ac6 %name="Mine 100 trillion bitcoins just from Laptop" %desc="Laptop BPS I" %icon="ccIcons[2,26]" %id="3" %req="100000000000000" %i="1"]
+[i:ac6 %name="Mine 1 sextillion bitcoins just from Laptop" %desc="Laptop BPS II" %icon="ccIcons[2,27]" %id="3" %req="1000000000000000000000" %i="2"]
+[i:ac6 %name="Mine 10 octillion bitcoins just from Laptop" %desc="Laptop BPS III" %icon="ccIcons[2,30]" %id="3" %req="10000000000000000000000000000" %i="3"]
+[i:ac6 %name="Mine 1 quadrillion bitcoins just from Desktop PC" %desc="Desktop PC BPS I" %icon="ccIcons[3,26]" %id="4" %req="1000000000000000" %i="1"]
+[i:ac6 %name="Mine 10 sextillion bitcoins just from Desktop PC" %desc="Desktop PC BPS II" %icon="ccIcons[3,27]" %id="4" %req="10000000000000000000000" %i="2"]
+[i:ac6 %name="Mine 100 octillion bitcoins just from Desktop PC" %desc="Desktop PC BPS III" %icon="ccIcons[3,30]" %id="4" %req="100000000000000000000000000000" %i="3"]
+[i:ac6 %name="Mine 10 quadrillion bitcoins just from Old Miner Machine" %desc="Old Miner Machine BPS I" %icon="ccIcons[4,26]" %id="5" %req="10000000000000000" %i="1"]
+[i:ac6 %name="Mine 100 sextillion bitcoins just from Old Miner Machine" %desc="Old Miner Machine BPS II" %icon="ccIcons[4,27]" %id="5" %req="100000000000000000000000" %i="2"]
+[i:ac6 %name="Mine 1 nonillion bitcoins just from Old Miner Machine" %desc="Old Miner Machine BPS III" %icon="ccIcons[4,30]" %id="5" %req="1000000000000000000000000000000" %i="3"]
+[i:ac6 %name="Mine 100 quadrillion bitcoins just from New Miner Machine" %desc="New Miner Machine BPS I" %icon="ccIcons[5,26]" %id="6" %req="100000000000000000" %i="1"]
+[i:ac6 %name="Mine 1 septillion bitcoins just from New Miner Machine" %desc="New Miner Machine BPS II" %icon="ccIcons[5,27]" %id="6" %req="1000000000000000000000000" %i="2"]
+[i:ac6 %name="Mine 10 nonillion bitcoins just from New Miner Machine" %desc="New Miner Machine BPS III" %icon="ccIcons[5,30]" %id="6" %req="10000000000000000000000000000000" %i="3"]
+[i:ac6 %name="Mine 1 quintillion bitcoins just from ASIC Miner Machine" %desc="ASIC Miner Machine BPS I" %icon="ccIcons[6,26]" %id="7" %req="1000000000000000000" %i="1"]
+[i:ac6 %name="Mine 10 septillion bitcoins just from ASIC Miner Machine" %desc="ASIC Miner Machine BPS II" %icon="ccIcons[6,27]" %id="7" %req="10000000000000000000000000" %i="2"]
+[i:ac6 %name="Mine 100 nonillion bitcoins just from ASIC Miner Machine" %desc="ASIC Miner Machine BPS III" %icon="ccIcons[6,30]" %id="7" %req="100000000000000000000000000000000" %i="3"]
+[i:ac6 %name="Mine 10 quintillion bitcoins just from Cloud Server" %desc="Cloud Server BPS I" %icon="ccIcons[7,26]" %id="8" %req="10000000000000000000" %i="1"]
+[i:ac6 %name="Mine 100 septillion bitcoins just from Cloud Server" %desc="Cloud Server BPS II" %icon="ccIcons[7,27]" %id="8" %req="100000000000000000000000000" %i="2"]
+[i:ac6 %name="Mine 1 decillion bitcoins just from Cloud Server" %desc="Cloud Server BPS III" %icon="ccIcons[7,30]" %id="8" %req="1000000000000000000000000000000000" %i="3"]
+[i:ac6 %name="Mine 100 quintillion bitcoins just from Miner Machine Array" %desc="Miner Machine Array BPS I" %icon="ccIcons[8,26]" %id="9" %req="100000000000000000000" %i="1"]
+[i:ac6 %name="Mine 1 octillion bitcoins just from Miner Machine Array" %desc="Miner Machine Array BPS II" %icon="ccIcons[8,27]" %id="9" %req="1000000000000000000000000000" %i="2"]
+[i:ac6 %name="Mine 10 decillion bitcoins just from Miner Machine Array" %desc="Miner Machine Array BPS III" %icon="ccIcons[8,30]" %id="9" %req="10000000000000000000000000000000000" %i="3"]
+[i:ac6 %name="Mine 1 sextillion bitcoins just from Miner Machine Cluster" %desc="Miner Machine Cluster BPS I" %icon="ccIcons[9,26]" %id="10" %req="1000000000000000000000" %i="1"]
+[i:ac6 %name="Mine 10 octillion bitcoins just from Miner Machine Cluster" %desc="Miner Machine Cluster BPS II" %icon="ccIcons[9,27]" %id="10" %req="10000000000000000000000000000" %i="2"]
+[i:ac6 %name="Mine 100 decillion bitcoins just from Miner Machine Cluster" %desc="Miner Machine Cluster BPS III" %icon="ccIcons[9,30]" %id="10" %req="100000000000000000000000000000000000" %i="3"]
+[i:ac6 %name="Mine 10 sextillion bitcoins just from Supercomputer" %desc="Supercomputer BPS I" %icon="ccIcons[10,26]" %id="11" %req="10000000000000000000000" %i="1"]
+[i:ac6 %name="Mine 100 octillion bitcoins just from Supercomputer" %desc="Supercomputer BPS II" %icon="ccIcons[10,27]" %id="11" %req="100000000000000000000000000000" %i="2"]
+[i:ac6 %name="Mine 1 undecillion bitcoins just from Supercomputer" %desc="Supercomputer BPS III" %icon="ccIcons[10,30]" %id="11" %req="1000000000000000000000000000000000000" %i="3"]
+[i:ac6 %name="Mine 100 sextillion bitcoins just from Quantum Computer" %desc="Quantum Computer BPS I" %icon="ccIcons[11,26]" %id="12" %req="100000000000000000000000" %i="1"]
+[i:ac6 %name="Mine 1 nonillion bitcoins just from Quantum Computer" %desc="Quantum Computer BPS II" %icon="ccIcons[11,27]" %id="12" %req="1000000000000000000000000000000" %i="2"]
+[i:ac6 %name="Mine 10 undecillion bitcoins just from Quantum Computer" %desc="Quantum Computer BPS III" %icon="ccIcons[11,30]" %id="12" %req="10000000000000000000000000000000000000" %i="3"]
+[i:ac6 %name="Mine 1 septillion bitcoins just from JARVIS" %desc="JARVIS BPS I" %icon="ccIcons[12,26]" %id="13" %req="1000000000000000000000000" %i="1"]
+[i:ac6 %name="Mine 10 nonillion bitcoins just from JARVIS" %desc="JARVIS BPS II" %icon="ccIcons[12,27]" %id="13" %req="10000000000000000000000000000000" %i="2"]
+[i:ac6 %name="Mine 100 undecillion bitcoins just from JARVIS" %desc="JARVIS BPS III" %icon="ccIcons[12,30]" %id="13" %req="100000000000000000000000000000000000000" %i="3"]
+[i:ac6 %name="Mine 10 septillion bitcoins just from Time Machine" %desc="Time Machine BPS I" %icon="ccIcons[13,26]" %id="14" %req="10000000000000000000000000" %i="1"]
+[i:ac6 %name="Mine 100 nonillion bitcoins just from Time Machine" %desc="Time Machine BPS II" %icon="ccIcons[13,27]" %id="14" %req="100000000000000000000000000000000" %i="2"]
+[i:ac6 %name="Mine 1 duodecillion bitcoins just from Time Machine" %desc="Time Machine BPS III" %icon="ccIcons[13,30]" %id="14" %req="1000000000000000000000000000000000000000" %i="3"]
+[i:ac6 %name="Mine 100 septillion bitcoins just from Sophon" %desc="Sophon BPS I" %icon="ccIcons[14,26]" %id="15" %req="100000000000000000000000000" %i="1"]
+[i:ac6 %name="Mine 1 decillion bitcoins just from Sophon" %desc="Sophon BPS II" %icon="ccIcons[14,27]" %id="15" %req="1000000000000000000000000000000000" %i="2"]
+[i:ac6 %name="Mine 10 duodecillion bitcoins just from Sophon" %desc="Sophon BPS III" %icon="ccIcons[14,30]" %id="15" %req="10000000000000000000000000000000000000000" %i="3"]
+[i:ac6 %name="Mine 1 octillion bitcoins just from Fractal Engine" %desc="Fractal Engine BPS I" %icon="ccIcons[15,26]" %id="16" %req="1000000000000000000000000000" %i="1"]
+[i:ac6 %name="Mine 10 decillion bitcoins just from Fractal Engine" %desc="Fractal Engine BPS II" %icon="ccIcons[15,27]" %id="16" %req="10000000000000000000000000000000000" %i="2"]
+[i:ac6 %name="Mine 100 duodecillion bitcoins just from Fractal Engine" %desc="Fractal Engine BPS III" %icon="ccIcons[15,30]" %id="16" %req="100000000000000000000000000000000000000000" %i="3"]
+[i:ac6 %name="Mine 10 octillion bitcoins just from Croto System" %desc="Croto System BPS I" %icon="ccIcons[16,26]" %id="17" %req="10000000000000000000000000000" %i="1"]
+[i:ac6 %name="Mine 100 decillion bitcoins just from Croto System" %desc="Croto System BPS II" %icon="ccIcons[16,27]" %id="17" %req="100000000000000000000000000000000000" %i="2"]
+[i:ac6 %name="Mine 1 tredecillion bitcoins just from Croto System" %desc="Croto System BPS III" %icon="ccIcons[16,30]" %id="17" %req="1000000000000000000000000000000000000000000" %i="3"]
+[i:ac6 %name="Mine 100 octillion bitcoins just from Idleverse" %desc="Idleverse BPS I" %icon="ccIcons[17,26]" %id="18" %req="100000000000000000000000000000" %i="1"]
+[i:ac6 %name="Mine 1 undecillion bitcoins just from Idleverse" %desc="Idleverse BPS II" %icon="ccIcons[17,27]" %id="18" %req="1000000000000000000000000000000000000" %i="2"]
+[i:ac6 %name="Mine 10 tredecillion bitcoins just from Idleverse" %desc="Idleverse BPS III" %icon="ccIcons[17,30]" %id="18" %req="10000000000000000000000000000000000000000000" %i="3"]
+[i:ac7 %name="Own 100 buildings" %desc="Construction Worker" %icon="ccIcons[2,6]" %req="100" %i="1"]
+[i:ac7 %name="Own 500 buildings" %desc="Architect" %icon="ccIcons[3,6]" %req="500" %i="2"]
+[i:ac7 %name="Own 1000 buildings" %desc="Engineer" %icon="ccIcons[4,6]" %req="1000" %i="3"]
+[i:ac7 %name="Own 2000 buildings" %desc="Master Builder" %icon="ccIcons[5,6]" %req="2000" %i="4"]
+[i:ac7 %name="Own 4000 buildings" %desc="Grand Design" %icon="ccIcons[32,12]" %req="4000" %i="5"]
+[i:ac7 %name="Own 8000 buildings" %desc="World City" %icon="ccIcons[33,12]" %req="8000" %i="6"]
+[i:ac8 %name="Purchase 20 upgrades" %desc="Enhancer" %icon="ccIcons[20,0]" %req="20" %i="1"]
+[i:ac8 %name="Purchase 50 upgrades" %desc="Amplifier" %icon="ccIcons[20,1]" %req="50" %i="2"]
+[i:ac8 %name="Purchase 100 upgrades" %desc="Upgrade procedure" %icon="ccIcons[20,2]" %req="100" %i="3"]
+[i:ac8 %name="Purchase 150 upgrades" %desc="Master of progress" %icon="ccIcons[20,13]" %req="150" %i="4"]
+[i:ac8 %name="Purchase 200 upgrades" %desc="Tech master" %icon="ccIcons[20,14]" %req="200" %i="5"]
