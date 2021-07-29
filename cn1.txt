@@ -23,7 +23,7 @@ Layout
 	*buttons
 		contains:Buttons
 *store
-	contains:buildings, upgrades, achievements, btns
+	contains:buildings, upgrades
 	*buildings
 		contains:BulkDisplay, Buildings
 		header:建筑
@@ -33,6 +33,8 @@ Layout
 		header:科技
 		costs:hide
 		names:hide
+*others
+	contains:achievements, btns
 	*achievements
 		contains:Achievements
 		header:成就
