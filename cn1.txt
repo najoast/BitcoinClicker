@@ -161,7 +161,8 @@ Buttons
 					$num=$cost*100
 					toast 天降伟人，您获得100倍奖励！比特币+[$num]
 				end
-				lose -1*$num bitcoins
+				varTemp=$num
+				lose varTemp bitcoins
 			end
 		end
 
@@ -172,6 +173,9 @@ Resources
 		icon:icons[0,0]
 		class:noBackground
 		show earned
+	*varTemp
+		name:varTemp
+		hidden
 	*resAllUpgradesNum
         name:resAllUpgradesNum
 		icon:icons[0,0]
