@@ -23,7 +23,7 @@ Layout
 	*buttons
 		contains:Buttons
 *store
-	contains:buildings, upgrades, achievements
+	contains:buildings, upgrades, achievements, btns
 	*buildings
 		contains:BulkDisplay, Buildings
 		header:建筑
