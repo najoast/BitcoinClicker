@@ -162,7 +162,11 @@ Buttons
 					toast 天降伟人，您获得100倍奖励！比特币+[$num]
 				end
 			end
-			yield 1+$num bitcoins
+			yield $num bitcoins
+		end
+		on tick:
+			if (bitcoins>bitcoins:ps*60) dim this
+			else light this
 		end
 
 Resources
