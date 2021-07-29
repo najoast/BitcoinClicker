@@ -161,8 +161,8 @@ Buttons
 					$num=$cost*100
 					toast 天降伟人，您获得100倍奖励！比特币+[$num]
 				end
-				gain 1+$num bitcoin
 			end
+			yield 1+$num bitcoins
 		end
 
 Resources
