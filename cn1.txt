@@ -142,7 +142,7 @@ Buttons
 				$val=random(1,100)
 				if ($val>=1 and $val<=40)
 					$num=$cost*0.5
-					toast <#cdcdce>很遗憾，您获得0.5倍奖励。</#>比特币+[$num]
+					toast <#87878b>很遗憾，您获得0.5倍奖励。</#>比特币+[$num]
 				else if ($val>=41 and $val<=70)
 					$num=$cost
 					toast 再接再励，您获得1倍奖励。比特币+[$num]
