@@ -131,6 +131,7 @@ Buttons
 		name:手气不错
 		desc:花费[bitcoins:ps*300]比特币，随机获得更多或更少比特币。<//></><.>40%概率获得0.5倍<.>30%概率获得1倍<.>20%概率获得2倍<.>4%概率获得5倍<.>3%概率获得10倍<.>2%概率获得50倍<.>1%概率获得100倍
 		icon:ccIcons[15,6]
+		icon class:shadowed
 		on click:
 			if (bitcoins<bitcoins:ps*300)
 				toast 比特币不足!
