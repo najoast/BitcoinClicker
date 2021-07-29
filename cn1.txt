@@ -33,18 +33,18 @@ Layout
 		header:科技
 		costs:hide
 		names:hide
-*others
-	contains:achievements, btns
-	*achievements
-		contains:Achievements
-		header:成就
-		costs:hide
-		names:hide
-	*btns
-		contains:tag:funcBtn
-		header:功能按钮
-		costs:hide
-		names:hide
+// *others
+// 	contains:achievements, btns
+// 	*achievements
+// 		contains:Achievements
+// 		header:成就
+// 		costs:hide
+// 		names:hide
+// 	*btns
+// 		contains:tag:funcBtn
+// 		header:功能按钮
+// 		costs:hide
+// 		names:hide
 
 Includes
 // 鼠标点击和建筑1的科技加成效果
@@ -159,7 +159,7 @@ Buttons
 		name:手气不错
 		desc:花费[bitcoins:ps*60]比特币，随机获得更多或更少比特币。
 		icon:ccIcons[15,6]
-		class:noBackground
+		class:noBackground systemButton
 		// req:bitcoins:ps>100000
 		req:bitcoins:ps>0
 		tag:funcBtn
