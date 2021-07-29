@@ -131,7 +131,7 @@ Buttons
 		name:手气不错
 		desc:花费[bitcoins:ps*60]比特币，随机获得更多或更少比特币。<//></><.>40%概率获得0.5倍<.>30%概率获得1倍<.>20%概率获得2倍<.>4%概率获得5倍<.>3%概率获得10倍<.>2%概率获得50倍<.>1%概率获得100倍
 		icon:ccIcons[15,6]
-		icon class:shadowed
+		class:noBackground
 		on click:
 			$cost=bitcoins:ps*60
 			if (bitcoins<$cost)
@@ -162,7 +162,7 @@ Buttons
 					toast 天降伟人，您获得100倍奖励！比特币+[$num]
 				end
 				varTemp=$num
-				lose varTemp bitcoins
+				yield varTemp bitcoins
 			end
 		end
 
@@ -175,7 +175,7 @@ Resources
 		show earned
 	*varTemp
 		name:varTemp
-		hidden
+		class:noBackground
 	*resAllUpgradesNum
         name:resAllUpgradesNum
 		icon:icons[0,0]
