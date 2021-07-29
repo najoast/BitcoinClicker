@@ -129,37 +129,37 @@ Buttons
 		tooltip class:red
 	*btnGamble
 		name:手气不错
-		desc:花费[bitcoins:ps*300]比特币，随机获得更多或更少比特币。<//></><.>40%概率获得0.5倍<.>30%概率获得1倍<.>20%概率获得2倍<.>4%概率获得5倍<.>3%概率获得10倍<.>2%概率获得50倍<.>1%概率获得100倍
+		desc:花费[bitcoins:ps*60]比特币，随机获得更多或更少比特币。<//></><.>40%概率获得0.5倍<.>30%概率获得1倍<.>20%概率获得2倍<.>4%概率获得5倍<.>3%概率获得10倍<.>2%概率获得50倍<.>1%概率获得100倍
 		icon:ccIcons[15,6]
 		icon class:shadowed
 		on click:
-			if (bitcoins<bitcoins:ps*300)
+			$cost=bitcoins:ps*60
+			if (bitcoins<$cost)
 				toast 比特币不足!
 			else
-				$cost=bitcoins:ps*300
 				lose $cost bitcoins
 				$val=random(1,100)
 				if ($val>=1 and $val<=40)
 					$num=$cost*0.5
-					toast 很遗憾，您获得0.5倍奖励
+					toast 很遗憾，您获得0.5倍奖励。比特币+$num
 				else if ($val>=41 and $val<=70)
 					$num=$cost
-					toast 不亏不赚，您获得1倍奖励
+					toast 再接再励，您获得1倍奖励。比特币+$num
 				else if ($val>=71 and $val<=90)
 					$num=$cost*2
-					toast 手气不错，您获得2倍奖励！
+					toast 手气不错，您获得2倍奖励！比特币+$num
 				else if ($val>=91 and $val<=94)
 					$num=$cost*5
-					toast 目瞪口呆，您获得5倍奖励！
+					toast 目瞪口呆，您获得5倍奖励！比特币+$num
 				else if ($val>=95 and $val<=97)
 					$num=$cost*10
-					toast 叹为观止，您获得10倍奖励！
+					toast 叹为观止，您获得10倍奖励！比特币+$num
 				else if ($val>=98 and $val<=99)
 					$num=$cost*50
-					toast 俯首称臣，您获得50倍奖励！
+					toast 俯首称臣，您获得50倍奖励！比特币+$num
 				else if ($val=100)
 					$num=$cost*100
-					toast 天降伟人，您获得100倍奖励！
+					toast 天降伟人，您获得100倍奖励！比特币+$num
 				end
 				yield $num bitcoins
 			end
