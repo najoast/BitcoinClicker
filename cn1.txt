@@ -161,7 +161,7 @@ Buttons
 					$num=$cost*100
 					toast 天降伟人，您获得100倍奖励！比特币+[$num]
 				end
-				yield $num*1 bitcoins
+				lose -1*$num bitcoins//yield $var can't work
 			end
 		end
 
