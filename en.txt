@@ -207,7 +207,7 @@ Resources
 				else if ($val>=4001 and $val<=8000)
 					$num=$base*2
 					yield 1 resLcm2
-					toast <#7ed321>Feel lucky. You get 2 times the reward, Bitcoin +[$num].</#>
+					toast <#0dbae6>Feel lucky. You get 2 times the reward, Bitcoin +[$num].</#>
 				else if ($val>=8001 and $val<=9000)
 					$num=$base*5
 					yield 1 resLcm5
@@ -275,10 +275,10 @@ Shinies
 		on click:log Woop
 		on click:
             $bnum=max(7,random(bitcoins:ps*60*1,bitcoins:ps*60*2))
-			$lnum=random(1,10)
-			toast +<b>[$bnum]</b> bitcoins, +<b>[$lnum]</b> luckycoin
+			$lnum=random(2,10)
+			toast +<b>[$bnum]</b> bitcoins, +<b>[$lnum]</b> luckycoins.
 			yield $bnum bitcoins
-			yield $lnum luckycoin
+			yield $lnum luckycoins
 		end
 		frequency:60
 		class:bigButton

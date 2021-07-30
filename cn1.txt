@@ -276,7 +276,7 @@ Shinies
 		on click:log Woop
 		on click:
             $bnum=max(7,random(bitcoins:ps*60,bitcoins:ps*60*2))
-			$lnum=random(1,10)
+			$lnum=random(2,10)
 			toast 比特币+<b>[$bnum]</b>, 幸运币+<b>[$lnum]</b>
 			yield $bnum bitcoins
 			yield $lnum luckycoin
