@@ -264,6 +264,7 @@ Resources
 	[i:newRes %key="resLcm2"]
 	[i:newRes %key="resLcm5"]
 	[i:newRes %key="resLcm10"]
+	[i:newRes %key="resLcm20"]
 	[i:newRes %key="resLcm50"]
 	[i:newRes %key="resLcm100"]
 
