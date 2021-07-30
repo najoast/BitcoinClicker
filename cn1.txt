@@ -200,29 +200,30 @@ Resources
 				lose $cost luckycoin
 				$base=bitcoins:ps*random(55,65)
 				$val=random(1,10000)
-				if ($val>=1 and $val<=5000)
-					$num=$base*0.5
-					toast <#87878b>再接再励，您获得[$num]比特币。</#>
-				else if ($val>=5001 and $val<=8000)
+				if ($val>=1 and $val<=4000)
 					$num=$base
-					toast 手气不错，您获得[$num]比特币。</#>
-				else if ($val>=8001 and $val<=9600)
+					toast <#87878b>再接再励，您获得[$num]比特币。</#>
+				else if ($val>=4001 and $val<=8000)
 					$num=$base*2
 					yield 1 resLcm2
-					toast <#7ed321>啧啧称奇，您获得[$num]比特币。</#>
-				else if ($val>=9601 and $val<=9890)
+					toast 手气不错，您获得[$num]比特币。</#>
+				else if ($val>=8001 and $val<=9000)
 					$num=$base*5
 					yield 1 resLcm5
-					toast <#f8e71c>目瞪口呆，您获得[$num]比特币。</#>
-				else if ($val>=9891 and $val<=9900)
+					toast <#7ed321>啧啧称奇，您获得[$num]比特币。</#>
+				else if ($val>=9001 and $val<=9400)
 					$num=$base*10
 					yield 1 resLcm10
+					toast <#f8e71c>目瞪口呆，您获得[$num]比特币。</#>
+				else if ($val>=9401 and $val<=9700)
+					$num=$base*20
+					yield 1 resLcm20
 					toast <#f5a623>叹为观止，您获得[$num]比特币。</#>
-				else if ($val>=9901 and $val<=9999)
+				else if ($val>=9701 and $val<=9900)
 					$num=$base*50
 					yield 1 resLcm50
 					toast <#9013fe>俯首称臣，您获得[$num]比特币。</#>
-				else if ($val>=10000)
+				else if ($val>=9901)
 					$num=$base*100
 					yield 1 resLcm100
 					toast <#d0021b>天降伟人，您获得[$num]比特币。</#>
@@ -264,6 +265,7 @@ Resources
 	[i:newRes %key="resLcm2"]
 	[i:newRes %key="resLcm5"]
 	[i:newRes %key="resLcm10"]
+	[i:newRes %key="resLcm20"]
 	[i:newRes %key="resLcm50"]
 	[i:newRes %key="resLcm100"]
 
