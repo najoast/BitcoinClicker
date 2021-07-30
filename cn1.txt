@@ -143,6 +143,46 @@ Buttons
 		icon class:shadowed
 		tooltip origin:bottom
 		tooltip class:red
+	*btnGamble
+		name:手气不错
+		desc:花费1个幸运币，试试手气吧！
+		icon:ccIcons[15,6]
+		class:noBackground
+		req:luckycoin>0
+		on click:
+			anim icon plop
+			$cost=1
+			if (luckycoin<$cost)
+				toast 幸运币不足!
+			else
+				lose $cost luckycoin
+				$base=bitcoins:ps*60
+				$val=random(1,10000)
+				if ($val>=1 and $val<=5000)
+					$num=$base*0.5
+					toast <#87878b>再接再励，您获得[$num]比特币。</#>
+				else if ($val>=5001 and $val<=8000)
+					$num=$base
+					toast 手气不错，您获得[$num]比特币。</#>
+				else if ($val>=8001 and $val<=9600)
+					$num=$base*2
+					toast <#7ed321>啧啧称奇，您获得[$num]比特币。</#>
+				else if ($val>=9601 and $val<=9890)
+					$num=$base*5
+					toast <#f8e71c>目瞪口呆，您获得[$num]比特币。</#>
+				else if ($val>=9891 and $val<=9900)
+					$num=$base*10
+					toast <#f5a623>叹为观止，您获得[$num]比特币。</#>
+				else if ($val>=9901 and $val<=9999)
+					$num=$base*50
+					toast <#9013fe>俯首称臣，您获得[$num]比特币。</#>
+				else if ($val>=10000)
+					$num=$base*100
+					toast <#d0021b>天降伟人，您获得[$num]比特币。</#>
+				end
+			end
+			yield $num bitcoins
+		end
 
 Resources
 	*bitcoin|bitcoins
@@ -151,6 +191,13 @@ Resources
 		icon:icons[0,0]
 		class:noBackground
 		show earned
+	*luckycoin|lockycoins
+		name:幸运币
+		desc:使用[n:this]可以在四叶草那里试试手气。
+		icon:icons[0,0]
+		class:noBackground
+		show earned
+
 	*resAllUpgradesNum
         name:resAllUpgradesNum
 		icon:icons[0,0]
@@ -191,8 +238,9 @@ Shinies
 			if (have clover) $boost=4
 			//get at least 7, or between 1 and 3 minutes of our bitcoin production
             $amount=max(7,random(bitcoins:ps*60*1,bitcoins:ps*60*3))*$boost
-			toast 比特币+<b>[$amount]</b>
+			toast 比特币+<b>[$amount]</b>, 幸运币+<b>1</b>
 			yield $amount bitcoins
+			yield 1 luckycoin
 		end
 		frequency:60
 		class:bigButton
