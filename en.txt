@@ -188,7 +188,7 @@ Resources
 		show earned
 	*luckycoin|lockycoins
 		name:Lucky Bitcoins
-		desc:Click spend 1 [n:this] to get a random amount of Bitcoins. (Available from Jump Bitcoin)
+		desc:Click spend 1 [n:this] to get a random amount of Bitcoins.
 		icon:icons[0,0]
 		class:noBackground
 		show earned
@@ -286,6 +286,7 @@ Shinies
 Buildings
 	*TEMPLATE
 		on click:anim glow
+		on earn:yield 1 luckycoin
 		
 	*building1
 		name:Manual Calculation

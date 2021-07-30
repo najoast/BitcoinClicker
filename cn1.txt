@@ -187,7 +187,7 @@ Resources
 		show earned
 	*luckycoin|lockycoins
 		name:幸运币
-		desc:点击花费1[n:this]，可随机获得一定量的比特币。(可以从跳动的比特币那里获得)
+		desc:点击花费1[n:this]，可随机获得一定量的比特币。
 		icon:icons[0,0]
 		class:noBackground
 		show earned
@@ -287,6 +287,7 @@ Shinies
 Buildings
 	*TEMPLATE
 		on click:anim glow
+		on earn:yield 1 luckycoin
 		
 	*building1
 		name:人工计算
