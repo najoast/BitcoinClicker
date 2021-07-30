@@ -4,7 +4,7 @@ Let's make a game!
 	name:Bitcoin Clickers
 	version:1.2
 	created:23/7/2021
-	by:Ares Studio
+	by:Ares Studio (najoast@gmail.com)
 
 Settings
 	building cost increase:115%
