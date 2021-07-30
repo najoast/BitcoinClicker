@@ -198,7 +198,7 @@ Resources
 				toast 幸运币不足!
 			else
 				lose $cost luckycoin
-				$base=bitcoins:ps*random(55,65)
+				$base=bitcoins:ps*60
 				$val=random(1,10000)
 				if ($val>=1 and $val<=4000)
 					$num=$base
