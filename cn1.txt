@@ -185,7 +185,7 @@ Resources
 		icon:icons[0,0]
 		class:noBackground
 		show earned
-	*luckycoin|lockycoins
+	*luckycoin|luckycoins
 		name:幸运币
 		desc:点击花费1[n:this]，可随机获得一定量的比特币。
 		icon:icons[0,0]

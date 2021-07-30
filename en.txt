@@ -186,7 +186,7 @@ Resources
 		icon:icons[0,0]
 		class:noBackground
 		show earned
-	*luckycoin|lockycoins
+	*luckycoin|luckycoins
 		name:Lucky Bitcoins
 		desc:Click spend 1 [n:this] to get a random amount of Bitcoins.
 		icon:icons[0,0]
@@ -278,7 +278,7 @@ Shinies
 			$lnum=random(2,10)
 			toast +<b>[$bnum]</b> bitcoins, +<b>[$lnum]</b> luckycoins.
 			yield $bnum bitcoins
-			yield $lnum luckycoins
+			yield $lnum luckycoin
 		end
 		frequency:60
 		class:bigButton
