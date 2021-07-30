@@ -287,7 +287,6 @@ Shinies
 Buildings
 	*TEMPLATE
 		on click:anim glow
-		on earn:yield 1 luckycoin
 		
 	*building1
 		name:人工计算
