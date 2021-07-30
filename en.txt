@@ -228,8 +228,9 @@ Shinies
 		on click:log Woop
 		on click:
             $amount=max(7,random(bitcoins:ps*60*1,bitcoins:ps*60*2))
-			toast +<b>[$amount]</b> bitcoins
+			toast +<b>[$amount]</b> bitcoins, +<b>1</b> luckycoin
 			yield $amount bitcoins
+			yield 1 luckycoin
 		end
 		frequency:60
 		class:bigButton
