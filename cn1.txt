@@ -136,27 +136,27 @@ Includes
         name:[%name]
         icon:[%icon]
         req:luckycoin:earned-luckycoin>=[%req]
-*include ac10 %name %icon %req
+*include ac10 %name %icon %req %i
     *ac10i[%i]
         name:[%name]
         icon:[%icon]
         req:resLcm2>=[%req]
-*include ac11 %name %icon %req
+*include ac11 %name %icon %req %i
     *ac11i[%i]
         name:[%name]
         icon:[%icon]
         req:resLcm5>=[%req]
-*include ac12 %name %icon %req
+*include ac12 %name %icon %req %i
     *ac12i[%i]
         name:[%name]
         icon:[%icon]
         req:resLcm10>=[%req]
-*include ac13 %name %icon %req
+*include ac13 %name %icon %req %i
     *ac13i[%i]
         name:[%name]
         icon:[%icon]
         req:resLcm50>=[%req]
-*include ac14 %name %icon %req
+*include ac14 %name %icon %req %i
     *ac14i[%i]
         name:[%name]
         icon:[%icon]
