@@ -153,7 +153,7 @@ Resources
 		show earned
 	*luckycoin|lockycoins
 		name:幸运币
-		desc:点击花费1[n:this]，可随机获得一定量的比特币。
+		desc:点击花费1[n:this]，可随机获得一定量的比特币。<q>听说可以从跳动的比特币那里获得</q>
 		icon:icons[0,0]
 		class:noBackground
 		show earned
