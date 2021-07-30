@@ -152,6 +152,46 @@ Resources
 		icon:icons[0,0]
 		class:noBackground
 		show earned
+	*luckycoin|lockycoins
+		name:Lucky Bitcoins
+		desc:Click spend 1 [n:this] to get a random amount of Bitcoins. (Available from Jump Bitcoin)
+		icon:icons[0,0]
+		class:noBackground
+		show earned
+		on click:
+			anim icon plop
+			$cost=1
+			if (luckycoin<$cost)
+				toast Not enough lucky coins!
+			else
+				lose $cost luckycoin
+				$base=bitcoins:ps*random(55,65)
+				$val=random(1,10000)
+				if ($val>=1 and $val<=5000)
+					$num=$base*0.5
+					toast <#87878b>You get [$num] bitcoins.</#>
+				else if ($val>=5001 and $val<=8000)
+					$num=$base
+					toast Feel lucky. You get [$num] bitcoins.</#>
+				else if ($val>=8001 and $val<=9600)
+					$num=$base*2
+					toast <#7ed321>Amazed. You get [$num] bitcoins.</#>
+				else if ($val>=9601 and $val<=9890)
+					$num=$base*5
+					toast <#f8e71c>Stunned! You get [$num] bitcoins!</#>
+				else if ($val>=9891 and $val<=9900)
+					$num=$base*10
+					toast <#f5a623>Breathtaking! You get [$num] bitcoins!</#>
+				else if ($val>=9901 and $val<=9999)
+					$num=$base*50
+					toast <#9013fe>God like! You get [$num] bitcoins!</#>
+				else if ($val>=10000)
+					$num=$base*100
+					toast <#d0021b>Legendary! You get [$num] bitcoins!</#>
+				end
+			end
+			yield $num bitcoins
+		end
 	*resAllUpgradesNum
         name:resAllUpgradesNum
 		icon:icons[0,0]
@@ -187,10 +227,7 @@ Shinies
 		movement:onRight moveLeft fade bounce:0.05
 		on click:log Woop
 		on click:
-			$boost=1
-			if (have clover) $boost=4
-			//get at least 7, or between 1 and 3 minutes of our bitcoin production
-            $amount=max(7,random(bitcoins:ps*60*1,bitcoins:ps*60*3))*$boost
+            $amount=max(7,random(bitcoins:ps*60*1,bitcoins:ps*60*2))
 			toast +<b>[$amount]</b> bitcoins
 			yield $amount bitcoins
 		end
@@ -685,13 +722,6 @@ Upgrades
 [i:br2 %id="18" %idx="11" %name="Reinforced Idleverse XI" %desc="[n:building18] are <b>twice</b> as efficient." %icon="[7,20]" %cost="60000000000000000000000000000000000000000000000" %req="400"]
 [i:br2 %id="18" %idx="12" %name="Reinforced Idleverse XII" %desc="[n:building18] are <b>twice</b> as efficient." %icon="[7,21]" %cost="600000000000000000000000000000000000000000000000000" %req="450"]
 [i:br2 %id="18" %idx="13" %name="Reinforced Idleverse XIII" %desc="[n:building18] are <b>twice</b> as efficient." %icon="[7,22]" %cost="6000000000000000000000000000000000000000000000000000000" %req="500"]
-
-	*clover
-		name:Clover
-		desc:A delicious herb that tastes lucky.<//><b>效果：</b><.>lucky bitcoin effects are 4 times more powerful
-		icon:icons[2,8]
-		cost:1000000000 bitcoins
-		req:500000000 bitcoins:earned
 
 Achievements
 [i:ac1 %name="Mined 1 bitcoin" %desc="First entry into mining" %icon="ccIcons[3,0]" %req="1" %i="1"]
