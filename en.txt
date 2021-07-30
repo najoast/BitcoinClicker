@@ -203,31 +203,31 @@ Resources
 				$val=random(1,10000)
 				if ($val>=1 and $val<=4000)
 					$num=$base
-					toast <#87878b>You get [$num] bitcoins.</#>
+					toast You get 1 times the reward, Bitcoin +[$num].
 				else if ($val>=4001 and $val<=8000)
 					$num=$base*2
 					yield 1 resLcm2
-					toast Feel lucky. You get [$num] bitcoins.</#>
+					toast <#7ed321>Feel lucky. You get 2 times the reward, Bitcoin +[$num].</#>
 				else if ($val>=8001 and $val<=9000)
 					$num=$base*5
 					yield 1 resLcm5
-					toast <#7ed321>Amazed. You get [$num] bitcoins.</#>
+					toast <#7ed321>Amazed. You get 5 times the reward, Bitcoin +[$num].</#>
 				else if ($val>=9001 and $val<=9400)
 					$num=$base*10
 					yield 1 resLcm10
-					toast <#f8e71c>Stunned! You get [$num] bitcoins!</#>
+					toast <#f8e71c>Stunned! You get 10 times the reward, Bitcoin +[$num]!</#>
 				else if ($val>=9401 and $val<=9700)
 					$num=$base*20
 					yield 1 resLcm20
-					toast <#f5a623>Breathtaking! You get [$num] bitcoins!</#>
+					toast <#f5a623>Breathtaking! You get 20 times the reward, Bitcoin +[$num]!</#>
 				else if ($val>=9701 and $val<=9900)
 					$num=$base*50
 					yield 1 resLcm50
-					toast <#9013fe>God like! You get [$num] bitcoins!</#>
+					toast <#9013fe>God like! You get 50 times the reward, Bitcoin +[$num]!</#>
 				else if ($val>=9901)
 					$num=$base*100
 					yield 1 resLcm100
-					toast <#d0021b>Legendary! You get [$num] bitcoins!</#>
+					toast <#d0021b>Legendary! You get 100 times the reward, Bitcoin +[$num]!</#>
 				end
 			end
 			yield $num bitcoins
@@ -274,10 +274,11 @@ Shinies
 		movement:onRight moveLeft fade bounce:0.05
 		on click:log Woop
 		on click:
-            $amount=max(7,random(bitcoins:ps*60*1,bitcoins:ps*60*2))
-			toast +<b>[$amount]</b> bitcoins, +<b>1</b> luckycoin
-			yield $amount bitcoins
-			yield 1 luckycoin
+            $bnum=max(7,random(bitcoins:ps*60*1,bitcoins:ps*60*2))
+			$lnum=random(1,10)
+			toast +<b>[$bnum]</b> bitcoins, +<b>[$lnum]</b> luckycoin
+			yield $bnum bitcoins
+			yield $lnum luckycoin
 		end
 		frequency:60
 		class:bigButton

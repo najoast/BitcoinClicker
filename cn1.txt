@@ -202,31 +202,31 @@ Resources
 				$val=random(1,10000)
 				if ($val>=1 and $val<=4000)
 					$num=$base
-					toast <#87878b>再接再励，您获得[$num]比特币。</#>
+					toast 再接再励，您获得1倍奖励。比特币+[$num]
 				else if ($val>=4001 and $val<=8000)
 					$num=$base*2
 					yield 1 resLcm2
-					toast 手气不错，您获得[$num]比特币。</#>
+					toast <#0dbae6>手气不错，您获得2倍奖励。比特币+[$num]</#>
 				else if ($val>=8001 and $val<=9000)
 					$num=$base*5
 					yield 1 resLcm5
-					toast <#7ed321>啧啧称奇，您获得[$num]比特币。</#>
+					toast <#7ed321>啧啧称奇，您获得5倍奖励。比特币+[$num]</#>
 				else if ($val>=9001 and $val<=9400)
 					$num=$base*10
 					yield 1 resLcm10
-					toast <#f8e71c>目瞪口呆，您获得[$num]比特币。</#>
+					toast <#f8e71c>目瞪口呆，您获得10倍奖励！比特币+[$num]</#>
 				else if ($val>=9401 and $val<=9700)
 					$num=$base*20
 					yield 1 resLcm20
-					toast <#f5a623>叹为观止，您获得[$num]比特币。</#>
+					toast <#f5a623>叹为观止，您获得20倍奖励！比特币+[$num]</#>
 				else if ($val>=9701 and $val<=9900)
 					$num=$base*50
 					yield 1 resLcm50
-					toast <#9013fe>俯首称臣，您获得[$num]比特币。</#>
+					toast <#9013fe>俯首称臣，您获得50倍奖励！比特币+[$num]</#>
 				else if ($val>=9901)
 					$num=$base*100
 					yield 1 resLcm100
-					toast <#d0021b>天降伟人，您获得[$num]比特币。</#>
+					toast <#d0021b>天降伟人，您获得100倍奖励！比特币[$num]</#>
 				end
 			end
 			yield $num bitcoins
@@ -275,10 +275,11 @@ Shinies
 		movement:onRight moveLeft fade bounce:0.05
 		on click:log Woop
 		on click:
-            $amount=max(7,random(bitcoins:ps*60,bitcoins:ps*60*2))
-			toast 比特币+<b>[$amount]</b>, 幸运币+<b>1</b>
-			yield $amount bitcoins
-			yield 1 luckycoin
+            $bnum=max(7,random(bitcoins:ps*60,bitcoins:ps*60*2))
+			$lnum=random(1,10)
+			toast 比特币+<b>[$bnum]</b>, 幸运币+<b>[$lnum]</b>
+			yield $bnum bitcoins
+			yield $lnum luckycoin
 		end
 		frequency:60
 		class:bigButton
