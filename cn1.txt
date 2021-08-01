@@ -7,7 +7,7 @@ Let's make a game!
 	by:Ares Studio
 
 Settings
-	building cost increase:110%
+	building cost increase:105%
 	background:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/bg.jpg
 	stylesheet:stuff/bigBlue.css
 	building cost refund:50%
