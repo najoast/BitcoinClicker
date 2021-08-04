@@ -63,6 +63,17 @@ Includes
 		req:building[%id]>=[%req]
 		passive:multiply yield of building[%id] by 2
 		tag:tagBuilding[%id]Upgrade
+*include br3 %id %idx %name %desc %icon %cost %req
+	*br3b[%idx]
+		name:[%name]
+		desc:[%desc]
+		icon:ccIcons[%icon]
+		cost:[%cost] bitcoins
+		req:building[%id]>=[%req]
+		passive:
+			multiply yield of building2 by 2
+			multiply yield of building[%d] by (1+0.01*(building2/[%idx]))
+		end
 
 *include newBuildingVarRes %id
 	*varBuilding[%id]Earned
@@ -852,6 +863,23 @@ Upgrades
 [i:br2 %id="18" %idx="11" %name="强化空闲宇宙11" %desc="[n:building18]的效果<b>翻倍</b>。" %icon="[7,20]" %cost="60000000000000000000000000000000000000000000000" %req="400"]
 [i:br2 %id="18" %idx="12" %name="强化空闲宇宙12" %desc="[n:building18]的效果<b>翻倍</b>。" %icon="[7,21]" %cost="600000000000000000000000000000000000000000000000000" %req="450"]
 [i:br2 %id="18" %idx="13" %name="强化空闲宇宙13" %desc="[n:building18]的效果<b>翻倍</b>。" %icon="[7,22]" %cost="6000000000000000000000000000000000000000000000000000000" %req="500"]
+
+[i:br3 %id="3" %idx="1" %name="家用笔记本强化" %desc="人列计算机的产量翻倍。每个人列计算机使家用笔记本的产量+1%。" %icon="[16,0]" %cost="55000" %req="15"]
+[i:br3 %id="4" %idx="2" %name="组装计算机强化" %desc="人列计算机的产量翻倍。每2个人列计算机使组装计算机的产量+1%。" %icon="[16,1]" %cost="600000" %req="15"]
+[i:br3 %id="5" %idx="3" %name="二手矿机强化" %desc="人列计算机的产量翻倍。每3个人列计算机使二手矿机的产量+1%。" %icon="[16,2]" %cost="6500000" %req="15"]
+[i:br3 %id="6" %idx="4" %name="显卡矿机强化" %desc="人列计算机的产量翻倍。每4个人列计算机使显卡矿机的产量+1%。" %icon="[16,13]" %cost="70000000" %req="15"]
+[i:br3 %id="7" %idx="5" %name="ASIC矿机强化" %desc="人列计算机的产量翻倍。每5个人列计算机使ASIC矿机的产量+1%。" %icon="[16,14]" %cost="1000000000" %req="15"]
+[i:br3 %id="8" %idx="6" %name="云服务器强化" %desc="人列计算机的产量翻倍。每6个人列计算机使云服务器的产量+1%。" %icon="[16,15]" %cost="16500000000" %req="15"]
+[i:br3 %id="9" %idx="7" %name="挖矿机阵列强化" %desc="人列计算机的产量翻倍。每7个人列计算机使挖矿机阵列的产量+1%。" %icon="[16,16]" %cost="255000000000" %req="15"]
+[i:br3 %id="10" %idx="8" %name="挖矿机集群强化" %desc="人列计算机的产量翻倍。每8个人列计算机使挖矿机集群的产量+1%。" %icon="[16,17]" %cost="3750000000000" %req="15"]
+[i:br3 %id="11" %idx="9" %name="超级计算机强化" %desc="人列计算机的产量翻倍。每9个人列计算机使超级计算机的产量+1%。" %icon="[16,18]" %cost="50000000000000" %req="15"]
+[i:br3 %id="12" %idx="10" %name="量子计算机强化" %desc="人列计算机的产量翻倍。每10个人列计算机使量子计算机的产量+1%。" %icon="[16,19]" %cost="700000000000000" %req="15"]
+[i:br3 %id="13" %idx="11" %name="贾维斯强化" %desc="人列计算机的产量翻倍。每11个人列计算机使贾维斯的产量+1%。" %icon="[16,20]" %cost="8500000000000000" %req="15"]
+[i:br3 %id="14" %idx="12" %name="时间机器强化" %desc="人列计算机的产量翻倍。每12个人列计算机使时间机器的产量+1%。" %icon="[16,21]" %cost="105000000000000000" %req="15"]
+[i:br3 %id="15" %idx="13" %name="智子强化" %desc="人列计算机的产量翻倍。每13个人列计算机使智子的产量+1%。" %icon="[16,22]" %cost="1300000000000000000" %req="15"]
+[i:br3 %id="16" %idx="14" %name="分形引擎强化" %desc="人列计算机的产量翻倍。每14个人列计算机使分形引擎的产量+1%。" %icon="[16,23]" %cost="15500000000000000000" %req="15"]
+[i:br3 %id="17" %idx="15" %name="克罗托系统强化" %desc="人列计算机的产量翻倍。每15个人列计算机使克罗托系统的产量+1%。" %icon="[16,24]" %cost="3550000000000000000000" %req="15"]
+[i:br3 %id="18" %idx="16" %name="空闲宇宙强化" %desc="人列计算机的产量翻倍。每16个人列计算机使空闲宇宙的产量+1%。" %icon="[16,25]" %cost="60000000000000000000000" %req="15"]
 
 Achievements
 [i:ac1 %name="累积生产1比特币" %desc="初入挖矿" %icon="ccIcons[3,0]" %req="1" %i="1"]
