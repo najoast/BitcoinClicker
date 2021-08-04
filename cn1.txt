@@ -72,7 +72,7 @@ Includes
 		req:building[%id]>=[%req]
 		passive:
 			multiply yield of building2 by 2
-			multiply yield of building[%d] by (1+0.01*(building2/[%idx]))
+			multiply yield of building[%id] by (1+0.01*(building2/[%idx]))
 		end
 
 *include newBuildingVarRes %id
