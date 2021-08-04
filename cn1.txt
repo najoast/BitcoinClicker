@@ -69,10 +69,10 @@ Includes
 		desc:<//></><.><b>人列计算机</b>的产量翻倍<.>每[%idx]个<b>人列计算机</b>使<b>[%b1n]</b>的产量+1%
 		icon:ccIcons[%icon]
 		cost:[%cost] bitcoins
-		req:building[%id]>=[%req]
+		req:building[%b1]>=[%req]
 		passive:
 			multiply yield of building2 by 2
-			multiply yield of building[%id] by (1+0.01*(building2/[%idx]))
+			multiply yield of building[%b1] by (1+0.01*(building2/[%idx]))
 		end
 *include br4 %idx %b1 %b2 %b1n %b2n %name %req %cost %icon
 	*br4i[%idx]
