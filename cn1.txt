@@ -322,7 +322,7 @@ Buildings
 			building1Cps=1+$addition
 			yield building1Cps bitcoins
 			yield building1Cps varBuilding1Earned
-			varBuilding1Cost=15*pow(1.15,building1)
+			varBuilding1Cost=15*pow(1.05,building1)
 			// log [$total] [$addition] [bitcoins:ps] [varBuilding1Earned:ps] [varBuilding1Cost]
 		end
 		unlocked
@@ -337,7 +337,7 @@ Buildings
 		on tick:
 			yield 4 bitcoins
 			yield 4 varBuilding2Earned
-			varBuilding2Cost=100*pow(1.15,building2)
+			varBuilding2Cost=100*pow(1.05,building2)
 		end
 		tag:tagBuilding2
 		req:have building1
@@ -350,7 +350,7 @@ Buildings
 		on tick:
 			yield 8 bitcoins
 			yield 8 varBuilding3Earned
-			varBuilding3Cost=1100*pow(1.15,building3)
+			varBuilding3Cost=1100*pow(1.05,building3)
 		end
 		tag:tagBuilding3
 		req:have building2
@@ -363,7 +363,7 @@ Buildings
 		on tick:
 			yield 47 bitcoins
 			yield 47 varBuilding4Earned
-			varBuilding4Cost=12000*pow(1.15,building4)
+			varBuilding4Cost=12000*pow(1.05,building4)
 		end
 		tag:tagBuilding4
 		req:have building3
@@ -376,7 +376,7 @@ Buildings
 		on tick:
 			yield 260 bitcoins
 			yield 260 varBuilding5Earned
-			varBuilding5Cost=130000*pow(1.15,building5)
+			varBuilding5Cost=130000*pow(1.05,building5)
 		end
 		tag:tagBuilding5
 		req:have building4
@@ -389,7 +389,7 @@ Buildings
 		on tick:
 			yield 1400 bitcoins
 			yield 1400 varBuilding6Earned
-			varBuilding6Cost=1400000*pow(1.15,building6)
+			varBuilding6Cost=1400000*pow(1.05,building6)
 		end
 		tag:tagBuilding6
 		req:have building5
@@ -402,7 +402,7 @@ Buildings
 		on tick:
 			yield 7800 bitcoins
 			yield 7800 varBuilding7Earned
-			varBuilding7Cost=20000000*pow(1.15,building7)
+			varBuilding7Cost=20000000*pow(1.05,building7)
 		end
 		tag:tagBuilding7
 		req:have building6
@@ -415,7 +415,7 @@ Buildings
 		on tick:
 			yield 44000 bitcoins
 			yield 44000 varBuilding8Earned
-			varBuilding8Cost=330000000*pow(1.15,building8)
+			varBuilding8Cost=330000000*pow(1.05,building8)
 		end
 		tag:tagBuilding8
 		req:have building7
@@ -428,7 +428,7 @@ Buildings
 		on tick:
 			yield 260000 bitcoins
 			yield 260000 varBuilding9Earned
-			varBuilding9Cost=5100000000*pow(1.15,building9)
+			varBuilding9Cost=5100000000*pow(1.05,building9)
 		end
 		tag:tagBuilding9
 		req:have building8
@@ -441,7 +441,7 @@ Buildings
 		on tick:
 			yield 1600000 bitcoins
 			yield 1600000 varBuilding10Earned
-			varBuilding10Cost=75000000000*pow(1.15,building10)
+			varBuilding10Cost=75000000000*pow(1.05,building10)
 		end
 		tag:tagBuilding10
 		req:have building9
@@ -454,7 +454,7 @@ Buildings
 		on tick:
 			yield 10000000 bitcoins
 			yield 10000000 varBuilding11Earned
-			varBuilding11Cost=1000000000000*pow(1.15,building11)
+			varBuilding11Cost=1000000000000*pow(1.05,building11)
 		end
 		tag:tagBuilding11
 		req:have building10
@@ -467,7 +467,7 @@ Buildings
 		on tick:
 			yield 65000000 bitcoins
 			yield 65000000 varBuilding12Earned
-			varBuilding12Cost=14000000000000*pow(1.15,building12)
+			varBuilding12Cost=14000000000000*pow(1.05,building12)
 		end
 		tag:tagBuilding12
 		req:have building11
@@ -480,7 +480,7 @@ Buildings
 		on tick:
 			yield 430000000 bitcoins
 			yield 430000000 varBuilding13Earned
-			varBuilding13Cost=170000000000000*pow(1.15,building13)
+			varBuilding13Cost=170000000000000*pow(1.05,building13)
 		end
 		tag:tagBuilding13
 		req:have building12
@@ -493,7 +493,7 @@ Buildings
 		on tick:
 			yield 2900000000 bitcoins
 			yield 2900000000 varBuilding14Earned
-			varBuilding14Cost=2100000000000000*pow(1.15,building14)
+			varBuilding14Cost=2100000000000000*pow(1.05,building14)
 		end
 		tag:tagBuilding14
 		req:have building13
@@ -506,7 +506,7 @@ Buildings
 		on tick:
 			yield 21000000000 bitcoins
 			yield 21000000000 varBuilding15Earned
-			varBuilding15Cost=26000000000000000*pow(1.15,building15)
+			varBuilding15Cost=26000000000000000*pow(1.05,building15)
 		end
 		tag:tagBuilding15
 		req:have building14
@@ -519,7 +519,7 @@ Buildings
 		on tick:
 			yield 150000000000 bitcoins
 			yield 150000000000 varBuilding16Earned
-			varBuilding16Cost=310000000000000000*pow(1.15,building16)
+			varBuilding16Cost=310000000000000000*pow(1.05,building16)
 		end
 		tag:tagBuilding16
 		req:have building15
@@ -532,7 +532,7 @@ Buildings
 		on tick:
 			yield 1100000000000 bitcoins
 			yield 1100000000000 varBuilding17Earned
-			varBuilding17Cost=71000000000000000000*pow(1.15,building17)
+			varBuilding17Cost=71000000000000000000*pow(1.05,building17)
 		end
 		tag:tagBuilding17
 		req:have building16
@@ -545,7 +545,7 @@ Buildings
 		on tick:
 			yield 8300000000000 bitcoins
 			yield 8300000000000 varBuilding18Earned
-			varBuilding18Cost=12000000000000000000000*pow(1.15,building18)
+			varBuilding18Cost=12000000000000000000000*pow(1.05,building18)
 		end
 		tag:tagBuilding18
 		req:have building17
