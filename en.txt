@@ -101,7 +101,7 @@ Includes
 *include br6 %idx %req %cost %icon %factor
 	*br6i[%idx]
 		name:Kitten Power [%idx]
-		desc:You gain <b>more BpS</b> the more milk you have.
+		desc:You gain <b>more BpS</b> the more Achievements you have.
 		icon:ccIcons[%icon]
 		cost:[%cost] bitcoins
 		req:resAllAchievesNum:earned>=[%req]
