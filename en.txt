@@ -98,6 +98,20 @@ Includes
 			multiply yield of :Buildings by 1.0[%mul]
 			multiply yield of bitcoinButton by 1.0[%mul]
 		end
+*include br6 %idx %req %cost %icon %factor
+	*br6i[%idx]
+		name:Kitten Power [%idx]
+		desc:You gain <b>more BpS</b> the more milk you have.
+		icon:ccIcons[%icon]
+		cost:[%cost] bitcoins
+		req:resAllAchievesNum:earned>=[%req]
+		passive:
+			$x=1+[%factor]*resAllAchievesNum:earned/25
+			if ($x>1)
+				multiply yield of :Buildings by $x
+				multiply yield of bitcoinButton by $x
+			end
+		end
 
 *include newBuildingVarRes %id
 	*varBuilding[%id]Earned
@@ -268,6 +282,11 @@ Resources
 		end
 	*resAllUpgradesNum
         name:resAllUpgradesNum
+		icon:icons[0,0]
+		class:noBackground
+		hidden
+	*resAllAchievesNum
+        name:resAllAchievesNum
 		icon:icons[0,0]
 		class:noBackground
 		hidden
@@ -979,7 +998,23 @@ Upgrades
 [i:br5 %idx="121" %req="15811000000000000000000000000000000000000000000000000000000" %cost="316227000000000000000000000000000000000000000000000000000000" %icon="[8,11]" %mul="5"]
 [i:br5 %idx="122" %req="15811000000000000000000000000000000000000000000000000000000" %cost="316227000000000000000000000000000000000000000000000000000000" %icon="[9,11]" %mul="5"]
 
+[i:br6 %idx="1" %req="13" %cost="9000000" %icon="[18,0]" %factor="0.1"]
+[i:br6 %idx="2" %req="25" %cost="9000000000" %icon="[18,1]" %factor="0.125"]
+[i:br6 %idx="3" %req="50" %cost="90000000000000" %icon="[18,2]" %factor="0.15"]
+[i:br6 %idx="4" %req="75" %cost="90000000000000000" %icon="[18,13]" %factor="0.175"]
+[i:br6 %idx="5" %req="100" %cost="900000000000000000000" %icon="[18,14]" %factor="0.2"]
+[i:br6 %idx="6" %req="125" %cost="900000000000000000000000" %icon="[18,15]" %factor="0.2"]
+[i:br6 %idx="7" %req="150" %cost="900000000000000000000000000" %icon="[18,16]" %factor="0.2"]
+[i:br6 %idx="8" %req="175" %cost="900000000000000000000000000000" %icon="[18,17]" %factor="0.2"]
+[i:br6 %idx="9" %req="200" %cost="900000000000000000000000000000000" %icon="[18,18]" %factor="0.2"]
+[i:br6 %idx="10" %req="225" %cost="900000000000000000000000000000000000" %icon="[18,19]" %factor="0.175"]
+[i:br6 %idx="11" %req="250" %cost="900000000000000000000000000000000000000" %icon="[18,21]" %factor="0.15"]
+[i:br6 %idx="12" %req="275" %cost="900000000000000000000000000000000000000000" %icon="[18,25]" %factor="0.125"]
+[i:br6 %idx="13" %req="300" %cost="900000000000000000000000000000000000000000000" %icon="[18,26]" %factor="0.115"]
+
 Achievements
+*TEMPLATE
+	on earn:yield 1 resAllAchievesNum
 [i:ac1 %name="Mined 1 bitcoin" %desc="First entry into mining" %icon="ccIcons[3,0]" %req="1" %i="1"]
 [i:ac1 %name="Mined 1000 bitcoins" %desc="Manual mining" %icon="ccIcons[3,1]" %req="1000" %i="2"]
 [i:ac1 %name="Mined 100000 bitcoins" %desc="Automatic mining" %icon="ccIcons[3,2]" %req="100000" %i="3"]
