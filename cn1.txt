@@ -196,9 +196,7 @@ Buttons
 			[include cursorClick]
 			yield 1+$addition bitcoins
 		end
-		on tick:
-			yield 1 bitcoins
-		end
+		on tick:do click with bitcoinButton
 		no text
 		icon class:shadowed
 		tooltip origin:bottom
