@@ -33,7 +33,8 @@ Resources
 	*bitcoin|bitcoins
 		name:只因
 		desc:这是你拥有的只因，你能用它们购买东西。你的目标是获得尽可能多的只因！
-		icon:icons[0,0]
+		// icon:icons[0,0]
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/master/res/lq.png
 		class:noBackground
 		show earned
 		
