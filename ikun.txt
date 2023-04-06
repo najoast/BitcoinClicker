@@ -22,7 +22,7 @@ Buttons
 		desc:点击坤坤来生成更多的只因吧！
 		on click:anim icon wobble
 		on click:yield 1 bitcoin
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/master/res/ikun_512.png
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/master/res/ikun.png
 		no text
 		class:bigButton hasFlares
 		icon class:shadowed
