@@ -1,322 +1,1617 @@
 Let's make a game!
-	name:无尽的只因
-	by:全栈游戏开发
-	desc:鸡你实在是太美
-	created:6/4/2023
-	updated:6/4/2023
-	version:1
+	desc:鸡你实在是太美<br> B站: https://space.bilibili.com/389407601
+	updated:28/07/2021
+	name:点击你太美
+	version:1.0.0
+	created:23/7/2021
+	by:全栈游戏开发 https://space.bilibili.com/389407601
 
 Settings
-	background:https://i.imgur.com/ko1yDMX.jpg
-	building cost increase:115%
-	building cost refund:50%
-	spritesheet:icons, 48 by 48, https://raw.githubusercontent.com/najoast/BitcoinClicker/master/res/icons.png
+	building cost increase:105%
+	background:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/bg.jpg
 	stylesheet:stuff/bigBlue.css
+	building cost refund:50%
+	spritesheet:icons, 48 by 48, https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/icons.png
+	spritesheet:ccIcons, 48 by 48, https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/ccIcons.png
 
 Layout
-	use default
-		
+*main
+	contains:res, buttons
+	*res
+		contains:Resources
+		class:fullWidth
+	*buttons
+		contains:Buttons
+*store
+	contains:buildings, upgrades
+	*buildings
+		contains:BulkDisplay, Buildings
+		header:建筑
+		tooltip origin:left
+	*upgrades
+		contains:Upgrades
+		header:科技
+		costs:hide
+		names:hide
+
+Includes
+// 鼠标点击和建筑1的科技加成效果
+*include cursorClick
+        $addition=0
+        $total=0
+        do count with :Buildings:notTag:tagBuilding1
+        if ($total>0)
+			if (have building1Upgrade4) $addition=0.1*$total
+			if (have building1Upgrade5) $addition=$addition*2
+			if (have building1Upgrade6) $addition=$addition*5
+			if (have building1Upgrade7) $addition=$addition*10
+            if (have building1Upgrade8) $addition=$addition*20
+            if (have building1Upgrade9) $addition=$addition*20
+            if (have building1Upgrade10) $addition=$addition*20
+            if (have building1Upgrade11) $addition=$addition*20
+            if (have building1Upgrade12) $addition=$addition*20
+            if (have building1Upgrade13) $addition=$addition*20
+        end
+
+// Common building upgrade: only have `twice` effect
+*include br2 %id %idx %name %desc %icon %cost %req
+	*building[%id]Upgrade[%idx]
+		name:[%name]
+		desc:[%desc]
+		icon:ccIcons[%icon]
+		cost:[%cost] bitcoins
+		req:building[%id]>=[%req]
+		passive:multiply yield of building[%id] by 2
+		tag:tagBuilding[%id]Upgrade
+*include br3 %idx %b1 %b1n %req %cost %icon
+	*br3i[%idx]
+		name:[%b1n]强化
+		desc:<//></><.><b>篮球场</b>的产量翻倍<.>每[%idx]个<b>篮球场</b>使<b>[%b1n]</b>的产量+1%
+		icon:ccIcons[%icon]
+		cost:[%cost] bitcoins
+		req:building[%b1]>=[%req]
+		passive:
+			multiply yield of building2 by 2
+			multiply yield of building[%b1] by (1+0.01*(building2/[%idx]))
+		end
+*include br4 %idx %b1 %b2 %b1n %b2n %name %req %cost %icon
+	*br4i[%idx]
+		name:[%name]
+		desc:<//></><.>每个<b>[%b2n]</b>使<b>[%b1n]</b>的产量+5%<.>每个<b>[%b1n]</b>使<b>[%b2n]</b>的产量+0.1%
+		icon:ccIcons[%icon]
+		cost:[%cost] bitcoins
+		req:building[%b1]>=[%req]
+		req:building[%b2]>=[%req]
+		passive:
+			multiply yield of building[%b1] by (1+0.05*building[%b2])
+			multiply yield of building[%b2] by (1+0.001*building[%b1])
+		end
+*include br5 %idx %req %cost %icon %mul
+	*br5i[%idx]
+		name:只因产量[%idx]
+		desc:只因产量<b>+[%mul]%</b>
+		icon:ccIcons[%icon]
+		cost:[%cost] bitcoins
+		req:bitcoin:earned>=[%req]
+		passive:
+			multiply yield of :Buildings by 1.0[%mul]
+			multiply yield of bitcoinButton by 1.0[%mul]
+		end
+*include br6 %idx %req %cost %icon %factor
+	*br6i[%idx]
+		name:猫科技[%idx]
+		desc:达成的成就越多，获得的产量加成也越多。
+		icon:ccIcons[%icon]
+		cost:[%cost] bitcoins
+		req:resAllAchievesNum:earned>=[%req]
+		passive:
+			$x=1+[%factor]*resAllAchievesNum:earned/25
+			if ($x>1)
+				multiply yield of :Buildings by $x
+				multiply yield of bitcoinButton by $x
+			end
+		end
+
+*include newBuildingVarRes %id
+	*varBuilding[%id]Earned
+		name:建筑[%id]Earned
+		desc:nothing
+		icon:icons[0,0]
+		class:noBackground
+		hidden
+		// show earned
+	*varBuilding[%id]Cost
+		name:建筑[%id]Cost
+		desc:nothing
+		icon:icons[0,0]
+		class:noBackground
+		hidden
+*include newRes %key
+	*[%key]
+		name:[%key]
+		hidden
+
+*include ac1 %name %desc %icon %req %i
+    *ac1i[%i]
+        name:[%name]
+        desc:[%desc]
+        icon:[%icon]
+        req:bitcoin:earned>=[%req]
+*include ac2 %name %desc %icon %req %i
+    *ac2i[%i]
+        name:[%name]
+        desc:[%desc]
+        icon:[%icon]
+        req:bitcoin:ps>=[%req]
+*include ac3 %name %desc %icon %req %i
+    *ac3i[%i]
+        name:[%name]
+        desc:[%desc]
+        icon:[%icon]
+        req:bitcoinButton:clicks>=[%req]
+*include ac4 %name %desc %icon %req %i
+    *ac4i[%i]
+        name:[%name]
+        desc:[%desc]
+        icon:[%icon]
+		req:bitcoin:earned-varBuilding1Earned+varBuilding2Earned+varBuilding3Earned+varBuilding4Earned+varBuilding5Earned+varBuilding6Earned+varBuilding7Earned+varBuilding8Earned+varBuilding9Earned+varBuilding10Earned+varBuilding11Earned+varBuilding12Earned+varBuilding13Earned+varBuilding14Earned+varBuilding15Earned+varBuilding16Earned+varBuilding17Earned+varBuilding18Earned>=[%req]
+*include ac5 %name %desc %icon %id %req %i
+    *ac5b[%id]i[%i]
+        name:[%name]
+        desc:[%desc]
+        icon:[%icon]
+        req:building[%id]>=[%req]
+*include ac6 %name %desc %icon %id %req %i
+    *ac6b[%id]i[%i]
+        name:[%name]
+        desc:[%desc]
+        icon:[%icon]
+        req:varBuilding[%id]Earned>=[%req]
+*include ac7 %name %desc %icon %req %i
+    *ac7i[%i]
+        name:[%name]
+        desc:[%desc]
+        icon:[%icon]
+        req:building1+building2+building3+building4+building5+building6+building7+building8+building9+building10+building11+building12+building13+building14+building15+building16+building17+building18>=[%req]
+*include ac8 %name %desc %icon %req %i
+    *ac8i[%i]
+        name:[%name]
+        desc:[%desc]
+        icon:[%icon]
+        req:resAllUpgradesNum:earned>[%req]
+*include ac9 %name %icon %req %i
+    *ac9i[%i]
+        name:[%name]
+        icon:[%icon]
+        req:luckycoin:earned-luckycoin>=[%req]
+*include ac10 %name %icon %req %i
+    *ac10i[%i]
+        name:[%name]
+        icon:[%icon]
+        req:resLcm2>=[%req]
+*include ac11 %name %icon %req %i
+    *ac11i[%i]
+        name:[%name]
+        icon:[%icon]
+        req:resLcm5>=[%req]
+*include ac12 %name %icon %req %i
+    *ac12i[%i]
+        name:[%name]
+        icon:[%icon]
+        req:resLcm10>=[%req]
+*include ac13 %name %icon %req %i
+    *ac13i[%i]
+        name:[%name]
+        icon:[%icon]
+        req:resLcm50>=[%req]
+*include ac14 %name %icon %req %i
+    *ac14i[%i]
+        name:[%name]
+        icon:[%icon]
+        req:resLcm100>=[%req]
+
 Buttons
 	*bitcoinButton
-		name:只因
+		name:坤坤
 		desc:点击坤坤来生成更多的只因吧！
-		on click:anim icon wobble
-		on click:yield 1 bitcoin
 		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/master/res/ikun.png
-		no text
 		class:bigButton hasFlares
+		on click:
+			anim icon wobble
+			[include cursorClick]
+			yield 1+$addition bitcoins
+		end
+		no text
 		icon class:shadowed
 		tooltip origin:bottom
 		tooltip class:red
-		
+
 Resources
 	*bitcoin|bitcoins
 		name:只因
 		desc:这是你拥有的只因，你能用它们购买东西。你的目标是获得尽可能多的只因！
-		// icon:icons[0,0]
 		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/master/res/lq.png
 		class:noBackground
 		show earned
-		
-Shinies
-	*luckyBitcoin
-		on click:log Woop
-		movement:onRight moveLeft fade bounce:0.05
-		frequency:60
-		frequency variation:30
-		icon:https://gitee.com/Yancey/BitcoinClicker/raw/main/res/btn_bitcoin.png
-		class:bigButton
+	*luckycoin|luckycoins
+		name:鸡币
+		desc:点击花费1[n:this]，可随机获得一定量的只因。
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/master/res/lq.png
+		class:noBackground
+		show earned
 		on click:
-			$boost=1
-			if (have clover) $boost=4
-            //get at least 7, or between 1 and 3 minutes of our bitcoin production
-            $amount=max(7,random(bitcoins:ps*60*1,bitcoins:ps*60*3))*$boost
-            toast 比特币+<b>[$amount]
-            yield $amount bitcoins
+			anim icon plop
+			$cost=1
+			if (luckycoin<$cost)
+				toast 鸡币不足!
+			else
+				lose $cost luckycoin
+				$base=bitcoins:ps*60
+				$val=random(1,10000)
+				if ($val>=1 and $val<=4000)
+					$num=$base
+					toast 再接再励，您获得1倍奖励。只因+[$num]
+				else if ($val>=4001 and $val<=8000)
+					$num=$base*2
+					yield 1 resLcm2
+					toast <#0dbae6>手气不错，您获得2倍奖励。只因+[$num]</#>
+				else if ($val>=8001 and $val<=9000)
+					$num=$base*5
+					yield 1 resLcm5
+					toast <#7ed321>啧啧称奇，您获得5倍奖励。只因+[$num]</#>
+				else if ($val>=9001 and $val<=9400)
+					$num=$base*10
+					yield 1 resLcm10
+					toast <#f8e71c>目瞪口呆，您获得10倍奖励！只因+[$num]</#>
+				else if ($val>=9401 and $val<=9700)
+					$num=$base*20
+					yield 1 resLcm20
+					toast <#f5a623>叹为观止，您获得20倍奖励！只因+[$num]</#>
+				else if ($val>=9701 and $val<=9900)
+					$num=$base*50
+					yield 1 resLcm50
+					toast <#9013fe>俯首称臣，您获得50倍奖励！只因+[$num]</#>
+				else if ($val>=9901)
+					$num=$base*100
+					yield 1 resLcm100
+					toast <#d0021b>天降伟人，您获得100倍奖励！只因[$num]</#>
+				end
+			end
+			yield $num bitcoins
 		end
 
-Includes
-*include newBuilding %id %name %desc %icon %cost %yield %req
-    *building[%id]
-        name:[%name]
-        desc:[%desc]。<//><b>效果：</b><.>+[%yield]比特币/秒
-        icon:[%icon]
-        cost:[%cost] bitcoins
-        on tick:yield [%yield] bitcoins
-        req:have building[%req]
-        // req:have building[%req] or [%cost] bitcoins:earned
+	*resAllUpgradesNum
+        name:resAllUpgradesNum
+		icon:icons[0,0]
+		class:noBackground
+		hidden
+	*resAllAchievesNum
+        name:resAllAchievesNum
+		icon:icons[0,0]
+		class:noBackground
+		hidden
+	*building1Cps
+		name:建筑1Cps
+		icon:icons[0,0]
+		class:noBackground
+		hidden
+	// 用来记录建筑的CPS和累积产量
+	[include newBuildingVarRes %id="1"]
+	[include newBuildingVarRes %id="2"]
+	[include newBuildingVarRes %id="3"]
+	[include newBuildingVarRes %id="4"]
+	[include newBuildingVarRes %id="5"]
+	[include newBuildingVarRes %id="6"]
+	[include newBuildingVarRes %id="7"]
+	[include newBuildingVarRes %id="8"]
+	[include newBuildingVarRes %id="9"]
+	[include newBuildingVarRes %id="10"]
+	[include newBuildingVarRes %id="11"]
+	[include newBuildingVarRes %id="12"]
+	[include newBuildingVarRes %id="13"]
+	[include newBuildingVarRes %id="14"]
+	[include newBuildingVarRes %id="15"]
+	[include newBuildingVarRes %id="16"]
+	[include newBuildingVarRes %id="17"]
+	[include newBuildingVarRes %id="18"]
+	// lucky coin multiply times
+	[i:newRes %key="resLcm2"]
+	[i:newRes %key="resLcm5"]
+	[i:newRes %key="resLcm10"]
+	[i:newRes %key="resLcm20"]
+	[i:newRes %key="resLcm50"]
+	[i:newRes %key="resLcm100"]
+
+Shinies
+	*luckyBitcoin
+		frequency variation:30
+		movement:onRight moveLeft fade bounce:0.05
+		on click:log Woop
+		on click:
+            $bnum=max(7,random(bitcoins:ps*60,bitcoins:ps*60*2))
+			$lnum=random(2,10)
+			toast 只因+<b>[$bnum]</b>, 鸡币+<b>[$lnum]</b>
+			yield $bnum bitcoins
+			yield $lnum luckycoin
+		end
+		frequency:60
+		class:bigButton
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/btn_bitcoin.png
 
 Buildings
 	*TEMPLATE
 		on click:anim glow
 		
-    *building1
-		name:人工计算
-		desc:想通过一个人的大脑计算sha256，几乎是不可能的事情。<//><b>效果：</b><.>+0.1比特币/秒
-		icon:icons[3,0]
+	*building1
+		name:练习室
+        desc:练习偶像们必不可少的场所，可以提高他们的表演技能和音乐水平。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding1Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding1Earned:ps]个只因（占总产量的[varBuilding1Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding1Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding1Cost/(varBuilding1Earned:ps/building1)]</b>只因|]
+		icon:ccIcons[0,0]
 		cost:15 bitcoins
-		on tick:yield 0.1 bitcoin
+		on tick:
+			[include cursorClick]
+			building1Cps=1+$addition
+			yield building1Cps bitcoins
+			yield building1Cps varBuilding1Earned
+			varBuilding1Cost=15*pow(1.05,building1)
+			// log [$total] [$addition] [bitcoins:ps] [varBuilding1Earned:ps] [varBuilding1Cost]
+		end
 		unlocked
+        tag:tagBuilding1
+        on count:$total=$total+building1
+	// 从第2个建筑开始，之后所有建筑都用工具生成的(因为它们的行为完全一致)
+	*building2
+		name:篮球场
+		desc:偶像们的运动必须要有足够的空间，篮球场不仅能满足运动需求，还可以提高身体素质和协调性。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding2Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding2Earned:ps]个只因（占总产量的[varBuilding2Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding2Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding2Cost/(varBuilding2Earned:ps/this)]</b>只因|]
+		icon:ccIcons[16,0]
+		cost:100 bitcoins
+		on tick:
+			yield 4 bitcoins
+			yield 4 varBuilding2Earned
+			varBuilding2Cost=100*pow(1.05,building2)
+		end
+		tag:tagBuilding2
+		req:have building1
+		on count:$total=$total+building2
+	*building3
+		name:录音室
+		desc:音乐制作必备的场所，可以提高偶像们的音乐水平和录制效率。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding3Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding3Earned:ps]个只因（占总产量的[varBuilding3Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding3Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding3Cost/(varBuilding3Earned:ps/this)]</b>只因|]
+		icon:icons[3,2]
+		cost:1100 bitcoins
+		on tick:
+			yield 8 bitcoins
+			yield 8 varBuilding3Earned
+			varBuilding3Cost=1100*pow(1.05,building3)
+		end
+		tag:tagBuilding3
+		req:have building2
+		on count:$total=$total+building3
+	*building4
+		name:彩排厅
+		desc:彩排节目必备的场地，可提高演出节目的完成度。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding4Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding4Earned:ps]个只因（占总产量的[varBuilding4Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding4Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding4Cost/(varBuilding4Earned:ps/this)]</b>只因|]
+		icon:ccIcons[4,0]
+		cost:12000 bitcoins
+		on tick:
+			yield 47 bitcoins
+			yield 47 varBuilding4Earned
+			varBuilding4Cost=12000*pow(1.05,building4)
+		end
+		tag:tagBuilding4
+		req:have building3
+		on count:$total=$total+building4
+	*building5
+		name:娱乐厅
+		desc:为艺人提供休息、娱乐的场所，提高艺人的心情和健康状况。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding5Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding5Earned:ps]个只因（占总产量的[varBuilding5Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding5Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding5Cost/(varBuilding5Earned:ps/this)]</b>只因|]
+		icon:icons[3,0]
+		cost:130000 bitcoins
+		on tick:
+			yield 260 bitcoins
+			yield 260 varBuilding5Earned
+			varBuilding5Cost=130000*pow(1.05,building5)
+		end
+		tag:tagBuilding5
+		req:have building4
+		on count:$total=$total+building5
+	*building6
+		name:签约公司
+		desc:提供更广阔的发展平台，能够签约更多优秀的艺人。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding6Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding6Earned:ps]个只因（占总产量的[varBuilding6Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding6Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding6Cost/(varBuilding6Earned:ps/this)]</b>只因|]
+		icon:icons[3,1]
+		cost:1400000 bitcoins
+		on tick:
+			yield 1400 bitcoins
+			yield 1400 varBuilding6Earned
+			varBuilding6Cost=1400000*pow(1.05,building6)
+		end
+		tag:tagBuilding6
+		req:have building5
+		on count:$total=$total+building6
+	*building7
+		name:演唱会场馆
+		desc:可以容纳更多的粉丝，为艺人带来更高的知名度。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding7Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding7Earned:ps]个只因（占总产量的[varBuilding7Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding7Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding7Cost/(varBuilding7Earned:ps/this)]</b>只因|]
+		icon:icons[3,8]
+		cost:20000000 bitcoins
+		on tick:
+			yield 7800 bitcoins
+			yield 7800 varBuilding7Earned
+			varBuilding7Cost=20000000*pow(1.05,building7)
+		end
+		tag:tagBuilding7
+		req:have building6
+		on count:$total=$total+building7
+	*building8
+		name:电视台
+		desc:提供更广泛的宣传平台，增加艺人的曝光度和知名度。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding8Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding8Earned:ps]个只因（占总产量的[varBuilding8Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding8Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding8Cost/(varBuilding8Earned:ps/this)]</b>只因|]
+		icon:icons[3,6]
+		cost:330000000 bitcoins
+		on tick:
+			yield 44000 bitcoins
+			yield 44000 varBuilding8Earned
+			varBuilding8Cost=330000000*pow(1.05,building8)
+		end
+		tag:tagBuilding8
+		req:have building7
+		on count:$total=$total+building8
+	*building9
+		name:电影公司
+		desc:拍摄电影、电视剧等影视作品，提高艺人的知名度和影响力。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding9Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding9Earned:ps]个只因（占总产量的[varBuilding9Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding9Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding9Cost/(varBuilding9Earned:ps/this)]</b>只因|]
+		icon:ccIcons[18,7]
+		cost:5100000000 bitcoins
+		on tick:
+			yield 260000 bitcoins
+			yield 260000 varBuilding9Earned
+			varBuilding9Cost=5100000000*pow(1.05,building9)
+		end
+		tag:tagBuilding9
+		req:have building8
+		on count:$total=$total+building9
+	*building10
+		name:大型演出舞台
+		desc:可容纳更多的观众和更多的精彩节目，为艺人带来更高的收益和只因产量。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding10Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding10Earned:ps]个只因（占总产量的[varBuilding10Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding10Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding10Cost/(varBuilding10Earned:ps/this)]</b>只因|]
+		icon:ccIcons[17,7]
+		cost:75000000000 bitcoins
+		on tick:
+			yield 1600000 bitcoins
+			yield 1600000 varBuilding10Earned
+			varBuilding10Cost=75000000000*pow(1.05,building10)
+		end
+		tag:tagBuilding10
+		req:have building9
+		on count:$total=$total+building10
+	*building11
+		name:偶像工厂
+		desc:培养新的偶像练习生，为公司提供更多优秀的艺人资源。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding11Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding11Earned:ps]个只因（占总产量的[varBuilding11Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding11Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding11Cost/(varBuilding11Earned:ps/this)]</b>只因|]
+		icon:ccIcons[21,10]
+		cost:1000000000000 bitcoins
+		on tick:
+			yield 10000000 bitcoins
+			yield 10000000 varBuilding11Earned
+			varBuilding11Cost=1000000000000*pow(1.05,building11)
+		end
+		tag:tagBuilding11
+		req:have building10
+		on count:$total=$total+building11
+	*building12
+		name:巨星训练营
+		desc:为明星提供更专业的培训，提高艺人的专业水平和知名度。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding12Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding12Earned:ps]个只因（占总产量的[varBuilding12Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding12Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding12Cost/(varBuilding12Earned:ps/this)]</b>只因|]
+		icon:ccIcons[12,10]
+		cost:14000000000000 bitcoins
+		on tick:
+			yield 65000000 bitcoins
+			yield 65000000 varBuilding12Earned
+			varBuilding12Cost=14000000000000*pow(1.05,building12)
+		end
+		tag:tagBuilding12
+		req:have building11
+		on count:$total=$total+building12
+	*building13
+		name:演出中心
+		desc:可容纳更多的观众和更多的演出节目，提高艺人的知名度和收益。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding13Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding13Earned:ps]个只因（占总产量的[varBuilding13Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding13Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding13Cost/(varBuilding13Earned:ps/this)]</b>只因|]
+		icon:ccIcons[20,10]
+		cost:170000000000000 bitcoins
+		on tick:
+			yield 430000000 bitcoins
+			yield 430000000 varBuilding13Earned
+			varBuilding13Cost=170000000000000*pow(1.05,building13)
+		end
+		tag:tagBuilding13
+		req:have building12
+		on count:$total=$total+building13
+	*building14
+		name:体育场
+		desc:可容纳更多的粉丝，举办更大型的演唱会和体育比赛，为艺人带来更高的收益和只因产量。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding14Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding14Earned:ps]个只因（占总产量的[varBuilding14Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding14Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding14Cost/(varBuilding14Earned:ps/this)]</b>只因|]
+		icon:ccIcons[8,0]
+		cost:2100000000000000 bitcoins
+		on tick:
+			yield 2900000000 bitcoins
+			yield 2900000000 varBuilding14Earned
+			varBuilding14Cost=2100000000000000*pow(1.05,building14)
+		end
+		tag:tagBuilding14
+		req:have building13
+		on count:$total=$total+building14
+	*building15
+		name:影视城
+		desc:拍摄更多、更大型的影视作品，为艺人带来更高的知名度和只因收益。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding15Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding15Earned:ps]个只因（占总产量的[varBuilding15Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding15Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding15Cost/(varBuilding15Earned:ps/this)]</b>只因|]
+		icon:ccIcons[5,12]
+		cost:26000000000000000 bitcoins
+		on tick:
+			yield 21000000000 bitcoins
+			yield 21000000000 varBuilding15Earned
+			varBuilding15Cost=26000000000000000*pow(1.05,building15)
+		end
+		tag:tagBuilding15
+		req:have building14
+		on count:$total=$total+building15
+	*building16
+		name:全明星演唱会
+		desc:举办全明星的大型演唱会，为公司带来更高的知名度和收益，产生海量的只因。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding16Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding16Earned:ps]个只因（占总产量的[varBuilding16Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding16Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding16Cost/(varBuilding16Earned:ps/this)]</b>只因|]
+		icon:ccIcons[14,12]
+		cost:310000000000000000 bitcoins
+		on tick:
+			yield 150000000000 bitcoins
+			yield 150000000000 varBuilding16Earned
+			varBuilding16Cost=310000000000000000*pow(1.05,building16)
+		end
+		tag:tagBuilding16
+		req:have building15
+		on count:$total=$total+building16
+	*building17
+		name:娱乐帝国
+		desc:拥有全球最顶尖的艺人，可以主导只因产业。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding17Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding17Earned:ps]个只因（占总产量的[varBuilding17Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding17Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding17Cost/(varBuilding17Earned:ps/this)]</b>只因|]
+		icon:ccIcons[24,15]
+		cost:71000000000000000000 bitcoins
+		on tick:
+			yield 1100000000000 bitcoins
+			yield 1100000000000 varBuilding17Earned
+			varBuilding17Cost=71000000000000000000*pow(1.05,building17)
+		end
+		tag:tagBuilding17
+		req:have building16
+		on count:$total=$total+building17
+	*building18
+		name:只因宇宙
+		desc:有无数其他空闲的宇宙与我们自己的宇宙一起运行。 你终于找到了一种方法来劫持他们的产品并将他们制作的任何东西转换成只因！[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding18Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding18Earned:ps]个只因（占总产量的[varBuilding18Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding18Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding18Cost/(varBuilding18Earned:ps/this)]</b>只因|]
+		icon:ccIcons[9,9]
+		cost:12000000000000000000000 bitcoins
+		on tick:
+			yield 8300000000000 bitcoins
+			yield 8300000000000 varBuilding18Earned
+			varBuilding18Cost=12000000000000000000000*pow(1.05,building18)
+		end
+		tag:tagBuilding18
+		req:have building17
+		on count:$total=$total+building18
 
-    // [include newBuilding %id="1" %name="人工计算" %desc="想通过一个人的大脑计算sha256，几乎是不可能的事情" %icon="icons[3,0]" %cost="5" %yield="0.1"]
-	[include newBuilding %id="2" %name="人列计算机" %desc="顾名思义，人列计算机就是由人组成的计算机。但是人数需求庞大，由人组成计算机的的各个部位，由各种符号代替二进制进行运算" %icon="icons[3,1]" %cost="100" %yield="1" %req="1"]
-	[include newBuilding %id="3" %name="家用笔记本" %desc="任何一台电脑都能成为挖矿机，只是收益会比较低" %icon="icons[3,2]" %cost="1100" %yield="8" %req="2"]
-	[include newBuilding %id="4" %name="组装计算机" %desc="由非常多张显卡组成的挖矿机，哪怕只是HD6770那样的垃圾卡，“组团”之后的运算能力还是能够超越大部分用户的单张显卡的" %icon="icons[3,3]" %cost="12000" %yield="47" %req="3"]
-	[include newBuilding %id="5" %name="淘汰的二手矿机" %desc="矿老板淘汰下来的二手显卡矿机组" %icon="icons[3,4]" %cost="130000" %yield="260" %req="4"]
-	[include newBuilding %id="6" %name="全新的显卡矿机" %desc="全新的显卡矿机，挖矿不算快，但是性价比高" %icon="icons[3,5]" %cost="1400000" %yield="1400" %req="5"]
-	[include newBuilding %id="7" %name="ASIC矿机" %desc="ASIC矿机芯片的性能超过当前顶级的电脑CPU。因为ASIC矿机在算力上有绝对的优势，所以电脑、显卡矿机开始逐渐被淘汰" %icon="icons[3,6]" %cost="20000000" %yield="7800" %req="6"]
-	[include newBuilding %id="8" %name="云服务器" %desc="利用弹性计算能力，可以根据需要随意增加服务器数量，大大提高部署效率" %icon="icons[3,7]" %cost="330000000" %yield="44000" %req="7"]
-	[include newBuilding %id="9" %name="挖矿机阵列" %desc="由数十台挖矿机组成的阵列，效率大大提升" %icon="icons[3,8]" %cost="5100000000" %yield="260000" %req="8"]
-	[include newBuilding %id="10" %name="挖矿机集群" %desc="由数百到数千台挖矿机组成的大阵集群，效率惊人" %icon="icons[3,8]" %cost="75000000000" %yield="1600000" %req="9"]
-	[include newBuilding %id="11" %name="超级计算机" %desc="超级计算机（Super computer）是指能够执行一般个人电脑无法处理的大量资料与高速运算的电脑。" %icon="icons[3,8]" %cost="1000000000000" %yield="10000000" %req="10"]
-	[include newBuilding %id="12" %name="量子计算机" %desc="量子计算机求解数学算法高斯玻色取样只需200秒，而目前世界最快的超级计算机要用6亿年。" %icon="icons[3,8]" %cost="14000000000000" %yield="65000000" %req="11"]
-	[include newBuilding %id="13" %name="贾维斯" %desc="全称为Just A Rather Very Intelligent System（只是一个相当聪明的智能系统），钢铁侠的私人管家，拥有超越时代的计算能力" %icon="icons[3,8]" %cost="170000000000000" %yield="430000000" %req="12"]
-	[include newBuilding %id="14" %name="克罗托系统" %desc="从宏观上来说物质是一堆堆聚合的原子，而原子的运动都符合物理方程，就像你知道一个小球的速度、位置和所受的力，就能计算出他未来的运行轨迹。所以理论上来说只要确切地得知宇宙中每个原子的状态，再拥有足够的算力，我们就能计算出未来了！" %icon="icons[3,8]" %cost="2100000000000000" %yield="2900000000" %req="13"]
-	
+
 Upgrades
 	*TEMPLATE
 		on click:anim glow
-	
-	//food upgrades
-	//inspiration : http://rabbit.org/suggested-vegetables-and-fruits-for-a-rabbit-diet/
-	
-	*parsley
-		name:Parsley
-		desc:A nice little supplement to your bitcoins' diet.<//><b>效果：</b><.>+1 bitcoin/click
-		icon:icons[1,1]
-		cost:100 bitcoins
-		passive:increase bitcoin yield of bitcoinButton by 1
-		req:10 bitcoins:earned
-		
-	*spinach
-		name:Spinach
-		desc:Big tasty leaves, perfect for hungry bitcoins.<//><b>效果：</b><.>+1 bitcoin/click
-		icon:icons[1,2]
-		cost:200 bitcoins
-		passive:increase bitcoin yield of bitcoinButton by 1
-		req:50 bitcoins:earned
-		
-	*lettuce
-		name:Lettuce
-		desc:Frilly greens loved by all bitcoins.<//><b>效果：</b><.>+1 bitcoin/click
-		icon:icons[1,3]
-		cost:400 bitcoins
-		passive:increase bitcoin yield of bitcoinButton by 1
-		req:200 bitcoins:earned
-		
-	*broccoli
-		name:Broccoli
-		desc:Crunchy greens that look like little trees.<//><b>效果：</b><.>bitcoins/click x2<.>bitcoin production +5%
-		icon:icons[1,4]
-		cost:3000 bitcoins
-		passive:multiply bitcoin yield of bitcoinButton by 2
-		passive:multiply yield of bitcoins by 1.05
-		req:1000 bitcoins:earned
-		
-	*apple
-		name:Apple
-		desc:Nice pieces of juicy red apples.<//><b>效果：</b><.>bitcoins/click x1.5<.>bitcoin production +5%
-		icon:icons[1,5]
-		cost:10000 bitcoins
-		passive:multiply bitcoin yield of bitcoinButton by 1.5
-		passive:multiply yield of bitcoins by 1.05
-		req:1000 bitcoins:earned
-		
-	*radish
-		name:Radish
-		desc:Purple, crunchy, and strangely spicy.<//><b>效果：</b><.>bitcoins/click x1.5<.>bitcoin production +5%
-		icon:icons[1,6]
-		cost:50000 bitcoins
-		passive:multiply bitcoin yield of bitcoinButton by 1.5
-		passive:multiply yield of bitcoins by 1.05
-		req:10000 bitcoins:earned
-		
-	*mint
-		name:Mint
-		desc:Tasty, and gives your bitcoins a lovely breath.<//><b>效果：</b><.>bitcoins/click x1.5<.>bitcoin production +5%
-		icon:icons[1,7]
-		cost:100000 bitcoins
-		passive:multiply bitcoin yield of bitcoinButton by 1.5
-		passive:multiply yield of bitcoins by 1.05
-		req:50000 bitcoins:earned
-		
-	*chard
-		name:Chard
-		desc:Broad leaves that make for a tasty salad.<//><b>效果：</b><.>bitcoins/click x1.5<.>bitcoin production +5%
-		icon:icons[1,8]
-		cost:500000 bitcoins
-		passive:multiply bitcoin yield of bitcoinButton by 1.5
-		passive:multiply yield of bitcoins by 1.05
-		req:100000 bitcoins:earned
-		
-	*cherry
-		name:Cherry
-		desc:Your bitcoins look like little vampires when they start munching on these!<//><b>效果：</b><.>bitcoins/click x1.5<.>bitcoin production +5%
-		icon:icons[1,9]
-		cost:1000000 bitcoins
-		passive:multiply bitcoin yield of bitcoinButton by 1.5
-		passive:multiply yield of bitcoins by 1.05
-		req:500000 bitcoins:earned
-		
-	*carrot
-		name:Carrot
-		desc:The quintessential rabbit food! Crunchy, orange, and perfect.<//><b>效果：</b><.>bitcoins/click x2<.>bitcoin production +10%
-		icon:icons[1,0]
-		cost:100000000 bitcoins
-		passive:multiply bitcoin yield of bitcoinButton by 2
-		passive:multiply yield of bitcoins by 1.1
-		req:1000000 bitcoins:earned
-	
-	//building upgrades
-	
-	*buildingUpgrade1
-		name:Sippy bottles
-		desc:Your bitcoins can drink their fill!<//><b>效果：</b><.>[n:building1]产量x2<.>[n:building2]产量x2<.>[n:building3]产量x2
-		icon:icons[2,0] icons[3,0]
-		cost:1000 bitcoins
-		passive:multiply yield of building1 by 2
-		passive:multiply yield of building2 by 2
-		passive:multiply yield of building3 by 2
-		req:(building1>=10 or building2>=10 or building3>=10)
-		
-	*buildingUpgrade2
-		name:Prime grade hay
-		desc:Not just for horses anymore!<//><b>效果：</b><.>[n:building1]产量x2<.>[n:building2]产量x2<.>[n:building3]产量x2
-		icon:icons[2,0] icons[3,1]
-		cost:100000 bitcoins
-		passive:multiply yield of building1 by 2
-		passive:multiply yield of building2 by 2
-		passive:multiply yield of building3 by 2
-		req:(building1>=50 or building2>=50 or building3>=50)
-		
-	*buildingUpgrade3
-		name:Shredded newspapers
-		desc:You'd think they just poop on these, but they really enjoy reading the Sunday comics.<//><b>效果:</b><.>[n:building1]产量x2<.>[n:building2]产量x2<.>[n:building3]产量x2
-		icon:icons[2,0] icons[3,2]
-		cost:5000000 bitcoins
-		passive:multiply yield of building1 by 2
-		passive:multiply yield of building2 by 2
-		passive:multiply yield of building3 by 2
-		req:(building1>=100 or building2>=100 or building3>=100)
-		
-	*buildingUpgrade4
-		name:Pretty fences
-		desc:Just the right size so your bitcoins can peek through but not hop over!<//><b>效果：</b><.>[n:building4]产量x2<.>[n:building5]产量x2
-		icon:icons[2,0] icons[3,3]
-		cost:50000 bitcoins
-		passive:multiply yield of building4 by 2
-		passive:multiply yield of building5 by 2
-		req:(building4>=10 or building5>=10)
-		
-	*buildingUpgrade5
-		name:Bunny playground
-		desc:If your bitcoins are outside, they might as well get some exercise!<//><b>效果：</b><.>[n:building4]产量x2<.>[n:building5]产量x2
-		icon:icons[2,0] icons[3,4]
-		cost:5000000 bitcoins
-		passive:multiply yield of building4 by 2
-		passive:multiply yield of building5 by 2
-		req:(building4>=50 or building5>=50)
-		
-	*buildingUpgrade6
-		name:Bunny TVs
-		desc:Televisions that broadcast bitcoin cartoons, bitcoin sitcoms, and bitcoin news bulletins.<//><b>效果：</b><.>[n:building6]产量x2<.>[n:building7]产量x2
-		icon:icons[2,0] icons[3,5]
-		cost:1000000 bitcoins
-		passive:multiply yield of building6 by 2
-		passive:multiply yield of building7 by 2
-		req:(building6>=10 or building7>=10)
-		
-	*buildingUpgrade7
-		name:Wee little bitcoin cars
-		desc:Your bitcoins drive around in these. How nice!<//><b>效果：</b><.>[n:building6]产量x2<.>[n:building7]产量x2
-		icon:icons[2,0] icons[3,6]
-		cost:500000000 bitcoins
-		passive:multiply yield of building6 by 2
-		passive:multiply yield of building7 by 2
-		req:(building6>=50 or building7>=50)
-		
-	*clover
-		name:Clover
-		desc:A delicious herb that tastes lucky.<//><b>效果：</b><.>lucky bitcoin effects are 4 times more powerful
-		icon:icons[2,8]
-		cost:1000000000 bitcoins
-		req:500000000 bitcoins:earned
-		
+        on earn:
+			hide this
+			yield 1 resAllUpgradesNum
+		end
+
+	///////////////////////////////////////////////////////////////////////////////////
+	//                            Building Upgrades                                  //
+	///////////////////////////////////////////////////////////////////////////////////
+
+	// Building 1 Upgrades
+    *building1Upgrade1
+        name:强化点击
+        // desc:[i:mn]和[n:building1]的效果<b>翻倍</b>。<q>戳戳</q>
+        desc:鼠标点击和[n:building1]的效果<b>翻倍</b>。<q>戳戳</q>
+        icon:ccIcons[0,0]
+        cost:100 bitcoins
+        req:building1 > 0
+        passive:multiply yield of bitcoinButton by 2
+        passive:multiply yield of building1 by 2
+    *building1Upgrade2
+        name:鼠标手隔离霜
+        // desc:[i:mn]和[n:building1]的效果<b>翻倍</b>。<q>它…点击伤害…</q>
+        desc:鼠标点击和[n:building1]的效果<b>翻倍</b>。<q>它…点击伤害…</q>
+        icon:ccIcons[0,1]
+        cost:500 bitcoins
+        req:building1 > 0
+        passive:multiply yield of bitcoinButton by 2
+        passive:multiply yield of building1 by 2
+    *building1Upgrade3
+        name:双手并用
+        // desc:[i:mn]和[n:building1]的效果<b>翻倍</b>。<q>妈妈，快看，我用两只手一起点鼠标！</q>
+        desc:鼠标点击和[n:building1]的效果<b>翻倍</b>。<q>妈妈，快看，我用两只手一起点鼠标！</q>
+        icon:ccIcons[0,2]
+        cost:10000 bitcoins
+        req:building1 > 10
+        passive:multiply yield of bitcoinButton by 2
+        passive:multiply yield of building1 by 2
+    *building1Upgrade4
+        name:金手指
+        // desc:每拥有一个非[n:building1]建筑，[i:mn]和[n:building1]的产量<b>+0.1只因/秒</b>。<q>咔哒</q>
+        desc:每10个非<#F43F1A>[n:building1]</#>建筑，鼠标点击和[n:building1]的产量<b>+1只因/秒</b>。<q>咔哒</q>
+        icon:ccIcons[0,13]
+        cost:100000 bitcoins
+        req:building1 >= 25
+    *building1Upgrade5
+        name:百万手指
+        desc:[n:building1Upgrade4]的效果<b>x5</b>。<q>咔哒咔哒</q>
+        icon:ccIcons[0,14]
+        cost:10000000 bitcoins
+        req:building1 >= 50
+    *building1Upgrade6
+        name:十亿手指
+        desc:[n:building1Upgrade4]的效果<b>x10</b>。<q>咔哒咔哒咔哒</q>
+        icon:ccIcons[0,15]
+        cost:100000000 bitcoins
+        req:building1 >= 100
+    *building1Upgrade7
+        name:万亿手指
+        desc:[n:building1Upgrade4]的效果<b>x20</b>。<q>咔哒咔哒咔哒咔哒</q>
+        icon:ccIcons[0,16]
+        cost:1000000000 bitcoins // 1 billion
+        req:building1 >= 150
+    *building1Upgrade8
+        name:千万亿手指
+        desc:[n:building1Upgrade4]的效果<b>x20</b>。<q>咔哒咔哒咔哒咔哒咔哒</q>
+        icon:ccIcons[0,2]
+        cost:10000000000 bitcoins
+        req:building1 >= 200
+    *building1Upgrade9
+        name:百亿亿手指
+        desc:[n:building1Upgrade4]的效果<b>x20</b>。<q>朋友，只需点击点击点击点击点击，这真的很容易。</q>
+        icon:ccIcons[0,2]
+        cost:10000000000000 bitcoins
+        req:building1 >= 250
+    *building1Upgrade10
+        name:十万亿亿手指
+        desc:[n:building1Upgrade4]的效果<b>x20</b>。<q>有时<br>事情只是<br>点击</q>
+        icon:ccIcons[0,2]
+        cost:10000000000000000 bitcoins
+        req:building1 >= 300
+    *building1Upgrade11
+        name:亿亿亿手指
+        desc:[n:building1Upgrade4]的效果<b>x20</b>。<q>点啊点的也就点习惯了。</q>
+        icon:ccIcons[0,2]
+        cost:10000000000000000000 bitcoins
+        req:building1 >= 350
+    *building1Upgrade12
+        name:千亿亿亿手指
+        desc:[n:building1Upgrade4]的效果<b>x20</b>。<q>事实证明你完全可以把你的手指放在上面。</q>
+        icon:ccIcons[0,2]
+        cost:10000000000000000000000 bitcoins
+        req:building1 >= 400
+    *building1Upgrade13
+        name:百万亿亿亿手指
+        desc:[n:building1Upgrade4]的效果<b>x20</b>。<q>只为最疯狂的握手。</q>
+        icon:ccIcons[0,2]
+        cost:10000000000000000000000000 bitcoins
+        req:building1 >= 450
+	// End of Building 1 Upgrades
+[i:br2 %id="2" %idx="1"  %name="强化篮球场1" %desc="[n:building2]的效果<b>翻倍</b>。" %icon="[16,0]" %cost="1000" %req="1"]
+[i:br2 %id="2" %idx="2"  %name="强化篮球场2" %desc="[n:building2]的效果<b>翻倍</b>。" %icon="[16,1]" %cost="5000" %req="5"]
+[i:br2 %id="2" %idx="3"  %name="强化篮球场3" %desc="[n:building2]的效果<b>翻倍</b>。" %icon="[16,2]" %cost="50000" %req="25"]
+[i:br2 %id="2" %idx="4"  %name="强化篮球场4" %desc="[n:building2]的效果<b>翻倍</b>。" %icon="[16,13]" %cost="5000000" %req="50"]
+[i:br2 %id="2" %idx="5"  %name="强化篮球场5" %desc="[n:building2]的效果<b>翻倍</b>。" %icon="[16,14]" %cost="500000000" %req="100"]
+[i:br2 %id="2" %idx="6"  %name="强化篮球场6" %desc="[n:building2]的效果<b>翻倍</b>。" %icon="[16,15]" %cost="50000000000" %req="150"]
+[i:br2 %id="2" %idx="7"  %name="强化篮球场7" %desc="[n:building2]的效果<b>翻倍</b>。" %icon="[16,16]" %cost="50000000000000" %req="200"]
+[i:br2 %id="2" %idx="8"  %name="强化篮球场8" %desc="[n:building2]的效果<b>翻倍</b>。" %icon="[16,17]" %cost="50000000000000000" %req="250"]
+[i:br2 %id="2" %idx="9"  %name="强化篮球场9" %desc="[n:building2]的效果<b>翻倍</b>。" %icon="[16,18]" %cost="50000000000000000000" %req="300"]
+[i:br2 %id="2" %idx="10" %name="强化篮球场10" %desc="[n:building2]的效果<b>翻倍</b>。" %icon="[16,19]" %cost="50000000000000000000000" %req="350"]
+[i:br2 %id="2" %idx="11" %name="强化篮球场11" %desc="[n:building2]的效果<b>翻倍</b>。" %icon="[16,20]" %cost="500000000000000000000000000" %req="400"]
+[i:br2 %id="2" %idx="12" %name="强化篮球场12" %desc="[n:building2]的效果<b>翻倍</b>。" %icon="[16,21]" %cost="5000000000000000000000000000000" %req="450"]
+[i:br2 %id="2" %idx="13" %name="强化篮球场13" %desc="[n:building2]的效果<b>翻倍</b>。" %icon="[16,22]" %cost="50000000000000000000000000000000000" %req="500"]
+[i:br2 %id="3" %idx="1" %name="强化录音室1" %desc="[n:building3]的效果<b>翻倍</b>。" %icon="[15,0]" %cost="11000" %req="1"]
+[i:br2 %id="3" %idx="2" %name="强化录音室2" %desc="[n:building3]的效果<b>翻倍</b>。" %icon="[15,1]" %cost="55000" %req="5"]
+[i:br2 %id="3" %idx="3" %name="强化录音室3" %desc="[n:building3]的效果<b>翻倍</b>。" %icon="[15,2]" %cost="550000" %req="25"]
+[i:br2 %id="3" %idx="4" %name="强化录音室4" %desc="[n:building3]的效果<b>翻倍</b>。" %icon="[15,13]" %cost="55000000" %req="50"]
+[i:br2 %id="3" %idx="5" %name="强化录音室5" %desc="[n:building3]的效果<b>翻倍</b>。" %icon="[15,14]" %cost="5500000000" %req="100"]
+[i:br2 %id="3" %idx="6" %name="强化录音室6" %desc="[n:building3]的效果<b>翻倍</b>。" %icon="[15,15]" %cost="550000000000" %req="150"]
+[i:br2 %id="3" %idx="7" %name="强化录音室7" %desc="[n:building3]的效果<b>翻倍</b>。" %icon="[15,16]" %cost="550000000000000" %req="200"]
+[i:br2 %id="3" %idx="8" %name="强化录音室8" %desc="[n:building3]的效果<b>翻倍</b>。" %icon="[15,17]" %cost="550000000000000000" %req="250"]
+[i:br2 %id="3" %idx="9" %name="强化录音室9" %desc="[n:building3]的效果<b>翻倍</b>。" %icon="[15,18]" %cost="550000000000000000000" %req="300"]
+[i:br2 %id="3" %idx="10" %name="强化录音室10" %desc="[n:building3]的效果<b>翻倍</b>。" %icon="[15,19]" %cost="550000000000000000000000" %req="350"]
+[i:br2 %id="3" %idx="11" %name="强化录音室11" %desc="[n:building3]的效果<b>翻倍</b>。" %icon="[15,20]" %cost="5500000000000000000000000000" %req="400"]
+[i:br2 %id="3" %idx="12" %name="强化录音室12" %desc="[n:building3]的效果<b>翻倍</b>。" %icon="[15,21]" %cost="55000000000000000000000000000000" %req="450"]
+[i:br2 %id="3" %idx="13" %name="强化录音室13" %desc="[n:building3]的效果<b>翻倍</b>。" %icon="[15,22]" %cost="550000000000000000000000000000000000" %req="500"]
+[i:br2 %id="4" %idx="1" %name="强化彩排厅1" %desc="[n:building4]的效果<b>翻倍</b>。" %icon="[4,0]" %cost="120000" %req="1"]
+[i:br2 %id="4" %idx="2" %name="强化彩排厅2" %desc="[n:building4]的效果<b>翻倍</b>。" %icon="[4,1]" %cost="600000" %req="5"]
+[i:br2 %id="4" %idx="3" %name="强化彩排厅3" %desc="[n:building4]的效果<b>翻倍</b>。" %icon="[4,2]" %cost="6000000" %req="25"]
+[i:br2 %id="4" %idx="4" %name="强化彩排厅4" %desc="[n:building4]的效果<b>翻倍</b>。" %icon="[4,13]" %cost="600000000" %req="50"]
+[i:br2 %id="4" %idx="5" %name="强化彩排厅5" %desc="[n:building4]的效果<b>翻倍</b>。" %icon="[4,14]" %cost="60000000000" %req="100"]
+[i:br2 %id="4" %idx="6" %name="强化彩排厅6" %desc="[n:building4]的效果<b>翻倍</b>。" %icon="[4,15]" %cost="6000000000000" %req="150"]
+[i:br2 %id="4" %idx="7" %name="强化彩排厅7" %desc="[n:building4]的效果<b>翻倍</b>。" %icon="[4,16]" %cost="6000000000000000" %req="200"]
+[i:br2 %id="4" %idx="8" %name="强化彩排厅8" %desc="[n:building4]的效果<b>翻倍</b>。" %icon="[4,17]" %cost="6000000000000000000" %req="250"]
+[i:br2 %id="4" %idx="9" %name="强化彩排厅9" %desc="[n:building4]的效果<b>翻倍</b>。" %icon="[4,18]" %cost="6000000000000000000000" %req="300"]
+[i:br2 %id="4" %idx="10" %name="强化彩排厅10" %desc="[n:building4]的效果<b>翻倍</b>。" %icon="[4,19]" %cost="6000000000000000000000000" %req="350"]
+[i:br2 %id="4" %idx="11" %name="强化彩排厅11" %desc="[n:building4]的效果<b>翻倍</b>。" %icon="[4,20]" %cost="60000000000000000000000000000" %req="400"]
+[i:br2 %id="4" %idx="12" %name="强化彩排厅12" %desc="[n:building4]的效果<b>翻倍</b>。" %icon="[4,21]" %cost="600000000000000000000000000000000" %req="450"]
+[i:br2 %id="4" %idx="13" %name="强化彩排厅13" %desc="[n:building4]的效果<b>翻倍</b>。" %icon="[4,22]" %cost="6000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="5" %idx="1" %name="强化娱乐厅1" %desc="[n:building5]的效果<b>翻倍</b>。" %icon="[3,0]" %cost="1300000" %req="1"]
+[i:br2 %id="5" %idx="2" %name="强化娱乐厅2" %desc="[n:building5]的效果<b>翻倍</b>。" %icon="[3,1]" %cost="6500000" %req="5"]
+[i:br2 %id="5" %idx="3" %name="强化娱乐厅3" %desc="[n:building5]的效果<b>翻倍</b>。" %icon="[3,2]" %cost="65000000" %req="25"]
+[i:br2 %id="5" %idx="4" %name="强化娱乐厅4" %desc="[n:building5]的效果<b>翻倍</b>。" %icon="[3,13]" %cost="6500000000" %req="50"]
+[i:br2 %id="5" %idx="5" %name="强化娱乐厅5" %desc="[n:building5]的效果<b>翻倍</b>。" %icon="[3,14]" %cost="650000000000" %req="100"]
+[i:br2 %id="5" %idx="6" %name="强化娱乐厅6" %desc="[n:building5]的效果<b>翻倍</b>。" %icon="[3,15]" %cost="65000000000000" %req="150"]
+[i:br2 %id="5" %idx="7" %name="强化娱乐厅7" %desc="[n:building5]的效果<b>翻倍</b>。" %icon="[3,16]" %cost="65000000000000000" %req="200"]
+[i:br2 %id="5" %idx="8" %name="强化娱乐厅8" %desc="[n:building5]的效果<b>翻倍</b>。" %icon="[3,17]" %cost="65000000000000000000" %req="250"]
+[i:br2 %id="5" %idx="9" %name="强化娱乐厅9" %desc="[n:building5]的效果<b>翻倍</b>。" %icon="[3,18]" %cost="65000000000000000000000" %req="300"]
+[i:br2 %id="5" %idx="10" %name="强化娱乐厅10" %desc="[n:building5]的效果<b>翻倍</b>。" %icon="[3,19]" %cost="65000000000000000000000000" %req="350"]
+[i:br2 %id="5" %idx="11" %name="强化娱乐厅11" %desc="[n:building5]的效果<b>翻倍</b>。" %icon="[3,20]" %cost="650000000000000000000000000000" %req="400"]
+[i:br2 %id="5" %idx="12" %name="强化娱乐厅12" %desc="[n:building5]的效果<b>翻倍</b>。" %icon="[3,21]" %cost="6500000000000000000000000000000000" %req="450"]
+[i:br2 %id="5" %idx="13" %name="强化娱乐厅13" %desc="[n:building5]的效果<b>翻倍</b>。" %icon="[3,22]" %cost="6000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="6" %idx="1" %name="强化签约公司1" %desc="[n:building6]的效果<b>翻倍</b>。" %icon="[19,0]" %cost="14000000" %req="1"]
+[i:br2 %id="6" %idx="2" %name="强化签约公司2" %desc="[n:building6]的效果<b>翻倍</b>。" %icon="[19,1]" %cost="70000000" %req="5"]
+[i:br2 %id="6" %idx="3" %name="强化签约公司3" %desc="[n:building6]的效果<b>翻倍</b>。" %icon="[19,2]" %cost="700000000" %req="25"]
+[i:br2 %id="6" %idx="4" %name="强化签约公司4" %desc="[n:building6]的效果<b>翻倍</b>。" %icon="[19,13]" %cost="70000000000" %req="50"]
+[i:br2 %id="6" %idx="5" %name="强化签约公司5" %desc="[n:building6]的效果<b>翻倍</b>。" %icon="[19,14]" %cost="7000000000000" %req="100"]
+[i:br2 %id="6" %idx="6" %name="强化签约公司6" %desc="[n:building6]的效果<b>翻倍</b>。" %icon="[19,15]" %cost="700000000000000" %req="150"]
+[i:br2 %id="6" %idx="7" %name="强化签约公司7" %desc="[n:building6]的效果<b>翻倍</b>。" %icon="[19,16]" %cost="700000000000000000" %req="200"]
+[i:br2 %id="6" %idx="8" %name="强化签约公司8" %desc="[n:building6]的效果<b>翻倍</b>。" %icon="[19,17]" %cost="700000000000000000000" %req="250"]
+[i:br2 %id="6" %idx="9" %name="强化签约公司9" %desc="[n:building6]的效果<b>翻倍</b>。" %icon="[19,18]" %cost="700000000000000000000000" %req="300"]
+[i:br2 %id="6" %idx="10" %name="强化签约公司10" %desc="[n:building6]的效果<b>翻倍</b>。" %icon="[19,19]" %cost="700000000000000000000000000" %req="350"]
+[i:br2 %id="6" %idx="11" %name="强化签约公司11" %desc="[n:building6]的效果<b>翻倍</b>。" %icon="[19,20]" %cost="7000000000000000000000000000000" %req="400"]
+[i:br2 %id="6" %idx="12" %name="强化签约公司12" %desc="[n:building6]的效果<b>翻倍</b>。" %icon="[19,21]" %cost="70000000000000000000000000000000000" %req="450"]
+[i:br2 %id="6" %idx="13" %name="强化签约公司13" %desc="[n:building6]的效果<b>翻倍</b>。" %icon="[19,22]" %cost="700000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="7" %idx="1" %name="强化演唱会场馆1" %desc="[n:building7]的效果<b>翻倍</b>。" %icon="[1,0]" %cost="200000000" %req="1"]
+[i:br2 %id="7" %idx="2" %name="强化演唱会场馆2" %desc="[n:building7]的效果<b>翻倍</b>。" %icon="[1,1]" %cost="1000000000" %req="5"]
+[i:br2 %id="7" %idx="3" %name="强化演唱会场馆3" %desc="[n:building7]的效果<b>翻倍</b>。" %icon="[1,2]" %cost="10000000000" %req="25"]
+[i:br2 %id="7" %idx="4" %name="强化演唱会场馆4" %desc="[n:building7]的效果<b>翻倍</b>。" %icon="[1,13]" %cost="1000000000000" %req="50"]
+[i:br2 %id="7" %idx="5" %name="强化演唱会场馆5" %desc="[n:building7]的效果<b>翻倍</b>。" %icon="[1,14]" %cost="100000000000000" %req="100"]
+[i:br2 %id="7" %idx="6" %name="强化演唱会场馆6" %desc="[n:building7]的效果<b>翻倍</b>。" %icon="[1,15]" %cost="10000000000000000" %req="150"]
+[i:br2 %id="7" %idx="7" %name="强化演唱会场馆7" %desc="[n:building7]的效果<b>翻倍</b>。" %icon="[1,16]" %cost="10000000000000000000" %req="200"]
+[i:br2 %id="7" %idx="8" %name="强化演唱会场馆8" %desc="[n:building7]的效果<b>翻倍</b>。" %icon="[1,17]" %cost="10000000000000000000000" %req="250"]
+[i:br2 %id="7" %idx="9" %name="强化演唱会场馆9" %desc="[n:building7]的效果<b>翻倍</b>。" %icon="[1,18]" %cost="10000000000000000000000000" %req="300"]
+[i:br2 %id="7" %idx="10" %name="强化演唱会场馆10" %desc="[n:building7]的效果<b>翻倍</b>。" %icon="[1,19]" %cost="10000000000000000000000000000" %req="350"]
+[i:br2 %id="7" %idx="11" %name="强化演唱会场馆11" %desc="[n:building7]的效果<b>翻倍</b>。" %icon="[1,20]" %cost="100000000000000000000000000000000" %req="400"]
+[i:br2 %id="7" %idx="12" %name="强化演唱会场馆12" %desc="[n:building7]的效果<b>翻倍</b>。" %icon="[1,21]" %cost="1000000000000000000000000000000000000" %req="450"]
+[i:br2 %id="7" %idx="13" %name="强化演唱会场馆13" %desc="[n:building7]的效果<b>翻倍</b>。" %icon="[1,22]" %cost="10000000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="8" %idx="1" %name="强化电视台1" %desc="[n:building8]的效果<b>翻倍</b>。" %icon="[11,0]" %cost="3300000000" %req="1"]
+[i:br2 %id="8" %idx="2" %name="强化电视台2" %desc="[n:building8]的效果<b>翻倍</b>。" %icon="[11,1]" %cost="16500000000" %req="5"]
+[i:br2 %id="8" %idx="3" %name="强化电视台3" %desc="[n:building8]的效果<b>翻倍</b>。" %icon="[11,2]" %cost="165000000000" %req="25"]
+[i:br2 %id="8" %idx="4" %name="强化电视台4" %desc="[n:building8]的效果<b>翻倍</b>。" %icon="[11,13]" %cost="16500000000000" %req="50"]
+[i:br2 %id="8" %idx="5" %name="强化电视台5" %desc="[n:building8]的效果<b>翻倍</b>。" %icon="[11,14]" %cost="1650000000000000" %req="100"]
+[i:br2 %id="8" %idx="6" %name="强化电视台6" %desc="[n:building8]的效果<b>翻倍</b>。" %icon="[11,15]" %cost="165000000000000000" %req="150"]
+[i:br2 %id="8" %idx="7" %name="强化电视台7" %desc="[n:building8]的效果<b>翻倍</b>。" %icon="[11,16]" %cost="165000000000000000000" %req="200"]
+[i:br2 %id="8" %idx="8" %name="强化电视台8" %desc="[n:building8]的效果<b>翻倍</b>。" %icon="[11,17]" %cost="165000000000000000000000" %req="250"]
+[i:br2 %id="8" %idx="9" %name="强化电视台9" %desc="[n:building8]的效果<b>翻倍</b>。" %icon="[11,18]" %cost="165000000000000000000000000" %req="300"]
+[i:br2 %id="8" %idx="10" %name="强化电视台10" %desc="[n:building8]的效果<b>翻倍</b>。" %icon="[11,19]" %cost="165000000000000000000000000000" %req="350"]
+[i:br2 %id="8" %idx="11" %name="强化电视台11" %desc="[n:building8]的效果<b>翻倍</b>。" %icon="[11,20]" %cost="1650000000000000000000000000000000" %req="400"]
+[i:br2 %id="8" %idx="12" %name="强化电视台12" %desc="[n:building8]的效果<b>翻倍</b>。" %icon="[11,21]" %cost="16500000000000000000000000000000000000" %req="450"]
+[i:br2 %id="8" %idx="13" %name="强化电视台13" %desc="[n:building8]的效果<b>翻倍</b>。" %icon="[11,22]" %cost="165000000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="9" %idx="1" %name="强化电影公司1" %desc="[n:building9]的效果<b>翻倍</b>。" %icon="[12,0]" %cost="51000000000" %req="1"]
+[i:br2 %id="9" %idx="2" %name="强化电影公司2" %desc="[n:building9]的效果<b>翻倍</b>。" %icon="[12,1]" %cost="255000000000" %req="5"]
+[i:br2 %id="9" %idx="3" %name="强化电影公司3" %desc="[n:building9]的效果<b>翻倍</b>。" %icon="[12,2]" %cost="2550000000000" %req="25"]
+[i:br2 %id="9" %idx="4" %name="强化电影公司4" %desc="[n:building9]的效果<b>翻倍</b>。" %icon="[12,13]" %cost="255000000000000" %req="50"]
+[i:br2 %id="9" %idx="5" %name="强化电影公司5" %desc="[n:building9]的效果<b>翻倍</b>。" %icon="[12,14]" %cost="25500000000000000" %req="100"]
+[i:br2 %id="9" %idx="6" %name="强化电影公司6" %desc="[n:building9]的效果<b>翻倍</b>。" %icon="[12,15]" %cost="2550000000000000000" %req="150"]
+[i:br2 %id="9" %idx="7" %name="强化电影公司7" %desc="[n:building9]的效果<b>翻倍</b>。" %icon="[12,16]" %cost="2550000000000000000000" %req="200"]
+[i:br2 %id="9" %idx="8" %name="强化电影公司8" %desc="[n:building9]的效果<b>翻倍</b>。" %icon="[12,17]" %cost="2550000000000000000000000" %req="250"]
+[i:br2 %id="9" %idx="9" %name="强化电影公司9" %desc="[n:building9]的效果<b>翻倍</b>。" %icon="[12,18]" %cost="2550000000000000000000000000" %req="300"]
+[i:br2 %id="9" %idx="10" %name="强化电影公司10" %desc="[n:building9]的效果<b>翻倍</b>。" %icon="[12,19]" %cost="2550000000000000000000000000000" %req="350"]
+[i:br2 %id="9" %idx="11" %name="强化电影公司11" %desc="[n:building9]的效果<b>翻倍</b>。" %icon="[12,20]" %cost="25500000000000000000000000000000000" %req="400"]
+[i:br2 %id="9" %idx="12" %name="强化电影公司12" %desc="[n:building9]的效果<b>翻倍</b>。" %icon="[12,21]" %cost="255000000000000000000000000000000000000" %req="450"]
+[i:br2 %id="9" %idx="13" %name="强化电影公司13" %desc="[n:building9]的效果<b>翻倍</b>。" %icon="[12,22]" %cost="2550000000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="10" %idx="1" %name="强化大型演出舞台1" %desc="[n:building10]的效果<b>翻倍</b>。" %icon="[17,0]" %cost="750000000000" %req="1"]
+[i:br2 %id="10" %idx="2" %name="强化大型演出舞台2" %desc="[n:building10]的效果<b>翻倍</b>。" %icon="[17,1]" %cost="3750000000000" %req="5"]
+[i:br2 %id="10" %idx="3" %name="强化大型演出舞台3" %desc="[n:building10]的效果<b>翻倍</b>。" %icon="[17,2]" %cost="37500000000000" %req="25"]
+[i:br2 %id="10" %idx="4" %name="强化大型演出舞台4" %desc="[n:building10]的效果<b>翻倍</b>。" %icon="[17,13]" %cost="3750000000000000" %req="50"]
+[i:br2 %id="10" %idx="5" %name="强化大型演出舞台5" %desc="[n:building10]的效果<b>翻倍</b>。" %icon="[17,14]" %cost="375000000000000000" %req="100"]
+[i:br2 %id="10" %idx="6" %name="强化大型演出舞台6" %desc="[n:building10]的效果<b>翻倍</b>。" %icon="[17,15]" %cost="37500000000000000000" %req="150"]
+[i:br2 %id="10" %idx="7" %name="强化大型演出舞台7" %desc="[n:building10]的效果<b>翻倍</b>。" %icon="[17,16]" %cost="37500000000000000000000" %req="200"]
+[i:br2 %id="10" %idx="8" %name="强化大型演出舞台8" %desc="[n:building10]的效果<b>翻倍</b>。" %icon="[17,17]" %cost="37500000000000000000000000" %req="250"]
+[i:br2 %id="10" %idx="9" %name="强化大型演出舞台9" %desc="[n:building10]的效果<b>翻倍</b>。" %icon="[17,18]" %cost="37500000000000000000000000000" %req="300"]
+[i:br2 %id="10" %idx="10" %name="强化大型演出舞台10" %desc="[n:building10]的效果<b>翻倍</b>。" %icon="[17,19]" %cost="37500000000000000000000000000000" %req="350"]
+[i:br2 %id="10" %idx="11" %name="强化大型演出舞台11" %desc="[n:building10]的效果<b>翻倍</b>。" %icon="[17,20]" %cost="375000000000000000000000000000000000" %req="400"]
+[i:br2 %id="10" %idx="12" %name="强化大型演出舞台12" %desc="[n:building10]的效果<b>翻倍</b>。" %icon="[17,21]" %cost="3750000000000000000000000000000000000000" %req="450"]
+[i:br2 %id="10" %idx="13" %name="强化大型演出舞台13" %desc="[n:building10]的效果<b>翻倍</b>。" %icon="[17,22]" %cost="37500000000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="11" %idx="1" %name="强化偶像工厂1" %desc="[n:building11]的效果<b>翻倍</b>。" %icon="[9,0]" %cost="10000000000000" %req="1"]
+[i:br2 %id="11" %idx="2" %name="强化偶像工厂2" %desc="[n:building11]的效果<b>翻倍</b>。" %icon="[9,1]" %cost="50000000000000" %req="5"]
+[i:br2 %id="11" %idx="3" %name="强化偶像工厂3" %desc="[n:building11]的效果<b>翻倍</b>。" %icon="[9,2]" %cost="500000000000000" %req="25"]
+[i:br2 %id="11" %idx="4" %name="强化偶像工厂4" %desc="[n:building11]的效果<b>翻倍</b>。" %icon="[9,13]" %cost="50000000000000000" %req="50"]
+[i:br2 %id="11" %idx="5" %name="强化偶像工厂5" %desc="[n:building11]的效果<b>翻倍</b>。" %icon="[9,14]" %cost="5000000000000000000" %req="100"]
+[i:br2 %id="11" %idx="6" %name="强化偶像工厂6" %desc="[n:building11]的效果<b>翻倍</b>。" %icon="[9,15]" %cost="500000000000000000000" %req="150"]
+[i:br2 %id="11" %idx="7" %name="强化偶像工厂7" %desc="[n:building11]的效果<b>翻倍</b>。" %icon="[9,16]" %cost="500000000000000000000000" %req="200"]
+[i:br2 %id="11" %idx="8" %name="强化偶像工厂8" %desc="[n:building11]的效果<b>翻倍</b>。" %icon="[9,17]" %cost="500000000000000000000000000" %req="250"]
+[i:br2 %id="11" %idx="9" %name="强化偶像工厂9" %desc="[n:building11]的效果<b>翻倍</b>。" %icon="[9,18]" %cost="500000000000000000000000000000" %req="300"]
+[i:br2 %id="11" %idx="10" %name="强化偶像工厂10" %desc="[n:building11]的效果<b>翻倍</b>。" %icon="[9,19]" %cost="500000000000000000000000000000000" %req="350"]
+[i:br2 %id="11" %idx="11" %name="强化偶像工厂11" %desc="[n:building11]的效果<b>翻倍</b>。" %icon="[9,20]" %cost="5000000000000000000000000000000000000" %req="400"]
+[i:br2 %id="11" %idx="12" %name="强化偶像工厂12" %desc="[n:building11]的效果<b>翻倍</b>。" %icon="[9,21]" %cost="50000000000000000000000000000000000000000" %req="450"]
+[i:br2 %id="11" %idx="13" %name="强化偶像工厂13" %desc="[n:building11]的效果<b>翻倍</b>。" %icon="[9,22]" %cost="500000000000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="12" %idx="1" %name="强化巨星训练营1" %desc="[n:building12]的效果<b>翻倍</b>。" %icon="[18,5]" %cost="140000000000000" %req="1"]
+[i:br2 %id="12" %idx="2" %name="强化巨星训练营2" %desc="[n:building12]的效果<b>翻倍</b>。" %icon="[19,5]" %cost="700000000000000" %req="5"]
+[i:br2 %id="12" %idx="3" %name="强化巨星训练营3" %desc="[n:building12]的效果<b>翻倍</b>。" %icon="[20,5]" %cost="7000000000000000" %req="25"]
+[i:br2 %id="12" %idx="4" %name="强化巨星训练营4" %desc="[n:building12]的效果<b>翻倍</b>。" %icon="[21,5]" %cost="700000000000000000" %req="50"]
+[i:br2 %id="12" %idx="5" %name="强化巨星训练营5" %desc="[n:building12]的效果<b>翻倍</b>。" %icon="[22,5]" %cost="70000000000000000000" %req="100"]
+[i:br2 %id="12" %idx="6" %name="强化巨星训练营6" %desc="[n:building12]的效果<b>翻倍</b>。" %icon="[23,5]" %cost="7000000000000000000000" %req="150"]
+[i:br2 %id="12" %idx="7" %name="强化巨星训练营7" %desc="[n:building12]的效果<b>翻倍</b>。" %icon="[24,5]" %cost="7000000000000000000000000" %req="200"]
+[i:br2 %id="12" %idx="8" %name="强化巨星训练营8" %desc="[n:building12]的效果<b>翻倍</b>。" %icon="[25,5]" %cost="7000000000000000000000000000" %req="250"]
+[i:br2 %id="12" %idx="9" %name="强化巨星训练营9" %desc="[n:building12]的效果<b>翻倍</b>。" %icon="[26,5]" %cost="7000000000000000000000000000000" %req="300"]
+[i:br2 %id="12" %idx="10" %name="强化巨星训练营10" %desc="[n:building12]的效果<b>翻倍</b>。" %icon="[24,6]" %cost="7000000000000000000000000000000000" %req="350"]
+[i:br2 %id="12" %idx="11" %name="强化巨星训练营11" %desc="[n:building12]的效果<b>翻倍</b>。" %icon="[25,6]" %cost="70000000000000000000000000000000000000" %req="400"]
+[i:br2 %id="12" %idx="12" %name="强化巨星训练营12" %desc="[n:building12]的效果<b>翻倍</b>。" %icon="[26,6]" %cost="700000000000000000000000000000000000000000" %req="450"]
+[i:br2 %id="12" %idx="13" %name="强化巨星训练营13" %desc="[n:building12]的效果<b>翻倍</b>。" %icon="[11,5]" %cost="7000000000000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="13" %idx="1" %name="强化演出中心1" %desc="[n:building13]的效果<b>翻倍</b>。" %icon="[5,0]" %cost="1700000000000000" %req="1"]
+[i:br2 %id="13" %idx="2" %name="强化演出中心2" %desc="[n:building13]的效果<b>翻倍</b>。" %icon="[5,1]" %cost="8500000000000000" %req="5"]
+[i:br2 %id="13" %idx="3" %name="强化演出中心3" %desc="[n:building13]的效果<b>翻倍</b>。" %icon="[5,2]" %cost="85000000000000000" %req="25"]
+[i:br2 %id="13" %idx="4" %name="强化演出中心4" %desc="[n:building13]的效果<b>翻倍</b>。" %icon="[5,13]" %cost="8500000000000000000" %req="50"]
+[i:br2 %id="13" %idx="5" %name="强化演出中心5" %desc="[n:building13]的效果<b>翻倍</b>。" %icon="[5,14]" %cost="850000000000000000000" %req="100"]
+[i:br2 %id="13" %idx="6" %name="强化演出中心6" %desc="[n:building13]的效果<b>翻倍</b>。" %icon="[5,15]" %cost="85000000000000000000000" %req="150"]
+[i:br2 %id="13" %idx="7" %name="强化演出中心7" %desc="[n:building13]的效果<b>翻倍</b>。" %icon="[5,16]" %cost="85000000000000000000000000" %req="200"]
+[i:br2 %id="13" %idx="8" %name="强化演出中心8" %desc="[n:building13]的效果<b>翻倍</b>。" %icon="[5,17]" %cost="85000000000000000000000000000" %req="250"]
+[i:br2 %id="13" %idx="9" %name="强化演出中心9" %desc="[n:building13]的效果<b>翻倍</b>。" %icon="[5,18]" %cost="85000000000000000000000000000000" %req="300"]
+[i:br2 %id="13" %idx="10" %name="强化演出中心10" %desc="[n:building13]的效果<b>翻倍</b>。" %icon="[5,19]" %cost="85000000000000000000000000000000000" %req="350"]
+[i:br2 %id="13" %idx="11" %name="强化演出中心11" %desc="[n:building13]的效果<b>翻倍</b>。" %icon="[5,20]" %cost="850000000000000000000000000000000000000" %req="400"]
+[i:br2 %id="13" %idx="12" %name="强化演出中心12" %desc="[n:building13]的效果<b>翻倍</b>。" %icon="[5,21]" %cost="8500000000000000000000000000000000000000000" %req="450"]
+[i:br2 %id="13" %idx="13" %name="强化演出中心13" %desc="[n:building13]的效果<b>翻倍</b>。" %icon="[5,22]" %cost="85000000000000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="14" %idx="1" %name="强化体育场1" %desc="[n:building14]的效果<b>翻倍</b>。" %icon="[8,0]" %cost="21000000000000000" %req="1"]
+[i:br2 %id="14" %idx="2" %name="强化体育场2" %desc="[n:building14]的效果<b>翻倍</b>。" %icon="[8,1]" %cost="105000000000000000" %req="5"]
+[i:br2 %id="14" %idx="3" %name="强化体育场3" %desc="[n:building14]的效果<b>翻倍</b>。" %icon="[8,2]" %cost="1050000000000000000" %req="25"]
+[i:br2 %id="14" %idx="4" %name="强化体育场4" %desc="[n:building14]的效果<b>翻倍</b>。" %icon="[8,13]" %cost="105000000000000000000" %req="50"]
+[i:br2 %id="14" %idx="5" %name="强化体育场5" %desc="[n:building14]的效果<b>翻倍</b>。" %icon="[8,14]" %cost="10500000000000000000000" %req="100"]
+[i:br2 %id="14" %idx="6" %name="强化体育场6" %desc="[n:building14]的效果<b>翻倍</b>。" %icon="[8,15]" %cost="1050000000000000000000000" %req="150"]
+[i:br2 %id="14" %idx="7" %name="强化体育场7" %desc="[n:building14]的效果<b>翻倍</b>。" %icon="[8,16]" %cost="1050000000000000000000000000" %req="200"]
+[i:br2 %id="14" %idx="8" %name="强化体育场8" %desc="[n:building14]的效果<b>翻倍</b>。" %icon="[8,17]" %cost="1050000000000000000000000000000" %req="250"]
+[i:br2 %id="14" %idx="9" %name="强化体育场9" %desc="[n:building14]的效果<b>翻倍</b>。" %icon="[8,18]" %cost="1050000000000000000000000000000000" %req="300"]
+[i:br2 %id="14" %idx="10" %name="强化体育场10" %desc="[n:building14]的效果<b>翻倍</b>。" %icon="[8,19]" %cost="1050000000000000000000000000000000000" %req="350"]
+[i:br2 %id="14" %idx="11" %name="强化体育场11" %desc="[n:building14]的效果<b>翻倍</b>。" %icon="[8,20]" %cost="10500000000000000000000000000000000000000" %req="400"]
+[i:br2 %id="14" %idx="12" %name="强化体育场12" %desc="[n:building14]的效果<b>翻倍</b>。" %icon="[8,21]" %cost="105000000000000000000000000000000000000000000" %req="450"]
+[i:br2 %id="14" %idx="13" %name="强化体育场13" %desc="[n:building14]的效果<b>翻倍</b>。" %icon="[8,22]" %cost="1050000000000000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="15" %idx="1" %name="强化影视城1" %desc="[n:building15]的效果<b>翻倍</b>。" %icon="[14,0]" %cost="260000000000000000" %req="1"]
+[i:br2 %id="15" %idx="2" %name="强化影视城2" %desc="[n:building15]的效果<b>翻倍</b>。" %icon="[14,1]" %cost="1300000000000000000" %req="5"]
+[i:br2 %id="15" %idx="3" %name="强化影视城3" %desc="[n:building15]的效果<b>翻倍</b>。" %icon="[14,2]" %cost="13000000000000000000" %req="25"]
+[i:br2 %id="15" %idx="4" %name="强化影视城4" %desc="[n:building15]的效果<b>翻倍</b>。" %icon="[14,13]" %cost="1300000000000000000000" %req="50"]
+[i:br2 %id="15" %idx="5" %name="强化影视城5" %desc="[n:building15]的效果<b>翻倍</b>。" %icon="[14,14]" %cost="130000000000000000000000" %req="100"]
+[i:br2 %id="15" %idx="6" %name="强化影视城6" %desc="[n:building15]的效果<b>翻倍</b>。" %icon="[14,15]" %cost="13000000000000000000000000" %req="150"]
+[i:br2 %id="15" %idx="7" %name="强化影视城7" %desc="[n:building15]的效果<b>翻倍</b>。" %icon="[14,16]" %cost="13000000000000000000000000000" %req="200"]
+[i:br2 %id="15" %idx="8" %name="强化影视城8" %desc="[n:building15]的效果<b>翻倍</b>。" %icon="[14,17]" %cost="13000000000000000000000000000000" %req="250"]
+[i:br2 %id="15" %idx="9" %name="强化影视城9" %desc="[n:building15]的效果<b>翻倍</b>。" %icon="[14,18]" %cost="13000000000000000000000000000000000" %req="300"]
+[i:br2 %id="15" %idx="10" %name="强化影视城10" %desc="[n:building15]的效果<b>翻倍</b>。" %icon="[14,19]" %cost="13000000000000000000000000000000000000" %req="350"]
+[i:br2 %id="15" %idx="11" %name="强化影视城11" %desc="[n:building15]的效果<b>翻倍</b>。" %icon="[14,20]" %cost="130000000000000000000000000000000000000000" %req="400"]
+[i:br2 %id="15" %idx="12" %name="强化影视城12" %desc="[n:building15]的效果<b>翻倍</b>。" %icon="[14,21]" %cost="1300000000000000000000000000000000000000000000" %req="450"]
+[i:br2 %id="15" %idx="13" %name="强化影视城13" %desc="[n:building15]的效果<b>翻倍</b>。" %icon="[14,22]" %cost="13000000000000000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="16" %idx="1" %name="强化全明星演唱会1" %desc="[n:building16]的效果<b>翻倍</b>。" %icon="[6,0]" %cost="3100000000000000000" %req="1"]
+[i:br2 %id="16" %idx="2" %name="强化全明星演唱会2" %desc="[n:building16]的效果<b>翻倍</b>。" %icon="[6,1]" %cost="15500000000000000000" %req="5"]
+[i:br2 %id="16" %idx="3" %name="强化全明星演唱会3" %desc="[n:building16]的效果<b>翻倍</b>。" %icon="[6,2]" %cost="155000000000000000000" %req="25"]
+[i:br2 %id="16" %idx="4" %name="强化全明星演唱会4" %desc="[n:building16]的效果<b>翻倍</b>。" %icon="[6,13]" %cost="15500000000000000000000" %req="50"]
+[i:br2 %id="16" %idx="5" %name="强化全明星演唱会5" %desc="[n:building16]的效果<b>翻倍</b>。" %icon="[6,14]" %cost="1550000000000000000000000" %req="100"]
+[i:br2 %id="16" %idx="6" %name="强化全明星演唱会6" %desc="[n:building16]的效果<b>翻倍</b>。" %icon="[6,15]" %cost="155000000000000000000000000" %req="150"]
+[i:br2 %id="16" %idx="7" %name="强化全明星演唱会7" %desc="[n:building16]的效果<b>翻倍</b>。" %icon="[6,16]" %cost="155000000000000000000000000000" %req="200"]
+[i:br2 %id="16" %idx="8" %name="强化全明星演唱会8" %desc="[n:building16]的效果<b>翻倍</b>。" %icon="[6,17]" %cost="155000000000000000000000000000000" %req="250"]
+[i:br2 %id="16" %idx="9" %name="强化全明星演唱会9" %desc="[n:building16]的效果<b>翻倍</b>。" %icon="[6,18]" %cost="155000000000000000000000000000000000" %req="300"]
+[i:br2 %id="16" %idx="10" %name="强化全明星演唱会10" %desc="[n:building16]的效果<b>翻倍</b>。" %icon="[6,19]" %cost="155000000000000000000000000000000000000" %req="350"]
+[i:br2 %id="16" %idx="11" %name="强化全明星演唱会11" %desc="[n:building16]的效果<b>翻倍</b>。" %icon="[6,20]" %cost="1550000000000000000000000000000000000000000" %req="400"]
+[i:br2 %id="16" %idx="12" %name="强化全明星演唱会12" %desc="[n:building16]的效果<b>翻倍</b>。" %icon="[6,21]" %cost="15000000000000000000000000000000000000000000000" %req="450"]
+[i:br2 %id="16" %idx="13" %name="强化全明星演唱会13" %desc="[n:building16]的效果<b>翻倍</b>。" %icon="[6,22]" %cost="155000000000000000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="17" %idx="1" %name="强化娱乐帝国1" %desc="[n:building17]的效果<b>翻倍</b>。" %icon="[13,0]" %cost="710000000000000000000" %req="1"]
+[i:br2 %id="17" %idx="2" %name="强化娱乐帝国2" %desc="[n:building17]的效果<b>翻倍</b>。" %icon="[13,1]" %cost="3550000000000000000000" %req="5"]
+[i:br2 %id="17" %idx="3" %name="强化娱乐帝国3" %desc="[n:building17]的效果<b>翻倍</b>。" %icon="[13,2]" %cost="35500000000000000000000" %req="25"]
+[i:br2 %id="17" %idx="4" %name="强化娱乐帝国4" %desc="[n:building17]的效果<b>翻倍</b>。" %icon="[13,13]" %cost="3550000000000000000000000" %req="50"]
+[i:br2 %id="17" %idx="5" %name="强化娱乐帝国5" %desc="[n:building17]的效果<b>翻倍</b>。" %icon="[13,14]" %cost="355000000000000000000000000" %req="100"]
+[i:br2 %id="17" %idx="6" %name="强化娱乐帝国6" %desc="[n:building17]的效果<b>翻倍</b>。" %icon="[13,15]" %cost="35500000000000000000000000000" %req="150"]
+[i:br2 %id="17" %idx="7" %name="强化娱乐帝国7" %desc="[n:building17]的效果<b>翻倍</b>。" %icon="[13,16]" %cost="35500000000000000000000000000000" %req="200"]
+[i:br2 %id="17" %idx="8" %name="强化娱乐帝国8" %desc="[n:building17]的效果<b>翻倍</b>。" %icon="[13,17]" %cost="35500000000000000000000000000000000" %req="250"]
+[i:br2 %id="17" %idx="9" %name="强化娱乐帝国9" %desc="[n:building17]的效果<b>翻倍</b>。" %icon="[13,18]" %cost="35500000000000000000000000000000000000" %req="300"]
+[i:br2 %id="17" %idx="10" %name="强化娱乐帝国10" %desc="[n:building17]的效果<b>翻倍</b>。" %icon="[13,19]" %cost="35500000000000000000000000000000000000000" %req="350"]
+[i:br2 %id="17" %idx="11" %name="强化娱乐帝国11" %desc="[n:building17]的效果<b>翻倍</b>。" %icon="[13,20]" %cost="355000000000000000000000000000000000000000000" %req="400"]
+[i:br2 %id="17" %idx="12" %name="强化娱乐帝国12" %desc="[n:building17]的效果<b>翻倍</b>。" %icon="[13,21]" %cost="3550000000000000000000000000000000000000000000000" %req="450"]
+[i:br2 %id="17" %idx="13" %name="强化娱乐帝国13" %desc="[n:building17]的效果<b>翻倍</b>。" %icon="[13,22]" %cost="35500000000000000000000000000000000000000000000000000" %req="500"]
+[i:br2 %id="18" %idx="1" %name="强化只因宇宙1" %desc="[n:building18]的效果<b>翻倍</b>。" %icon="[7,0]" %cost="120000000000000000000000" %req="1"]
+[i:br2 %id="18" %idx="2" %name="强化只因宇宙2" %desc="[n:building18]的效果<b>翻倍</b>。" %icon="[7,1]" %cost="600000000000000000000000" %req="5"]
+[i:br2 %id="18" %idx="3" %name="强化只因宇宙3" %desc="[n:building18]的效果<b>翻倍</b>。" %icon="[7,2]" %cost="6000000000000000000000000" %req="25"]
+[i:br2 %id="18" %idx="4" %name="强化只因宇宙4" %desc="[n:building18]的效果<b>翻倍</b>。" %icon="[7,13]" %cost="600000000000000000000000000" %req="50"]
+[i:br2 %id="18" %idx="5" %name="强化只因宇宙5" %desc="[n:building18]的效果<b>翻倍</b>。" %icon="[7,14]" %cost="60000000000000000000000000000" %req="100"]
+[i:br2 %id="18" %idx="6" %name="强化只因宇宙6" %desc="[n:building18]的效果<b>翻倍</b>。" %icon="[7,15]" %cost="6000000000000000000000000000000" %req="150"]
+[i:br2 %id="18" %idx="7" %name="强化只因宇宙7" %desc="[n:building18]的效果<b>翻倍</b>。" %icon="[7,16]" %cost="6000000000000000000000000000000000" %req="200"]
+[i:br2 %id="18" %idx="8" %name="强化只因宇宙8" %desc="[n:building18]的效果<b>翻倍</b>。" %icon="[7,17]" %cost="6000000000000000000000000000000000000" %req="250"]
+[i:br2 %id="18" %idx="9" %name="强化只因宇宙9" %desc="[n:building18]的效果<b>翻倍</b>。" %icon="[7,18]" %cost="6000000000000000000000000000000000000000" %req="300"]
+[i:br2 %id="18" %idx="10" %name="强化只因宇宙10" %desc="[n:building18]的效果<b>翻倍</b>。" %icon="[7,19]" %cost="6000000000000000000000000000000000000000000" %req="350"]
+[i:br2 %id="18" %idx="11" %name="强化只因宇宙11" %desc="[n:building18]的效果<b>翻倍</b>。" %icon="[7,20]" %cost="60000000000000000000000000000000000000000000000" %req="400"]
+[i:br2 %id="18" %idx="12" %name="强化只因宇宙12" %desc="[n:building18]的效果<b>翻倍</b>。" %icon="[7,21]" %cost="600000000000000000000000000000000000000000000000000" %req="450"]
+[i:br2 %id="18" %idx="13" %name="强化只因宇宙13" %desc="[n:building18]的效果<b>翻倍</b>。" %icon="[7,22]" %cost="6000000000000000000000000000000000000000000000000000000" %req="500"]
+
+[i:br3 %idx="1" %b1="3" %b1n="录音室" %req="15" %cost="55000" %icon="[16,0]"]
+[i:br3 %idx="2" %b1="4" %b1n="彩排厅" %req="15" %cost="600000" %icon="[16,1]"]
+[i:br3 %idx="3" %b1="5" %b1n="娱乐厅" %req="15" %cost="6500000" %icon="[16,2]"]
+[i:br3 %idx="4" %b1="6" %b1n="签约公司" %req="15" %cost="70000000" %icon="[16,13]"]
+[i:br3 %idx="5" %b1="7" %b1n="演唱会场馆" %req="15" %cost="1000000000" %icon="[16,14]"]
+[i:br3 %idx="6" %b1="8" %b1n="电视台" %req="15" %cost="16500000000" %icon="[16,15]"]
+[i:br3 %idx="7" %b1="9" %b1n="电影公司" %req="15" %cost="255000000000" %icon="[16,16]"]
+[i:br3 %idx="8" %b1="10" %b1n="大型演出舞台" %req="15" %cost="3750000000000" %icon="[16,17]"]
+[i:br3 %idx="9" %b1="11" %b1n="偶像工厂" %req="15" %cost="50000000000000" %icon="[16,18]"]
+[i:br3 %idx="10" %b1="12" %b1n="巨星训练营" %req="15" %cost="700000000000000" %icon="[16,19]"]
+[i:br3 %idx="11" %b1="13" %b1n="演出中心" %req="15" %cost="8500000000000000" %icon="[16,20]"]
+[i:br3 %idx="12" %b1="14" %b1n="体育场" %req="15" %cost="105000000000000000" %icon="[16,21]"]
+[i:br3 %idx="13" %b1="15" %b1n="影视城" %req="15" %cost="1300000000000000000" %icon="[16,22]"]
+[i:br3 %idx="14" %b1="16" %b1n="全明星演唱会" %req="15" %cost="15500000000000000000" %icon="[16,23]"]
+[i:br3 %idx="15" %b1="17" %b1n="娱乐帝国" %req="15" %cost="3550000000000000000000" %icon="[16,24]"]
+[i:br3 %idx="16" %b1="18" %b1n="只因宇宙" %req="15" %cost="60000000000000000000000" %icon="[16,25]"]
+
+[i:br4 %idx="1" %b1="3" %b2="12" %b1n="录音室" %b2n="巨星训练营" %name="协同效应1" %req="15" %cost="2800000000000000000" %icon="[2,20]"]
+[i:br4 %idx="2" %b1="3" %b2="7" %b1n="录音室" %b2n="演唱会场馆" %name="协同效应2" %req="75" %cost="4002000000000000000" %icon="[2,29]"]
+[i:br4 %idx="3" %b1="4" %b2="8" %b1n="彩排厅" %b2n="电视台" %name="协同效应3" %req="15" %cost="66024000000000" %icon="[3,20]"]
+[i:br4 %idx="4" %b1="4" %b2="9" %b1n="彩排厅" %b2n="电影公司" %name="协同效应4" %req="75" %cost="1020000000000000000000" %icon="[3,29]"]
+[i:br4 %idx="5" %b1="5" %b2="13" %b1n="娱乐厅" %b2n="演出中心" %name="协同效应5" %req="15" %cost="34000000000000000000" %icon="[4,20]"]
+[i:br4 %idx="6" %b1="5" %b2="12" %b1n="娱乐厅" %b2n="巨星训练营" %name="协同效应6" %req="75" %cost="2800000000000000000000000" %icon="[4,29]"]
+[i:br4 %idx="7" %b1="6" %b2="11" %b1n="签约公司" %b2n="偶像工厂" %name="协同效应7" %req="15" %cost="200003000000000000" %icon="[15,20]"]
+[i:br4 %idx="8" %b1="5" %b2="6" %b1n="娱乐厅" %b2n="签约公司" %name="协同效应8" %req="75" %cost="540000000000000000" %icon="[15,29]"]
+[i:br4 %idx="9" %b1="7" %b2="11" %b1n="演唱会场馆" %b2n="偶像工厂" %name="协同效应9" %req="15" %cost="200040000000000000" %icon="[16,20]"]
+[i:br4 %idx="10" %b1="7" %b2="13" %b1n="演唱会场馆" %b2n="演出中心" %name="协同效应10" %req="75" %cost="34000000000000000000000000" %icon="[16,29]"]
+[i:br4 %idx="11" %b1="8" %b2="10" %b1n="电视台" %b2n="大型演出舞台" %name="协同效应11" %req="15" %cost="15660000000000000" %icon="[17,20]"]
+[i:br4 %idx="12" %b1="3" %b2="8" %b1n="录音室" %b2n="电视台" %name="协同效应12" %req="75" %cost="66002000000000000000" %icon="[17,29]"]
+[i:br4 %idx="13" %b1="4" %b2="9" %b1n="彩排厅" %b2n="电影公司" %name="协同效应13" %req="15" %cost="1020000000000000" %icon="[5,20]"]
+[i:br4 %idx="14" %b1="5" %b2="9" %b1n="娱乐厅" %b2n="电影公司" %name="协同效应14" %req="75" %cost="1020000000000000000000" %icon="[5,29]"]
+[i:br4 %idx="15" %b1="4" %b2="10" %b1n="彩排厅" %b2n="大型演出舞台" %name="协同效应15" %req="15" %cost="15000000000000000" %icon="[6,20]"]
+[i:br4 %idx="16" %b1="6" %b2="10" %b1n="签约公司" %b2n="大型演出舞台" %name="协同效应16" %req="75" %cost="15003000000000000000000" %icon="[6,29]"]
+[i:br4 %idx="17" %b1="3" %b2="11" %b1n="录音室" %b2n="偶像工厂" %name="协同效应17" %req="15" %cost="200000000000000000" %icon="[7,20]"]
+[i:br4 %idx="18" %b1="11" %b2="14" %b1n="偶像工厂" %b2n="体育场" %name="协同效应18" %req="75" %cost="422000000000000000000000000" %icon="[7,29]"]
+[i:br4 %idx="19" %b1="9" %b2="12" %b1n="电影公司" %b2n="巨星训练营" %name="协同效应19" %req="15" %cost="2810000000000000000" %icon="[8,20]"]
+[i:br4 %idx="20" %b1="12" %b2="14" %b1n="巨星训练营" %b2n="体育场" %name="协同效应20" %req="75" %cost="448000000000000000000000000" %icon="[8,29]"]
+[i:br4 %idx="21" %b1="6" %b2="13" %b1n="签约公司" %b2n="演出中心" %name="协同效应21" %req="15" %cost="34000000000000000000" %icon="[13,20]"]
+[i:br4 %idx="22" %b1="10" %b2="13" %b1n="大型演出舞台" %b2n="演出中心" %name="协同效应22" %req="75" %cost="34150000000000000000000000" %icon="[13,29]"]
+[i:br4 %idx="23" %b1="8" %b2="14" %b1n="电视台" %b2n="体育场" %name="协同效应23" %req="15" %cost="420000000000000000000" %icon="[14,20]"]
+[i:br4 %idx="24" %b1="7" %b2="14" %b1n="演唱会场馆" %b2n="体育场" %name="协同效应24" %req="75" %cost="420000000000000000000000000" %icon="[14,29]"]
+[i:br4 %idx="25" %b1="4" %b2="15" %b1n="彩排厅" %b2n="影视城" %name="协同效应25" %req="15" %cost="5200000000000000000000" %icon="[19,20]"]
+[i:br4 %idx="26" %b1="13" %b2="15" %b1n="演出中心" %b2n="影视城" %name="协同效应26" %req="75" %cost="5440000000000000000000000000" %icon="[19,29]"]
+[i:br4 %idx="27" %b1="14" %b2="16" %b1n="体育场" %b2n="全明星演唱会" %name="协同效应27" %req="15" %cost="66200000000000000000000" %icon="[20,20]"]
+[i:br4 %idx="28" %b1="1" %b2="16" %b1n="练习室" %b2n="全明星演唱会" %name="协同效应28" %req="75" %cost="62000000000000000000000000000" %icon="[20,29]"]
+[i:br4 %idx="29" %b1="2" %b2="17" %b1n="篮球场" %b2n="娱乐帝国" %name="协同效应29" %req="15" %cost="14200000000000000000000000" %icon="[32,20]"]
+[i:br4 %idx="30" %b1="15" %b2="17" %b1n="影视城" %b2n="娱乐帝国" %name="协同效应30" %req="75" %cost="14252000000000000000000000000000" %icon="[32,29]"]
+[i:br4 %idx="31" %b1="11" %b2="18" %b1n="偶像工厂" %b2n="只因宇宙" %name="协同效应31" %req="15" %cost="2400000000000000000000000000" %icon="[33,20]"]
+[i:br4 %idx="32" %b1="16" %b2="18" %b1n="全明星演唱会" %b2n="只因宇宙" %name="协同效应32" %req="75" %cost="2400000000000000000000000000000000" %icon="[33,29]"]
+
+[i:br5 %idx="1" %req="50000" %cost="999999" %icon="[0,11]" %mul="1"]
+[i:br5 %idx="2" %req="250000" %cost="5000000" %icon="[1,11]" %mul="1"]
+[i:br5 %idx="3" %req="500000" %cost="10000000" %icon="[2,11]" %mul="1"]
+[i:br5 %idx="4" %req="2500000" %cost="50000000" %icon="[3,11]" %mul="2"]
+[i:br5 %idx="5" %req="5000000" %cost="100000000" %icon="[4,11]" %mul="2"]
+[i:br5 %idx="6" %req="5000000" %cost="100000000" %icon="[5,11]" %mul="2"]
+[i:br5 %idx="7" %req="5000000" %cost="100000000" %icon="[6,11]" %mul="2"]
+[i:br5 %idx="8" %req="5000000" %cost="100000000" %icon="[7,11]" %mul="2"]
+[i:br5 %idx="9" %req="5000000" %cost="100000000" %icon="[8,11]" %mul="2"]
+[i:br5 %idx="10" %req="25000000" %cost="500000000" %icon="[9,11]" %mul="2"]
+[i:br5 %idx="11" %req="25000000" %cost="500000000" %icon="[10,11]" %mul="2"]
+[i:br5 %idx="12" %req="50000000" %cost="1000000000" %icon="[11,11]" %mul="2"]
+[i:br5 %idx="13" %req="250000000" %cost="5000000000" %icon="[12,11]" %mul="2"]
+[i:br5 %idx="14" %req="500000000" %cost="10000000000" %icon="[13,11]" %mul="2"]
+[i:br5 %idx="15" %req="2500000000" %cost="50000000000" %icon="[14,11]" %mul="2"]
+[i:br5 %idx="16" %req="5000000000" %cost="100000000000" %icon="[15,11]" %mul="5"]
+[i:br5 %idx="17" %req="5000000000" %cost="100000000000" %icon="[0,11]" %mul="5"]
+[i:br5 %idx="18" %req="25000000000" %cost="500000000000" %icon="[1,11]" %mul="2"]
+[i:br5 %idx="19" %req="50000000000" %cost="1000000000000" %icon="[2,11]" %mul="2"]
+[i:br5 %idx="20" %req="250000000000" %cost="5000000000000" %icon="[3,11]" %mul="2"]
+[i:br5 %idx="21" %req="500000000000" %cost="10000000000000" %icon="[4,11]" %mul="2"]
+[i:br5 %idx="22" %req="2500000000000" %cost="50000000000000" %icon="[5,11]" %mul="2"]
+[i:br5 %idx="23" %req="5000000000000" %cost="100000000000000" %icon="[6,11]" %mul="2"]
+[i:br5 %idx="24" %req="25000000000000" %cost="500000000000000" %icon="[7,11]" %mul="2"]
+[i:br5 %idx="25" %req="25000000000000" %cost="500000000000000" %icon="[8,11]" %mul="2"]
+[i:br5 %idx="26" %req="50000000000000" %cost="1000000000000000" %icon="[9,11]" %mul="2"]
+[i:br5 %idx="27" %req="50000000000000" %cost="1000000000000000" %icon="[10,11]" %mul="2"]
+[i:br5 %idx="28" %req="500000000000000" %cost="10000000000000000" %icon="[11,11]" %mul="2"]
+[i:br5 %idx="29" %req="500000000000000" %cost="10000000000000000" %icon="[12,11]" %mul="2"]
+[i:br5 %idx="30" %req="2500000000000000" %cost="50000000000000000" %icon="[13,11]" %mul="5"]
+[i:br5 %idx="31" %req="2500000000000000" %cost="50000000000000000" %icon="[14,11]" %mul="5"]
+[i:br5 %idx="32" %req="5000000000000000" %cost="100000000000000000" %icon="[15,11]" %mul="3"]
+[i:br5 %idx="33" %req="25000000000000000" %cost="500000000000000000" %icon="[0,11]" %mul="3"]
+[i:br5 %idx="34" %req="50000000000000000" %cost="1000000000000000000" %icon="[1,11]" %mul="3"]
+[i:br5 %idx="35" %req="250000000000000000" %cost="5000000000000000000" %icon="[2,11]" %mul="3"]
+[i:br5 %idx="36" %req="500000000000000000" %cost="10000000000000000000" %icon="[3,11]" %mul="3"]
+[i:br5 %idx="37" %req="2500000000000000000" %cost="50000000000000000000" %icon="[4,11]" %mul="3"]
+[i:br5 %idx="38" %req="5000000000000000000" %cost="100000000000000000000" %icon="[5,11]" %mul="4"]
+[i:br5 %idx="39" %req="25000000000000000000" %cost="500000000000000000000" %icon="[6,11]" %mul="4"]
+[i:br5 %idx="40" %req="50000000000000000000" %cost="1000000000000000000000" %icon="[7,11]" %mul="4"]
+[i:br5 %idx="41" %req="250000000000000000000" %cost="5000000000000000000000" %icon="[8,11]" %mul="4"]
+[i:br5 %idx="42" %req="500000000000000000000" %cost="10000000000000000000000" %icon="[9,11]" %mul="4"]
+[i:br5 %idx="43" %req="2500000000000000000000" %cost="50000000000000000000000" %icon="[10,11]" %mul="4"]
+[i:br5 %idx="44" %req="5000000000000000000000" %cost="100000000000000000000000" %icon="[11,11]" %mul="4"]
+[i:br5 %idx="45" %req="25000000000000000000000" %cost="500000000000000000000000" %icon="[12,11]" %mul="4"]
+[i:br5 %idx="46" %req="50000000000000000000000" %cost="1000000000000000000000000" %icon="[13,11]" %mul="4"]
+[i:br5 %idx="47" %req="250000000000000000000000" %cost="5000000000000000000000000" %icon="[14,11]" %mul="4"]
+[i:br5 %idx="48" %req="500000000000000000000000" %cost="10000000000000000000000000" %icon="[15,11]" %mul="4"]
+[i:br5 %idx="49" %req="2500000000000000000000000" %cost="50000000000000000000000000" %icon="[0,11]" %mul="4"]
+[i:br5 %idx="50" %req="5000000000000000000000000" %cost="100000000000000000000000000" %icon="[1,11]" %mul="4"]
+[i:br5 %idx="51" %req="25000000000000000000000000" %cost="500000000000000000000000000" %icon="[2,11]" %mul="4"]
+[i:br5 %idx="52" %req="50000000000000000000000000" %cost="1000000000000000000000000000" %icon="[3,11]" %mul="4"]
+[i:br5 %idx="53" %req="250000000000000000000000000" %cost="5000000000000000000000000000" %icon="[4,11]" %mul="4"]
+[i:br5 %idx="54" %req="500000000000000000000000000" %cost="10000000000000000000000000000" %icon="[5,11]" %mul="4"]
+[i:br5 %idx="55" %req="2500000000000000000000000000" %cost="50000000000000000000000000000" %icon="[6,11]" %mul="4"]
+[i:br5 %idx="56" %req="5000000000000000000000000000" %cost="100000000000000000000000000000" %icon="[7,11]" %mul="1"]
+[i:br5 %idx="57" %req="25000000000000000000000000000" %cost="500000000000000000000000000000" %icon="[8,11]" %mul="4"]
+[i:br5 %idx="58" %req="50000000000000000000000000000" %cost="1000000000000000000000000000000" %icon="[9,11]" %mul="4"]
+[i:br5 %idx="59" %req="250000000000000000000000000000" %cost="5000000000000000000000000000000" %icon="[10,11]" %mul="4"]
+[i:br5 %idx="60" %req="500000000000000000000000000000" %cost="10000000000000000000000000000000" %icon="[11,11]" %mul="4"]
+[i:br5 %idx="61" %req="2500000000000000000000000000000" %cost="50000000000000000000000000000000" %icon="[12,11]" %mul="4"]
+[i:br5 %idx="62" %req="5000000000000000000000000000000" %cost="100000000000000000000000000000000" %icon="[13,11]" %mul="4"]
+[i:br5 %idx="63" %req="25000000000000000000000000000000" %cost="500000000000000000000000000000000" %icon="[14,11]" %mul="4"]
+[i:br5 %idx="64" %req="50000000000000000000000000000000" %cost="1000000000000000000000000000000000" %icon="[15,11]" %mul="4"]
+[i:br5 %idx="65" %req="250000000000000000000000000000000" %cost="5000000000000000000000000000000000" %icon="[0,11]" %mul="4"]
+[i:br5 %idx="66" %req="500000000000000000000000000000000" %cost="10000000000000000000000000000000000" %icon="[1,11]" %mul="4"]
+[i:br5 %idx="67" %req="2500000000000000000000000000000000" %cost="50000000000000000000000000000000000" %icon="[2,11]" %mul="4"]
+[i:br5 %idx="68" %req="5000000000000000000000000000000000" %cost="100000000000000000000000000000000000" %icon="[3,11]" %mul="4"]
+[i:br5 %idx="69" %req="25000000000000000000000000000000000" %cost="500000000000000000000000000000000000" %icon="[4,11]" %mul="4"]
+[i:br5 %idx="70" %req="50000000000000000000000000000000000" %cost="1000000000000000000000000000000000000" %icon="[5,11]" %mul="4"]
+[i:br5 %idx="71" %req="250000000000000000000000000000000000" %cost="5000000000000000000000000000000000000" %icon="[6,11]" %mul="4"]
+[i:br5 %idx="72" %req="500000000000000000000000000000000000" %cost="10000000000000000000000000000000000000" %icon="[7,11]" %mul="4"]
+[i:br5 %idx="73" %req="2500000000000000000000000000000000000" %cost="50000000000000000000000000000000000000" %icon="[8,11]" %mul="4"]
+[i:br5 %idx="74" %req="5000000000000000000000000000000000000" %cost="100000000000000000000000000000000000000" %icon="[9,11]" %mul="4"]
+[i:br5 %idx="75" %req="25000000000000000000000000000000000000" %cost="500000000000000000000000000000000000000" %icon="[10,11]" %mul="5"]
+[i:br5 %idx="76" %req="50000000000000000000000000000000000000" %cost="1000000000000000000000000000000000000000" %icon="[11,11]" %mul="5"]
+[i:br5 %idx="77" %req="158113000000000000000000000000000000000" %cost="3162000000000000000000000000000000000000" %icon="[12,11]" %mul="5"]
+[i:br5 %idx="78" %req="500000000000000000000000000000000000000" %cost="10000000000000000000000000000000000000000" %icon="[13,11]" %mul="5"]
+[i:br5 %idx="79" %req="1581000000000000000000000000000000000000" %cost="31622000000000000000000000000000000000000" %icon="[14,11]" %mul="5"]
+[i:br5 %idx="80" %req="1581000000000000000000000000000000000000" %cost="31622000000000000000000000000000000000000" %icon="[15,11]" %mul="5"]
+[i:br5 %idx="81" %req="5000000000000000000000000000000000000000" %cost="100000000000000000000000000000000000000000" %icon="[0,11]" %mul="5"]
+[i:br5 %idx="82" %req="15811000000000000000000000000000000000000" %cost="316227000000000000000000000000000000000000" %icon="[1,11]" %mul="5"]
+[i:br5 %idx="83" %req="50000000000000000000000000000000000000000" %cost="1000000000000000000000000000000000000000000" %icon="[2,11]" %mul="5"]
+[i:br5 %idx="84" %req="158113000000000000000000000000000000000000" %cost="3162000000000000000000000000000000000000000" %icon="[3,11]" %mul="5"]
+[i:br5 %idx="85" %req="500000000000000000000000000000000000000000" %cost="10000000000000000000000000000000000000000000" %icon="[4,11]" %mul="5"]
+[i:br5 %idx="86" %req="1581000000000000000000000000000000000000000" %cost="31622000000000000000000000000000000000000000" %icon="[5,11]" %mul="5"]
+[i:br5 %idx="87" %req="1581000000000000000000000000000000000000000" %cost="31622000000000000000000000000000000000000000" %icon="[6,11]" %mul="5"]
+[i:br5 %idx="88" %req="5000000000000000000000000000000000000000000" %cost="100000000000000000000000000000000000000000000" %icon="[7,11]" %mul="5"]
+[i:br5 %idx="89" %req="15811000000000000000000000000000000000000000" %cost="316227000000000000000000000000000000000000000" %icon="[8,11]" %mul="5"]
+[i:br5 %idx="90" %req="50000000000000000000000000000000000000000000" %cost="1000000000000000000000000000000000000000000000" %icon="[9,11]" %mul="5"]
+[i:br5 %idx="91" %req="158113000000000000000000000000000000000000000" %cost="3162000000000000000000000000000000000000000000" %icon="[10,11]" %mul="5"]
+[i:br5 %idx="92" %req="500000000000000000000000000000000000000000000" %cost="10000000000000000000000000000000000000000000000" %icon="[11,11]" %mul="5"]
+[i:br5 %idx="93" %req="1581000000000000000000000000000000000000000000" %cost="31622000000000000000000000000000000000000000000" %icon="[12,11]" %mul="5"]
+[i:br5 %idx="94" %req="1581000000000000000000000000000000000000000000" %cost="31622000000000000000000000000000000000000000000" %icon="[13,11]" %mul="5"]
+[i:br5 %idx="95" %req="5000000000000000000000000000000000000000000000" %cost="100000000000000000000000000000000000000000000000" %icon="[14,11]" %mul="5"]
+[i:br5 %idx="96" %req="15811000000000000000000000000000000000000000000" %cost="316227000000000000000000000000000000000000000000" %icon="[15,11]" %mul="5"]
+[i:br5 %idx="97" %req="50000000000000000000000000000000000000000000000" %cost="1000000000000000000000000000000000000000000000000" %icon="[0,11]" %mul="5"]
+[i:br5 %idx="98" %req="50000000000000000000000000000000000000000000000" %cost="1000000000000000000000000000000000000000000000000" %icon="[1,11]" %mul="5"]
+[i:br5 %idx="99" %req="158113000000000000000000000000000000000000000000" %cost="3162000000000000000000000000000000000000000000000" %icon="[2,11]" %mul="5"]
+[i:br5 %idx="100" %req="500000000000000000000000000000000000000000000000" %cost="10000000000000000000000000000000000000000000000000" %icon="[3,11]" %mul="5"]
+[i:br5 %idx="101" %req="1581000000000000000000000000000000000000000000000" %cost="31622000000000000000000000000000000000000000000000" %icon="[4,11]" %mul="5"]
+[i:br5 %idx="102" %req="5000000000000000000000000000000000000000000000000" %cost="100000000000000000000000000000000000000000000000000" %icon="[5,11]" %mul="5"]
+[i:br5 %idx="103" %req="15811000000000000000000000000000000000000000000000" %cost="316227000000000000000000000000000000000000000000000" %icon="[6,11]" %mul="5"]
+[i:br5 %idx="104" %req="50000000000000000000000000000000000000000000000000" %cost="1000000000000000000000000000000000000000000000000000" %icon="[7,11]" %mul="5"]
+[i:br5 %idx="105" %req="158113000000000000000000000000000000000000000000000" %cost="3162000000000000000000000000000000000000000000000000" %icon="[8,11]" %mul="5"]
+[i:br5 %idx="106" %req="500000000000000000000000000000000000000000000000000" %cost="10000000000000000000000000000000000000000000000000000" %icon="[9,11]" %mul="5"]
+[i:br5 %idx="107" %req="1581000000000000000000000000000000000000000000000000" %cost="31622000000000000000000000000000000000000000000000000" %icon="[10,11]" %mul="5"]
+[i:br5 %idx="108" %req="5000000000000000000000000000000000000000000000000000" %cost="100000000000000000000000000000000000000000000000000000" %icon="[11,11]" %mul="5"]
+[i:br5 %idx="109" %req="15811000000000000000000000000000000000000000000000000" %cost="316227000000000000000000000000000000000000000000000000" %icon="[12,11]" %mul="5"]
+[i:br5 %idx="110" %req="50000000000000000000000000000000000000000000000000000" %cost="1000000000000000000000000000000000000000000000000000000" %icon="[13,11]" %mul="5"]
+[i:br5 %idx="111" %req="158113000000000000000000000000000000000000000000000000" %cost="3162000000000000000000000000000000000000000000000000000" %icon="[14,11]" %mul="5"]
+[i:br5 %idx="112" %req="500000000000000000000000000000000000000000000000000000" %cost="10000000000000000000000000000000000000000000000000000000" %icon="[15,11]" %mul="5"]
+[i:br5 %idx="113" %req="1581000000000000000000000000000000000000000000000000000" %cost="31622000000000000000000000000000000000000000000000000000" %icon="[0,11]" %mul="5"]
+[i:br5 %idx="114" %req="5000000000000000000000000000000000000000000000000000000" %cost="100000000000000000000000000000000000000000000000000000000" %icon="[1,11]" %mul="5"]
+[i:br5 %idx="115" %req="15811000000000000000000000000000000000000000000000000000" %cost="316227000000000000000000000000000000000000000000000000000" %icon="[2,11]" %mul="5"]
+[i:br5 %idx="116" %req="50000000000000000000000000000000000000000000000000000000" %cost="1000000000000000000000000000000000000000000000000000000000" %icon="[3,11]" %mul="5"]
+[i:br5 %idx="117" %req="158113000000000000000000000000000000000000000000000000000" %cost="3162000000000000000000000000000000000000000000000000000000" %icon="[4,11]" %mul="5"]
+[i:br5 %idx="118" %req="500000000000000000000000000000000000000000000000000000000" %cost="10000000000000000000000000000000000000000000000000000000000" %icon="[5,11]" %mul="5"]
+[i:br5 %idx="119" %req="1581000000000000000000000000000000000000000000000000000000" %cost="31622000000000000000000000000000000000000000000000000000000" %icon="[6,11]" %mul="5"]
+[i:br5 %idx="120" %req="5000000000000000000000000000000000000000000000000000000000" %cost="100000000000000000000000000000000000000000000000000000000000" %icon="[7,11]" %mul="5"]
+[i:br5 %idx="121" %req="15811000000000000000000000000000000000000000000000000000000" %cost="316227000000000000000000000000000000000000000000000000000000" %icon="[8,11]" %mul="5"]
+[i:br5 %idx="122" %req="15811000000000000000000000000000000000000000000000000000000" %cost="316227000000000000000000000000000000000000000000000000000000" %icon="[9,11]" %mul="5"]
+
+[i:br6 %idx="1" %req="13" %cost="9000000" %icon="[18,0]" %factor="0.1"]
+[i:br6 %idx="2" %req="25" %cost="9000000000" %icon="[18,1]" %factor="0.125"]
+[i:br6 %idx="3" %req="50" %cost="90000000000000" %icon="[18,2]" %factor="0.15"]
+[i:br6 %idx="4" %req="75" %cost="90000000000000000" %icon="[18,13]" %factor="0.175"]
+[i:br6 %idx="5" %req="100" %cost="900000000000000000000" %icon="[18,14]" %factor="0.2"]
+[i:br6 %idx="6" %req="125" %cost="900000000000000000000000" %icon="[18,15]" %factor="0.2"]
+[i:br6 %idx="7" %req="150" %cost="900000000000000000000000000" %icon="[18,16]" %factor="0.2"]
+[i:br6 %idx="8" %req="175" %cost="900000000000000000000000000000" %icon="[18,17]" %factor="0.2"]
+[i:br6 %idx="9" %req="200" %cost="900000000000000000000000000000000" %icon="[18,18]" %factor="0.2"]
+[i:br6 %idx="10" %req="225" %cost="900000000000000000000000000000000000" %icon="[18,19]" %factor="0.175"]
+[i:br6 %idx="11" %req="250" %cost="900000000000000000000000000000000000000" %icon="[18,21]" %factor="0.15"]
+[i:br6 %idx="12" %req="275" %cost="900000000000000000000000000000000000000000" %icon="[18,25]" %factor="0.125"]
+[i:br6 %idx="13" %req="300" %cost="900000000000000000000000000000000000000000000" %icon="[18,26]" %factor="0.115"]
+
 Achievements
-	*TEMPLATE
-		on click:anim glow
-		
-	*bunnyAchiev1
-		name:Run rabbit run
-		desc:Have <b>1</b> bitcoin.
-		req:1 bitcoin
-		icon:icons[2,4] icons[0,2] icons[0,6]
-	*bunnyAchiev2
-		name:Bunniest home videos
-		desc:Have <b>1000</b> bitcoins.
-		req:1000 bitcoins
-		icon:icons[2,4] icons[0,3] icons[0,6]
-	*bunnyAchiev3
-		name:You got buns, hun
-		desc:Have <b>1000000</b> bitcoins.
-		req:10000000 bitcoins
-		icon:icons[2,4] icons[0,4] icons[0,6]
-		
-	*clickAchiev1
-		name:That tickles
-		desc:Click the bitcoin <b>10</b> times.
-		req:10 bitcoinButton clicks
-		icon:icons[2,2] icons[0,2] icons[0,6]
-	*clickAchiev2
-		name:Don't squeeze me I'll fart
-		desc:Click the bitcoin <b>100</b> times.
-		req:100 bitcoinButton clicks
-		icon:icons[2,2] icons[0,3] icons[0,6]
-	*clickAchiev3
-		name:You're cruising for a bruising, dude
-		desc:Click the bitcoin <b>2000</b> times.
-		req:2000 bitcoinButton clicks
-		icon:icons[2,2] icons[0,4] icons[0,6]
-		
-	*bunnyPsAchiev1
-		name:Be vewy vewy quiet
-		desc:Produce <b>10</b> bitcoins per second.
-		req:10 bitcoins per second
-		icon:icons[2,3] icons[0,2] icons[0,6]
-	*bunnyPsAchiev2
-		name:Hop and a skip
-		desc:Produce <b>1000</b> bitcoins per second.
-		req:1000 bitcoins per second
-		icon:icons[2,3] icons[0,3] icons[0,6]
-	*bunnyPsAchiev3
-		name:Go forth and multiply
-		desc:Produce <b>100000</b> bitcoins per second.
-		req:100000 bitcoins per second
-		icon:icons[2,3] icons[0,4] icons[0,6]
-		
-	*fortressAchiev
-		name:Freedom!
-		desc:Complete building the <b>freedom [n:building9]</b>.<//>This is it. You beat the game!
-		req:100 building9
-		icon:icons[3,8] icons[0,4]
-		
+*TEMPLATE
+	on earn:yield 1 resAllAchievesNum
+[i:ac1 %name="累积生产1只因" %desc="初入只因" %icon="ccIcons[3,0]" %req="1" %i="1"]
+[i:ac1 %name="累积生产1000只因" %desc="手动只因" %icon="ccIcons[3,1]" %req="1000" %i="2"]
+[i:ac1 %name="累积生产100000只因" %desc="自动只因" %icon="ccIcons[3,2]" %req="100000" %i="3"]
+[i:ac1 %name="累积生产1M只因" %desc="只因新人" %icon="ccIcons[3,3]" %req="1000000" %i="4"]
+[i:ac1 %name="累积生产100M只因" %desc="只因先锋" %icon="ccIcons[3,4]" %req="100000000" %i="5"]
+[i:ac1 %name="累积生产1B只因" %desc="只因达人" %icon="ccIcons[3,5]" %req="1000000000" %i="6"]
+[i:ac1 %name="累积生产100B只因" %desc="矿老板" %icon="ccIcons[6,5]" %req="100000000000" %i="7"]
+[i:ac1 %name="累积生产1t只因" %desc="亚洲鸡王" %icon="ccIcons[7,5]" %req="1000000000000" %i="8"]
+[i:ac1 %name="累积生产100t只因" %desc="欧洲鸡王" %icon="ccIcons[8,5]" %req="100000000000000" %i="9"]
+[i:ac1 %name="累积生产1q只因" %desc="美洲鸡王" %icon="ccIcons[9,5]" %req="1000000000000000" %i="10"]
+[i:ac1 %name="累积生产100q只因" %desc="非洲鸡王" %icon="ccIcons[10,5]" %req="100000000000000000" %i="11"]
+[i:ac1 %name="累积生产1Q只因" %desc="北极鸡王" %icon="ccIcons[11,5]" %req="1000000000000000000" %i="12"]
+[i:ac1 %name="累积生产100Q只因" %desc="南极鸡王" %icon="ccIcons[18,5]" %req="100000000000000000000" %i="13"]
+[i:ac1 %name="累积生产1s只因" %desc="地球鸡王" %icon="ccIcons[19,5]" %req="1000000000000000000000" %i="14"]
+[i:ac1 %name="累积生产100s只因" %desc="金星鸡王" %icon="ccIcons[20,5]" %req="100000000000000000000000" %i="15"]
+[i:ac1 %name="累积生产1S只因" %desc="木星鸡王" %icon="ccIcons[21,5]" %req="1000000000000000000000000" %i="16"]
+[i:ac1 %name="累积生产100S只因" %desc="水星鸡王" %icon="ccIcons[22,5]" %req="100000000000000000000000000" %i="17"]
+[i:ac1 %name="累积生产1o只因" %desc="火星鸡王" %icon="ccIcons[23,5]" %req="1000000000000000000000000000" %i="18"]
+[i:ac1 %name="累积生产100o只因" %desc="土星鸡王" %icon="ccIcons[24,5]" %req="100000000000000000000000000000" %i="19"]
+[i:ac1 %name="累积生产1n只因" %desc="天王星鸡王" %icon="ccIcons[25,5]" %req="1000000000000000000000000000000" %i="20"]
+[i:ac1 %name="累积生产100n只因" %desc="海王星鸡王" %icon="ccIcons[26,5]" %req="100000000000000000000000000000000" %i="21"]
+[i:ac1 %name="累积生产1d只因" %desc="太阳系鸡王" %icon="ccIcons[27,5]" %req="1000000000000000000000000000000000" %i="22"]
+[i:ac1 %name="累积生产100d只因" %desc="银河系鸡王" %icon="ccIcons[28,5]" %req="100000000000000000000000000000000000" %i="23"]
+[i:ac1 %name="累积生产1U只因" %desc="仙女座星系鸡王" %icon="ccIcons[29,5]" %req="1000000000000000000000000000000000000" %i="24"]
+[i:ac1 %name="累积生产100U只因" %desc="半人马星系鸡王" %icon="ccIcons[21,2]" %req="100000000000000000000000000000000000000" %i="25"]
+[i:ac1 %name="累积生产1D只因" %desc="波德星系鸡王" %icon="ccIcons[22,2]" %req="1000000000000000000000000000000000000000" %i="26"]
+[i:ac1 %name="累积生产100D只因" %desc="黑眼星系鸡王" %icon="ccIcons[23,2]" %req="100000000000000000000000000000000000000000" %i="27"]
+[i:ac1 %name="累积生产1T只因" %desc="宇宙鸡王" %icon="ccIcons[24,2]" %req="1000000000000000000000000000000000000000000" %i="28"]
+[i:ac1 %name="累积生产100T只因" %desc="平行宇宙鸡王" %icon="ccIcons[25,2]" %req="100000000000000000000000000000000000000000000" %i="29"]
+[i:ac1 %name="累积生产1Qt只因" %desc="超时空鸡王" %icon="ccIcons[26,2]" %req="1000000000000000000000000000000000000000000000" %i="30"]
+[i:ac1 %name="累积生产100Qt只因" %desc="四维空间鸡王" %icon="ccIcons[27,2]" %req="100000000000000000000000000000000000000000000000" %i="31"]
+[i:ac1 %name="累积生产1Qd只因" %desc="五维空间鸡王" %icon="ccIcons[28,2]" %req="1000000000000000000000000000000000000000000000000" %i="32"]
+[i:ac1 %name="累积生产100Qd只因" %desc="六维空间鸡王" %icon="ccIcons[29,2]" %req="100000000000000000000000000000000000000000000000000" %i="33"]
+[i:ac1 %name="累积生产1Sd只因" %desc="七维空间鸡王" %icon="ccIcons[21,1]" %req="1000000000000000000000000000000000000000000000000000" %i="34"]
+[i:ac1 %name="累积生产100Sd只因" %desc="八维空间鸡王" %icon="ccIcons[22,1]" %req="100000000000000000000000000000000000000000000000000000" %i="35"]
+[i:ac1 %name="累积生产1St只因" %desc="九维空间鸡王" %icon="ccIcons[23,1]" %req="1000000000000000000000000000000000000000000000000000000" %i="36"]
+[i:ac1 %name="累积生产100St只因" %desc="十维空间鸡王" %icon="ccIcons[24,1]" %req="100000000000000000000000000000000000000000000000000000000" %i="37"]
+[i:ac1 %name="累积生产1O只因" %desc="十一维空间鸡王" %icon="ccIcons[25,1]" %req="1000000000000000000000000000000000000000000000000000000000" %i="38"]
+[i:ac1 %name="累积生产100O只因" %desc="十二维空间鸡王" %icon="ccIcons[26,1]" %req="100000000000000000000000000000000000000000000000000000000000" %i="39"]
+[i:ac1 %name="累积生产1N只因" %desc="虚空鸡王" %icon="ccIcons[27,1]" %req="1000000000000000000000000000000000000000000000000000000000000" %i="40"]
+[i:ac1 %name="累积生产100N只因" %desc="永恒鸡王" %icon="ccIcons[28,1]" %req="100000000000000000000000000000000000000000000000000000000000000" %i="41"]
+[i:ac1 %name="累积生产1v只因" %desc="不朽鸡王" %icon="ccIcons[29,1]" %req="1000000000000000000000000000000000000000000000000000000000000000" %i="42"]
+[i:ac2 %name="产量达到1只因/秒" %desc="临时只因" %icon="ccIcons[3,0]" %req="1" %i="1"]
+[i:ac2 %name="产量达到10只因/秒" %desc="硬核只因" %icon="ccIcons[3,1]" %req="10" %i="2"]
+[i:ac2 %name="产量达到100只因/秒" %desc="疯狂只因" %icon="ccIcons[3,2]" %req="100" %i="3"]
+[i:ac2 %name="产量达到1000只因/秒" %desc="通宵只因" %icon="ccIcons[3,3]" %req="1000" %i="4"]
+[i:ac2 %name="产量达到10000只因/秒" %desc="梦中只因" %icon="ccIcons[3,4]" %req="10000" %i="5"]
+[i:ac2 %name="产量达到1M只因/秒" %desc="只因小作坊" %icon="ccIcons[3,5]" %req="1000000" %i="6"]
+[i:ac2 %name="产量达到10M只因/秒" %desc="996只因" %icon="ccIcons[6,5]" %req="10000000" %i="7"]
+[i:ac2 %name="产量达到100M只因/秒" %desc="007只因" %icon="ccIcons[7,5]" %req="100000000" %i="8"]
+[i:ac2 %name="产量达到1B只因/秒" %desc="福报只因" %icon="ccIcons[8,5]" %req="1000000000" %i="9"]
+[i:ac2 %name="产量达到10B只因/秒" %desc="只因达人" %icon="ccIcons[9,5]" %req="10000000000" %i="10"]
+[i:ac2 %name="产量达到1t只因/秒" %desc="只因精英" %icon="ccIcons[10,5]" %req="1000000000000" %i="11"]
+[i:ac2 %name="产量达到10t只因/秒" %desc="只因怪兽" %icon="ccIcons[11,5]" %req="10000000000000" %i="12"]
+[i:ac2 %name="产量达到100t只因/秒" %desc="只因大师" %icon="ccIcons[18,5]" %req="100000000000000" %i="13"]
+[i:ac2 %name="产量达到1q只因/秒" %desc="只因实验室" %icon="ccIcons[19,5]" %req="1000000000000000" %i="14"]
+[i:ac2 %name="产量达到10q只因/秒" %desc="ASIC只因" %icon="ccIcons[20,5]" %req="10000000000000000" %i="15"]
+[i:ac2 %name="产量达到1Q只因/秒" %desc="服务器只因" %icon="ccIcons[21,5]" %req="1000000000000000000" %i="16"]
+[i:ac2 %name="产量达到10Q只因/秒" %desc="阵列只因" %icon="ccIcons[22,5]" %req="10000000000000000000" %i="17"]
+[i:ac2 %name="产量达到100Q只因/秒" %desc="集群只因" %icon="ccIcons[23,5]" %req="100000000000000000000" %i="18"]
+[i:ac2 %name="产量达到1s只因/秒" %desc="只因流水线" %icon="ccIcons[24,5]" %req="1000000000000000000000" %i="19"]
+[i:ac2 %name="产量达到10s只因/秒" %desc="只因工厂" %icon="ccIcons[25,5]" %req="10000000000000000000000" %i="20"]
+[i:ac2 %name="产量达到1S只因/秒" %desc="大规模只因" %icon="ccIcons[26,5]" %req="1000000000000000000000000" %i="21"]
+[i:ac2 %name="产量达到10S只因/秒" %desc="工业级只因" %icon="ccIcons[27,5]" %req="10000000000000000000000000" %i="22"]
+[i:ac2 %name="产量达到100S只因/秒" %desc="世界级只因" %icon="ccIcons[28,5]" %req="100000000000000000000000000" %i="23"]
+[i:ac2 %name="产量达到1o只因/秒" %desc="偶像工厂只因" %icon="ccIcons[29,5]" %req="1000000000000000000000000000" %i="24"]
+[i:ac2 %name="产量达到10o只因/秒" %desc="微观只因" %icon="ccIcons[21,2]" %req="10000000000000000000000000000" %i="25"]
+[i:ac2 %name="产量达到1n只因/秒" %desc="量子只因" %icon="ccIcons[22,2]" %req="1000000000000000000000000000000" %i="26"]
+[i:ac2 %name="产量达到10n只因/秒" %desc="演出中心只因" %icon="ccIcons[23,2]" %req="10000000000000000000000000000000" %i="27"]
+[i:ac2 %name="产量达到100n只因/秒" %desc="四维只因" %icon="ccIcons[24,2]" %req="100000000000000000000000000000000" %i="28"]
+[i:ac2 %name="产量达到1d只因/秒" %desc="五维只因" %icon="ccIcons[25,2]" %req="1000000000000000000000000000000000" %i="29"]
+[i:ac2 %name="产量达到10d只因/秒" %desc="十维只因" %icon="ccIcons[26,2]" %req="10000000000000000000000000000000000" %i="30"]
+[i:ac2 %name="产量达到1U只因/秒" %desc="影视城只因" %icon="ccIcons[27,2]" %req="1000000000000000000000000000000000000" %i="31"]
+[i:ac2 %name="产量达到10U只因/秒" %desc="体育场只因" %icon="ccIcons[28,2]" %req="10000000000000000000000000000000000000" %i="32"]
+[i:ac2 %name="产量达到100U只因/秒" %desc="全明星演唱会只因" %icon="ccIcons[29,2]" %req="100000000000000000000000000000000000000" %i="33"]
+[i:ac2 %name="产量达到1D只因/秒" %desc="娱乐帝国只因" %icon="ccIcons[21,1]" %req="1000000000000000000000000000000000000000" %i="34"]
+[i:ac2 %name="产量达到10D只因/秒" %desc="超时空只因" %icon="ccIcons[22,1]" %req="10000000000000000000000000000000000000000" %i="35"]
+[i:ac2 %name="产量达到1T只因/秒" %desc="虚空只因" %icon="ccIcons[23,1]" %req="1000000000000000000000000000000000000000000" %i="36"]
+[i:ac2 %name="产量达到10T只因/秒" %desc="永恒只因" %icon="ccIcons[24,1]" %req="10000000000000000000000000000000000000000000" %i="37"]
+[i:ac2 %name="产量达到100T只因/秒" %desc="不朽只因" %icon="ccIcons[25,1]" %req="100000000000000000000000000000000000000000000" %i="38"]
+[i:ac2 %name="产量达到1Qt只因/秒" %desc="只因漩涡" %icon="ccIcons[26,1]" %req="1000000000000000000000000000000000000000000000" %i="39"]
+[i:ac2 %name="产量达到10Qt只因/秒" %desc="只因脉冲" %icon="ccIcons[27,1]" %req="10000000000000000000000000000000000000000000000" %i="40"]
+[i:ac2 %name="产量达到1Qd只因/秒" %desc="只因征服者" %icon="ccIcons[28,1]" %req="1000000000000000000000000000000000000000000000000" %i="41"]
+[i:ac2 %name="产量达到10Qd只因/秒" %desc="只因宇宙只因" %icon="ccIcons[29,1]" %req="10000000000000000000000000000000000000000000000000" %i="42"]
+[i:ac3 %name="点击坤坤次数达到100次" %desc="单手点击" %icon="ccIcons[11,0]" %req="100" %i="1"]
+[i:ac3 %name="点击坤坤次数达到1000次" %desc="咔哒" %icon="ccIcons[11,1]" %req="1000" %i="2"]
+[i:ac3 %name="点击坤坤次数达到2000次" %desc="双手点击" %icon="ccIcons[11,2]" %req="2000" %i="3"]
+[i:ac3 %name="点击坤坤次数达到3000次" %desc="咔哒咔哒" %icon="ccIcons[11,13]" %req="3000" %i="4"]
+[i:ac3 %name="点击坤坤次数达到4000次" %desc="鼠标手" %icon="ccIcons[11,14]" %req="4000" %i="5"]
+[i:ac3 %name="点击坤坤次数达到5000次" %desc="咔哒咔哒咔哒" %icon="ccIcons[11,15]" %req="5000" %i="6"]
+[i:ac3 %name="点击坤坤次数达到6000次" %desc="点击精英" %icon="ccIcons[11,16]" %req="6000" %i="7"]
+[i:ac3 %name="点击坤坤次数达到8000次" %desc="点击达人" %icon="ccIcons[11,17]" %req="8000" %i="8"]
+[i:ac3 %name="点击坤坤次数达到9000次" %desc="疯狂点击" %icon="ccIcons[11,18]" %req="9000" %i="9"]
+[i:ac3 %name="点击坤坤次数达到10000次" %desc="点击健将" %icon="ccIcons[11,19]" %req="10000" %i="10"]
+[i:ac3 %name="点击坤坤次数达到15000次" %desc="点击运动员" %icon="ccIcons[11,20]" %req="15000" %i="11"]
+[i:ac3 %name="点击坤坤次数达到20000次" %desc="点击怪兽" %icon="ccIcons[11,21]" %req="20000" %i="12"]
+[i:ac3 %name="点击坤坤次数达到30000次" %desc="鼠标破坏者" %icon="ccIcons[11,22]" %req="30000" %i="13"]
+[i:ac4 %name="点击产出只因达到1000" %desc="快乐点击" %icon="ccIcons[0,0]" %req="1000" %i="1"]
+[i:ac4 %name="点击产出只因达到100000" %desc="开心点击" %icon="ccIcons[0,1]" %req="100000" %i="2"]
+[i:ac4 %name="点击产出只因达到10M" %desc="无感情点击" %icon="ccIcons[0,2]" %req="10000000" %i="3"]
+[i:ac4 %name="点击产出只因达到1B" %desc="点击机器" %icon="ccIcons[0,13]" %req="1000000000" %i="4"]
+[i:ac4 %name="点击产出只因达到100B" %desc="梦中点击" %icon="ccIcons[0,14]" %req="100000000000" %i="5"]
+[i:ac4 %name="点击产出只因达到10t" %desc="自动点击" %icon="ccIcons[0,15]" %req="10000000000000" %i="6"]
+[i:ac4 %name="点击产出只因达到1q" %desc="挂机点击" %icon="ccIcons[0,16]" %req="1000000000000000" %i="7"]
+[i:ac4 %name="点击产出只因达到100q" %desc="通宵点击" %icon="ccIcons[0,17]" %req="100000000000000000" %i="8"]
+[i:ac4 %name="点击产出只因达到10Q" %desc="亿万点击" %icon="ccIcons[0,18]" %req="10000000000000000000" %i="9"]
+[i:ac4 %name="点击产出只因达到1s" %desc="银手指" %icon="ccIcons[0,19]" %req="1000000000000000000000" %i="10"]
+[i:ac4 %name="点击产出只因达到100s" %desc="金手指" %icon="ccIcons[0,20]" %req="100000000000000000000000" %i="11"]
+[i:ac4 %name="点击产出只因达到10S" %desc="一阳指" %icon="ccIcons[0,21]" %req="10000000000000000000000000" %i="12"]
+[i:ac4 %name="点击产出只因达到1o" %desc="上帝之手" %icon="ccIcons[0,22]" %req="1000000000000000000000000000" %i="13"]
+[i:ac5 %name="拥有1个练习室" %desc="练习室1" %icon="ccIcons[0,0]" %id="1" %req="1" %i="1"]
+[i:ac5 %name="拥有10个练习室" %desc="练习室2" %icon="ccIcons[0,1]" %id="1" %req="10" %i="2"]
+[i:ac5 %name="拥有50个练习室" %desc="练习室3" %icon="ccIcons[0,2]" %id="1" %req="50" %i="3"]
+[i:ac5 %name="拥有100个练习室" %desc="练习室4" %icon="ccIcons[0,13]" %id="1" %req="100" %i="4"]
+[i:ac5 %name="拥有200个练习室" %desc="练习室5" %icon="ccIcons[0,14]" %id="1" %req="200" %i="5"]
+[i:ac5 %name="拥有300个练习室" %desc="练习室6" %icon="ccIcons[0,15]" %id="1" %req="300" %i="6"]
+[i:ac5 %name="拥有400个练习室" %desc="练习室7" %icon="ccIcons[0,16]" %id="1" %req="400" %i="7"]
+[i:ac5 %name="拥有500个练习室" %desc="练习室8" %icon="ccIcons[0,17]" %id="1" %req="500" %i="8"]
+[i:ac5 %name="拥有600个练习室" %desc="练习室9" %icon="ccIcons[0,18]" %id="1" %req="600" %i="9"]
+[i:ac5 %name="拥有700个练习室" %desc="练习室10" %icon="ccIcons[0,19]" %id="1" %req="700" %i="10"]
+[i:ac5 %name="拥有800个练习室" %desc="练习室11" %icon="ccIcons[0,20]" %id="1" %req="800" %i="11"]
+[i:ac5 %name="拥有1个篮球场" %desc="篮球场1" %icon="ccIcons[1,0]" %id="2" %req="1" %i="1"]
+[i:ac5 %name="拥有50个篮球场" %desc="篮球场2" %icon="ccIcons[1,1]" %id="2" %req="50" %i="2"]
+[i:ac5 %name="拥有100个篮球场" %desc="篮球场3" %icon="ccIcons[1,2]" %id="2" %req="100" %i="3"]
+[i:ac5 %name="拥有150个篮球场" %desc="篮球场4" %icon="ccIcons[1,13]" %id="2" %req="150" %i="4"]
+[i:ac5 %name="拥有200个篮球场" %desc="篮球场5" %icon="ccIcons[1,14]" %id="2" %req="200" %i="5"]
+[i:ac5 %name="拥有250个篮球场" %desc="篮球场6" %icon="ccIcons[1,15]" %id="2" %req="250" %i="6"]
+[i:ac5 %name="拥有300个篮球场" %desc="篮球场7" %icon="ccIcons[1,16]" %id="2" %req="300" %i="7"]
+[i:ac5 %name="拥有350个篮球场" %desc="篮球场8" %icon="ccIcons[1,17]" %id="2" %req="350" %i="8"]
+[i:ac5 %name="拥有400个篮球场" %desc="篮球场9" %icon="ccIcons[1,18]" %id="2" %req="400" %i="9"]
+[i:ac5 %name="拥有450个篮球场" %desc="篮球场10" %icon="ccIcons[1,19]" %id="2" %req="450" %i="10"]
+[i:ac5 %name="拥有500个篮球场" %desc="篮球场11" %icon="ccIcons[1,20]" %id="2" %req="500" %i="11"]
+[i:ac5 %name="拥有550个篮球场" %desc="篮球场12" %icon="ccIcons[1,21]" %id="2" %req="550" %i="12"]
+[i:ac5 %name="拥有600个篮球场" %desc="篮球场13" %icon="ccIcons[1,22]" %id="2" %req="600" %i="13"]
+[i:ac5 %name="拥有1个录音室" %desc="录音室1" %icon="ccIcons[2,0]" %id="3" %req="1" %i="1"]
+[i:ac5 %name="拥有50个录音室" %desc="录音室2" %icon="ccIcons[2,1]" %id="3" %req="50" %i="2"]
+[i:ac5 %name="拥有100个录音室" %desc="录音室3" %icon="ccIcons[2,2]" %id="3" %req="100" %i="3"]
+[i:ac5 %name="拥有150个录音室" %desc="录音室4" %icon="ccIcons[2,13]" %id="3" %req="150" %i="4"]
+[i:ac5 %name="拥有200个录音室" %desc="录音室5" %icon="ccIcons[2,14]" %id="3" %req="200" %i="5"]
+[i:ac5 %name="拥有250个录音室" %desc="录音室6" %icon="ccIcons[2,15]" %id="3" %req="250" %i="6"]
+[i:ac5 %name="拥有300个录音室" %desc="录音室7" %icon="ccIcons[2,16]" %id="3" %req="300" %i="7"]
+[i:ac5 %name="拥有350个录音室" %desc="录音室8" %icon="ccIcons[2,17]" %id="3" %req="350" %i="8"]
+[i:ac5 %name="拥有400个录音室" %desc="录音室9" %icon="ccIcons[2,18]" %id="3" %req="400" %i="9"]
+[i:ac5 %name="拥有450个录音室" %desc="录音室10" %icon="ccIcons[2,19]" %id="3" %req="450" %i="10"]
+[i:ac5 %name="拥有500个录音室" %desc="录音室11" %icon="ccIcons[2,20]" %id="3" %req="500" %i="11"]
+[i:ac5 %name="拥有550个录音室" %desc="录音室12" %icon="ccIcons[2,21]" %id="3" %req="550" %i="12"]
+[i:ac5 %name="拥有600个录音室" %desc="录音室13" %icon="ccIcons[2,22]" %id="3" %req="600" %i="13"]
+[i:ac5 %name="拥有1个彩排厅" %desc="彩排厅1" %icon="ccIcons[3,0]" %id="4" %req="1" %i="1"]
+[i:ac5 %name="拥有50个彩排厅" %desc="彩排厅2" %icon="ccIcons[3,1]" %id="4" %req="50" %i="2"]
+[i:ac5 %name="拥有100个彩排厅" %desc="彩排厅3" %icon="ccIcons[3,2]" %id="4" %req="100" %i="3"]
+[i:ac5 %name="拥有150个彩排厅" %desc="彩排厅4" %icon="ccIcons[3,13]" %id="4" %req="150" %i="4"]
+[i:ac5 %name="拥有200个彩排厅" %desc="彩排厅5" %icon="ccIcons[3,14]" %id="4" %req="200" %i="5"]
+[i:ac5 %name="拥有250个彩排厅" %desc="彩排厅6" %icon="ccIcons[3,15]" %id="4" %req="250" %i="6"]
+[i:ac5 %name="拥有300个彩排厅" %desc="彩排厅7" %icon="ccIcons[3,16]" %id="4" %req="300" %i="7"]
+[i:ac5 %name="拥有350个彩排厅" %desc="彩排厅8" %icon="ccIcons[3,17]" %id="4" %req="350" %i="8"]
+[i:ac5 %name="拥有400个彩排厅" %desc="彩排厅9" %icon="ccIcons[3,18]" %id="4" %req="400" %i="9"]
+[i:ac5 %name="拥有450个彩排厅" %desc="彩排厅10" %icon="ccIcons[3,19]" %id="4" %req="450" %i="10"]
+[i:ac5 %name="拥有500个彩排厅" %desc="彩排厅11" %icon="ccIcons[3,20]" %id="4" %req="500" %i="11"]
+[i:ac5 %name="拥有550个彩排厅" %desc="彩排厅12" %icon="ccIcons[3,21]" %id="4" %req="550" %i="12"]
+[i:ac5 %name="拥有600个彩排厅" %desc="彩排厅13" %icon="ccIcons[3,22]" %id="4" %req="600" %i="13"]
+[i:ac5 %name="拥有1个娱乐厅" %desc="娱乐厅1" %icon="ccIcons[4,0]" %id="5" %req="1" %i="1"]
+[i:ac5 %name="拥有50个娱乐厅" %desc="娱乐厅2" %icon="ccIcons[4,1]" %id="5" %req="50" %i="2"]
+[i:ac5 %name="拥有100个娱乐厅" %desc="娱乐厅3" %icon="ccIcons[4,2]" %id="5" %req="100" %i="3"]
+[i:ac5 %name="拥有150个娱乐厅" %desc="娱乐厅4" %icon="ccIcons[4,13]" %id="5" %req="150" %i="4"]
+[i:ac5 %name="拥有200个娱乐厅" %desc="娱乐厅5" %icon="ccIcons[4,14]" %id="5" %req="200" %i="5"]
+[i:ac5 %name="拥有250个娱乐厅" %desc="娱乐厅6" %icon="ccIcons[4,15]" %id="5" %req="250" %i="6"]
+[i:ac5 %name="拥有300个娱乐厅" %desc="娱乐厅7" %icon="ccIcons[4,16]" %id="5" %req="300" %i="7"]
+[i:ac5 %name="拥有350个娱乐厅" %desc="娱乐厅8" %icon="ccIcons[4,17]" %id="5" %req="350" %i="8"]
+[i:ac5 %name="拥有400个娱乐厅" %desc="娱乐厅9" %icon="ccIcons[4,18]" %id="5" %req="400" %i="9"]
+[i:ac5 %name="拥有450个娱乐厅" %desc="娱乐厅10" %icon="ccIcons[4,19]" %id="5" %req="450" %i="10"]
+[i:ac5 %name="拥有500个娱乐厅" %desc="娱乐厅11" %icon="ccIcons[4,20]" %id="5" %req="500" %i="11"]
+[i:ac5 %name="拥有550个娱乐厅" %desc="娱乐厅12" %icon="ccIcons[4,21]" %id="5" %req="550" %i="12"]
+[i:ac5 %name="拥有600个娱乐厅" %desc="娱乐厅13" %icon="ccIcons[4,22]" %id="5" %req="600" %i="13"]
+[i:ac5 %name="拥有1个签约公司" %desc="签约公司1" %icon="ccIcons[5,0]" %id="6" %req="1" %i="1"]
+[i:ac5 %name="拥有50个签约公司" %desc="签约公司2" %icon="ccIcons[5,1]" %id="6" %req="50" %i="2"]
+[i:ac5 %name="拥有100个签约公司" %desc="签约公司3" %icon="ccIcons[5,2]" %id="6" %req="100" %i="3"]
+[i:ac5 %name="拥有150个签约公司" %desc="签约公司4" %icon="ccIcons[5,13]" %id="6" %req="150" %i="4"]
+[i:ac5 %name="拥有200个签约公司" %desc="签约公司5" %icon="ccIcons[5,14]" %id="6" %req="200" %i="5"]
+[i:ac5 %name="拥有250个签约公司" %desc="签约公司6" %icon="ccIcons[5,15]" %id="6" %req="250" %i="6"]
+[i:ac5 %name="拥有300个签约公司" %desc="签约公司7" %icon="ccIcons[5,16]" %id="6" %req="300" %i="7"]
+[i:ac5 %name="拥有350个签约公司" %desc="签约公司8" %icon="ccIcons[5,17]" %id="6" %req="350" %i="8"]
+[i:ac5 %name="拥有400个签约公司" %desc="签约公司9" %icon="ccIcons[5,18]" %id="6" %req="400" %i="9"]
+[i:ac5 %name="拥有450个签约公司" %desc="签约公司10" %icon="ccIcons[5,19]" %id="6" %req="450" %i="10"]
+[i:ac5 %name="拥有500个签约公司" %desc="签约公司11" %icon="ccIcons[5,20]" %id="6" %req="500" %i="11"]
+[i:ac5 %name="拥有550个签约公司" %desc="签约公司12" %icon="ccIcons[5,21]" %id="6" %req="550" %i="12"]
+[i:ac5 %name="拥有600个签约公司" %desc="签约公司13" %icon="ccIcons[5,22]" %id="6" %req="600" %i="13"]
+[i:ac5 %name="拥有1个演唱会场馆" %desc="演唱会场馆1" %icon="ccIcons[6,0]" %id="7" %req="1" %i="1"]
+[i:ac5 %name="拥有50个演唱会场馆" %desc="演唱会场馆2" %icon="ccIcons[6,1]" %id="7" %req="50" %i="2"]
+[i:ac5 %name="拥有100个演唱会场馆" %desc="演唱会场馆3" %icon="ccIcons[6,2]" %id="7" %req="100" %i="3"]
+[i:ac5 %name="拥有150个演唱会场馆" %desc="演唱会场馆4" %icon="ccIcons[6,13]" %id="7" %req="150" %i="4"]
+[i:ac5 %name="拥有200个演唱会场馆" %desc="演唱会场馆5" %icon="ccIcons[6,14]" %id="7" %req="200" %i="5"]
+[i:ac5 %name="拥有250个演唱会场馆" %desc="演唱会场馆6" %icon="ccIcons[6,15]" %id="7" %req="250" %i="6"]
+[i:ac5 %name="拥有300个演唱会场馆" %desc="演唱会场馆7" %icon="ccIcons[6,16]" %id="7" %req="300" %i="7"]
+[i:ac5 %name="拥有350个演唱会场馆" %desc="演唱会场馆8" %icon="ccIcons[6,17]" %id="7" %req="350" %i="8"]
+[i:ac5 %name="拥有400个演唱会场馆" %desc="演唱会场馆9" %icon="ccIcons[6,18]" %id="7" %req="400" %i="9"]
+[i:ac5 %name="拥有450个演唱会场馆" %desc="演唱会场馆10" %icon="ccIcons[6,19]" %id="7" %req="450" %i="10"]
+[i:ac5 %name="拥有500个演唱会场馆" %desc="演唱会场馆11" %icon="ccIcons[6,20]" %id="7" %req="500" %i="11"]
+[i:ac5 %name="拥有550个演唱会场馆" %desc="演唱会场馆12" %icon="ccIcons[6,21]" %id="7" %req="550" %i="12"]
+[i:ac5 %name="拥有600个演唱会场馆" %desc="演唱会场馆13" %icon="ccIcons[6,22]" %id="7" %req="600" %i="13"]
+[i:ac5 %name="拥有1个电视台" %desc="电视台1" %icon="ccIcons[7,0]" %id="8" %req="1" %i="1"]
+[i:ac5 %name="拥有50个电视台" %desc="电视台2" %icon="ccIcons[7,1]" %id="8" %req="50" %i="2"]
+[i:ac5 %name="拥有100个电视台" %desc="电视台3" %icon="ccIcons[7,2]" %id="8" %req="100" %i="3"]
+[i:ac5 %name="拥有150个电视台" %desc="电视台4" %icon="ccIcons[7,13]" %id="8" %req="150" %i="4"]
+[i:ac5 %name="拥有200个电视台" %desc="电视台5" %icon="ccIcons[7,14]" %id="8" %req="200" %i="5"]
+[i:ac5 %name="拥有250个电视台" %desc="电视台6" %icon="ccIcons[7,15]" %id="8" %req="250" %i="6"]
+[i:ac5 %name="拥有300个电视台" %desc="电视台7" %icon="ccIcons[7,16]" %id="8" %req="300" %i="7"]
+[i:ac5 %name="拥有350个电视台" %desc="电视台8" %icon="ccIcons[7,17]" %id="8" %req="350" %i="8"]
+[i:ac5 %name="拥有400个电视台" %desc="电视台9" %icon="ccIcons[7,18]" %id="8" %req="400" %i="9"]
+[i:ac5 %name="拥有450个电视台" %desc="电视台10" %icon="ccIcons[7,19]" %id="8" %req="450" %i="10"]
+[i:ac5 %name="拥有500个电视台" %desc="电视台11" %icon="ccIcons[7,20]" %id="8" %req="500" %i="11"]
+[i:ac5 %name="拥有550个电视台" %desc="电视台12" %icon="ccIcons[7,21]" %id="8" %req="550" %i="12"]
+[i:ac5 %name="拥有600个电视台" %desc="电视台13" %icon="ccIcons[7,22]" %id="8" %req="600" %i="13"]
+[i:ac5 %name="拥有1个电影公司" %desc="电影公司1" %icon="ccIcons[8,0]" %id="9" %req="1" %i="1"]
+[i:ac5 %name="拥有50个电影公司" %desc="电影公司2" %icon="ccIcons[8,1]" %id="9" %req="50" %i="2"]
+[i:ac5 %name="拥有100个电影公司" %desc="电影公司3" %icon="ccIcons[8,2]" %id="9" %req="100" %i="3"]
+[i:ac5 %name="拥有150个电影公司" %desc="电影公司4" %icon="ccIcons[8,13]" %id="9" %req="150" %i="4"]
+[i:ac5 %name="拥有200个电影公司" %desc="电影公司5" %icon="ccIcons[8,14]" %id="9" %req="200" %i="5"]
+[i:ac5 %name="拥有250个电影公司" %desc="电影公司6" %icon="ccIcons[8,15]" %id="9" %req="250" %i="6"]
+[i:ac5 %name="拥有300个电影公司" %desc="电影公司7" %icon="ccIcons[8,16]" %id="9" %req="300" %i="7"]
+[i:ac5 %name="拥有350个电影公司" %desc="电影公司8" %icon="ccIcons[8,17]" %id="9" %req="350" %i="8"]
+[i:ac5 %name="拥有400个电影公司" %desc="电影公司9" %icon="ccIcons[8,18]" %id="9" %req="400" %i="9"]
+[i:ac5 %name="拥有450个电影公司" %desc="电影公司10" %icon="ccIcons[8,19]" %id="9" %req="450" %i="10"]
+[i:ac5 %name="拥有500个电影公司" %desc="电影公司11" %icon="ccIcons[8,20]" %id="9" %req="500" %i="11"]
+[i:ac5 %name="拥有550个电影公司" %desc="电影公司12" %icon="ccIcons[8,21]" %id="9" %req="550" %i="12"]
+[i:ac5 %name="拥有600个电影公司" %desc="电影公司13" %icon="ccIcons[8,22]" %id="9" %req="600" %i="13"]
+[i:ac5 %name="拥有1个大型演出舞台" %desc="大型演出舞台1" %icon="ccIcons[9,0]" %id="10" %req="1" %i="1"]
+[i:ac5 %name="拥有50个大型演出舞台" %desc="大型演出舞台2" %icon="ccIcons[9,1]" %id="10" %req="50" %i="2"]
+[i:ac5 %name="拥有100个大型演出舞台" %desc="大型演出舞台3" %icon="ccIcons[9,2]" %id="10" %req="100" %i="3"]
+[i:ac5 %name="拥有150个大型演出舞台" %desc="大型演出舞台4" %icon="ccIcons[9,13]" %id="10" %req="150" %i="4"]
+[i:ac5 %name="拥有200个大型演出舞台" %desc="大型演出舞台5" %icon="ccIcons[9,14]" %id="10" %req="200" %i="5"]
+[i:ac5 %name="拥有250个大型演出舞台" %desc="大型演出舞台6" %icon="ccIcons[9,15]" %id="10" %req="250" %i="6"]
+[i:ac5 %name="拥有300个大型演出舞台" %desc="大型演出舞台7" %icon="ccIcons[9,16]" %id="10" %req="300" %i="7"]
+[i:ac5 %name="拥有350个大型演出舞台" %desc="大型演出舞台8" %icon="ccIcons[9,17]" %id="10" %req="350" %i="8"]
+[i:ac5 %name="拥有400个大型演出舞台" %desc="大型演出舞台9" %icon="ccIcons[9,18]" %id="10" %req="400" %i="9"]
+[i:ac5 %name="拥有450个大型演出舞台" %desc="大型演出舞台10" %icon="ccIcons[9,19]" %id="10" %req="450" %i="10"]
+[i:ac5 %name="拥有500个大型演出舞台" %desc="大型演出舞台11" %icon="ccIcons[9,20]" %id="10" %req="500" %i="11"]
+[i:ac5 %name="拥有550个大型演出舞台" %desc="大型演出舞台12" %icon="ccIcons[9,21]" %id="10" %req="550" %i="12"]
+[i:ac5 %name="拥有600个大型演出舞台" %desc="大型演出舞台13" %icon="ccIcons[9,22]" %id="10" %req="600" %i="13"]
+[i:ac5 %name="拥有1个偶像工厂" %desc="偶像工厂1" %icon="ccIcons[10,0]" %id="11" %req="1" %i="1"]
+[i:ac5 %name="拥有50个偶像工厂" %desc="偶像工厂2" %icon="ccIcons[10,1]" %id="11" %req="50" %i="2"]
+[i:ac5 %name="拥有100个偶像工厂" %desc="偶像工厂3" %icon="ccIcons[10,2]" %id="11" %req="100" %i="3"]
+[i:ac5 %name="拥有150个偶像工厂" %desc="偶像工厂4" %icon="ccIcons[10,13]" %id="11" %req="150" %i="4"]
+[i:ac5 %name="拥有200个偶像工厂" %desc="偶像工厂5" %icon="ccIcons[10,14]" %id="11" %req="200" %i="5"]
+[i:ac5 %name="拥有250个偶像工厂" %desc="偶像工厂6" %icon="ccIcons[10,15]" %id="11" %req="250" %i="6"]
+[i:ac5 %name="拥有300个偶像工厂" %desc="偶像工厂7" %icon="ccIcons[10,16]" %id="11" %req="300" %i="7"]
+[i:ac5 %name="拥有350个偶像工厂" %desc="偶像工厂8" %icon="ccIcons[10,17]" %id="11" %req="350" %i="8"]
+[i:ac5 %name="拥有400个偶像工厂" %desc="偶像工厂9" %icon="ccIcons[10,18]" %id="11" %req="400" %i="9"]
+[i:ac5 %name="拥有450个偶像工厂" %desc="偶像工厂10" %icon="ccIcons[10,19]" %id="11" %req="450" %i="10"]
+[i:ac5 %name="拥有500个偶像工厂" %desc="偶像工厂11" %icon="ccIcons[10,20]" %id="11" %req="500" %i="11"]
+[i:ac5 %name="拥有550个偶像工厂" %desc="偶像工厂12" %icon="ccIcons[10,21]" %id="11" %req="550" %i="12"]
+[i:ac5 %name="拥有600个偶像工厂" %desc="偶像工厂13" %icon="ccIcons[10,22]" %id="11" %req="600" %i="13"]
+[i:ac5 %name="拥有1个巨星训练营" %desc="巨星训练营1" %icon="ccIcons[11,0]" %id="12" %req="1" %i="1"]
+[i:ac5 %name="拥有50个巨星训练营" %desc="巨星训练营2" %icon="ccIcons[11,1]" %id="12" %req="50" %i="2"]
+[i:ac5 %name="拥有100个巨星训练营" %desc="巨星训练营3" %icon="ccIcons[11,2]" %id="12" %req="100" %i="3"]
+[i:ac5 %name="拥有150个巨星训练营" %desc="巨星训练营4" %icon="ccIcons[11,13]" %id="12" %req="150" %i="4"]
+[i:ac5 %name="拥有200个巨星训练营" %desc="巨星训练营5" %icon="ccIcons[11,14]" %id="12" %req="200" %i="5"]
+[i:ac5 %name="拥有250个巨星训练营" %desc="巨星训练营6" %icon="ccIcons[11,15]" %id="12" %req="250" %i="6"]
+[i:ac5 %name="拥有300个巨星训练营" %desc="巨星训练营7" %icon="ccIcons[11,16]" %id="12" %req="300" %i="7"]
+[i:ac5 %name="拥有350个巨星训练营" %desc="巨星训练营8" %icon="ccIcons[11,17]" %id="12" %req="350" %i="8"]
+[i:ac5 %name="拥有400个巨星训练营" %desc="巨星训练营9" %icon="ccIcons[11,18]" %id="12" %req="400" %i="9"]
+[i:ac5 %name="拥有450个巨星训练营" %desc="巨星训练营10" %icon="ccIcons[11,19]" %id="12" %req="450" %i="10"]
+[i:ac5 %name="拥有500个巨星训练营" %desc="巨星训练营11" %icon="ccIcons[11,20]" %id="12" %req="500" %i="11"]
+[i:ac5 %name="拥有550个巨星训练营" %desc="巨星训练营12" %icon="ccIcons[11,21]" %id="12" %req="550" %i="12"]
+[i:ac5 %name="拥有600个巨星训练营" %desc="巨星训练营13" %icon="ccIcons[11,22]" %id="12" %req="600" %i="13"]
+[i:ac5 %name="拥有1个演出中心" %desc="演出中心1" %icon="ccIcons[12,0]" %id="13" %req="1" %i="1"]
+[i:ac5 %name="拥有50个演出中心" %desc="演出中心2" %icon="ccIcons[12,1]" %id="13" %req="50" %i="2"]
+[i:ac5 %name="拥有100个演出中心" %desc="演出中心3" %icon="ccIcons[12,2]" %id="13" %req="100" %i="3"]
+[i:ac5 %name="拥有150个演出中心" %desc="演出中心4" %icon="ccIcons[12,13]" %id="13" %req="150" %i="4"]
+[i:ac5 %name="拥有200个演出中心" %desc="演出中心5" %icon="ccIcons[12,14]" %id="13" %req="200" %i="5"]
+[i:ac5 %name="拥有250个演出中心" %desc="演出中心6" %icon="ccIcons[12,15]" %id="13" %req="250" %i="6"]
+[i:ac5 %name="拥有300个演出中心" %desc="演出中心7" %icon="ccIcons[12,16]" %id="13" %req="300" %i="7"]
+[i:ac5 %name="拥有350个演出中心" %desc="演出中心8" %icon="ccIcons[12,17]" %id="13" %req="350" %i="8"]
+[i:ac5 %name="拥有400个演出中心" %desc="演出中心9" %icon="ccIcons[12,18]" %id="13" %req="400" %i="9"]
+[i:ac5 %name="拥有450个演出中心" %desc="演出中心10" %icon="ccIcons[12,19]" %id="13" %req="450" %i="10"]
+[i:ac5 %name="拥有500个演出中心" %desc="演出中心11" %icon="ccIcons[12,20]" %id="13" %req="500" %i="11"]
+[i:ac5 %name="拥有550个演出中心" %desc="演出中心12" %icon="ccIcons[12,21]" %id="13" %req="550" %i="12"]
+[i:ac5 %name="拥有600个演出中心" %desc="演出中心13" %icon="ccIcons[12,22]" %id="13" %req="600" %i="13"]
+[i:ac5 %name="拥有1个体育场" %desc="体育场1" %icon="ccIcons[13,0]" %id="14" %req="1" %i="1"]
+[i:ac5 %name="拥有50个体育场" %desc="体育场2" %icon="ccIcons[13,1]" %id="14" %req="50" %i="2"]
+[i:ac5 %name="拥有100个体育场" %desc="体育场3" %icon="ccIcons[13,2]" %id="14" %req="100" %i="3"]
+[i:ac5 %name="拥有150个体育场" %desc="体育场4" %icon="ccIcons[13,13]" %id="14" %req="150" %i="4"]
+[i:ac5 %name="拥有200个体育场" %desc="体育场5" %icon="ccIcons[13,14]" %id="14" %req="200" %i="5"]
+[i:ac5 %name="拥有250个体育场" %desc="体育场6" %icon="ccIcons[13,15]" %id="14" %req="250" %i="6"]
+[i:ac5 %name="拥有300个体育场" %desc="体育场7" %icon="ccIcons[13,16]" %id="14" %req="300" %i="7"]
+[i:ac5 %name="拥有350个体育场" %desc="体育场8" %icon="ccIcons[13,17]" %id="14" %req="350" %i="8"]
+[i:ac5 %name="拥有400个体育场" %desc="体育场9" %icon="ccIcons[13,18]" %id="14" %req="400" %i="9"]
+[i:ac5 %name="拥有450个体育场" %desc="体育场10" %icon="ccIcons[13,19]" %id="14" %req="450" %i="10"]
+[i:ac5 %name="拥有500个体育场" %desc="体育场11" %icon="ccIcons[13,20]" %id="14" %req="500" %i="11"]
+[i:ac5 %name="拥有550个体育场" %desc="体育场12" %icon="ccIcons[13,21]" %id="14" %req="550" %i="12"]
+[i:ac5 %name="拥有600个体育场" %desc="体育场13" %icon="ccIcons[13,22]" %id="14" %req="600" %i="13"]
+[i:ac5 %name="拥有1个影视城" %desc="影视城1" %icon="ccIcons[14,0]" %id="15" %req="1" %i="1"]
+[i:ac5 %name="拥有50个影视城" %desc="影视城2" %icon="ccIcons[14,1]" %id="15" %req="50" %i="2"]
+[i:ac5 %name="拥有100个影视城" %desc="影视城3" %icon="ccIcons[14,2]" %id="15" %req="100" %i="3"]
+[i:ac5 %name="拥有150个影视城" %desc="影视城4" %icon="ccIcons[14,13]" %id="15" %req="150" %i="4"]
+[i:ac5 %name="拥有200个影视城" %desc="影视城5" %icon="ccIcons[14,14]" %id="15" %req="200" %i="5"]
+[i:ac5 %name="拥有250个影视城" %desc="影视城6" %icon="ccIcons[14,15]" %id="15" %req="250" %i="6"]
+[i:ac5 %name="拥有300个影视城" %desc="影视城7" %icon="ccIcons[14,16]" %id="15" %req="300" %i="7"]
+[i:ac5 %name="拥有350个影视城" %desc="影视城8" %icon="ccIcons[14,17]" %id="15" %req="350" %i="8"]
+[i:ac5 %name="拥有400个影视城" %desc="影视城9" %icon="ccIcons[14,18]" %id="15" %req="400" %i="9"]
+[i:ac5 %name="拥有450个影视城" %desc="影视城10" %icon="ccIcons[14,19]" %id="15" %req="450" %i="10"]
+[i:ac5 %name="拥有500个影视城" %desc="影视城11" %icon="ccIcons[14,20]" %id="15" %req="500" %i="11"]
+[i:ac5 %name="拥有550个影视城" %desc="影视城12" %icon="ccIcons[14,21]" %id="15" %req="550" %i="12"]
+[i:ac5 %name="拥有600个影视城" %desc="影视城13" %icon="ccIcons[14,22]" %id="15" %req="600" %i="13"]
+[i:ac5 %name="拥有1个全明星演唱会" %desc="全明星演唱会1" %icon="ccIcons[15,0]" %id="16" %req="1" %i="1"]
+[i:ac5 %name="拥有50个全明星演唱会" %desc="全明星演唱会2" %icon="ccIcons[15,1]" %id="16" %req="50" %i="2"]
+[i:ac5 %name="拥有100个全明星演唱会" %desc="全明星演唱会3" %icon="ccIcons[15,2]" %id="16" %req="100" %i="3"]
+[i:ac5 %name="拥有150个全明星演唱会" %desc="全明星演唱会4" %icon="ccIcons[15,13]" %id="16" %req="150" %i="4"]
+[i:ac5 %name="拥有200个全明星演唱会" %desc="全明星演唱会5" %icon="ccIcons[15,14]" %id="16" %req="200" %i="5"]
+[i:ac5 %name="拥有250个全明星演唱会" %desc="全明星演唱会6" %icon="ccIcons[15,15]" %id="16" %req="250" %i="6"]
+[i:ac5 %name="拥有300个全明星演唱会" %desc="全明星演唱会7" %icon="ccIcons[15,16]" %id="16" %req="300" %i="7"]
+[i:ac5 %name="拥有350个全明星演唱会" %desc="全明星演唱会8" %icon="ccIcons[15,17]" %id="16" %req="350" %i="8"]
+[i:ac5 %name="拥有400个全明星演唱会" %desc="全明星演唱会9" %icon="ccIcons[15,18]" %id="16" %req="400" %i="9"]
+[i:ac5 %name="拥有450个全明星演唱会" %desc="全明星演唱会10" %icon="ccIcons[15,19]" %id="16" %req="450" %i="10"]
+[i:ac5 %name="拥有500个全明星演唱会" %desc="全明星演唱会11" %icon="ccIcons[15,20]" %id="16" %req="500" %i="11"]
+[i:ac5 %name="拥有550个全明星演唱会" %desc="全明星演唱会12" %icon="ccIcons[15,21]" %id="16" %req="550" %i="12"]
+[i:ac5 %name="拥有600个全明星演唱会" %desc="全明星演唱会13" %icon="ccIcons[15,22]" %id="16" %req="600" %i="13"]
+[i:ac5 %name="拥有1个娱乐帝国" %desc="娱乐帝国1" %icon="ccIcons[16,0]" %id="17" %req="1" %i="1"]
+[i:ac5 %name="拥有50个娱乐帝国" %desc="娱乐帝国2" %icon="ccIcons[16,1]" %id="17" %req="50" %i="2"]
+[i:ac5 %name="拥有100个娱乐帝国" %desc="娱乐帝国3" %icon="ccIcons[16,2]" %id="17" %req="100" %i="3"]
+[i:ac5 %name="拥有150个娱乐帝国" %desc="娱乐帝国4" %icon="ccIcons[16,13]" %id="17" %req="150" %i="4"]
+[i:ac5 %name="拥有200个娱乐帝国" %desc="娱乐帝国5" %icon="ccIcons[16,14]" %id="17" %req="200" %i="5"]
+[i:ac5 %name="拥有250个娱乐帝国" %desc="娱乐帝国6" %icon="ccIcons[16,15]" %id="17" %req="250" %i="6"]
+[i:ac5 %name="拥有300个娱乐帝国" %desc="娱乐帝国7" %icon="ccIcons[16,16]" %id="17" %req="300" %i="7"]
+[i:ac5 %name="拥有350个娱乐帝国" %desc="娱乐帝国8" %icon="ccIcons[16,17]" %id="17" %req="350" %i="8"]
+[i:ac5 %name="拥有400个娱乐帝国" %desc="娱乐帝国9" %icon="ccIcons[16,18]" %id="17" %req="400" %i="9"]
+[i:ac5 %name="拥有450个娱乐帝国" %desc="娱乐帝国10" %icon="ccIcons[16,19]" %id="17" %req="450" %i="10"]
+[i:ac5 %name="拥有500个娱乐帝国" %desc="娱乐帝国11" %icon="ccIcons[16,20]" %id="17" %req="500" %i="11"]
+[i:ac5 %name="拥有550个娱乐帝国" %desc="娱乐帝国12" %icon="ccIcons[16,21]" %id="17" %req="550" %i="12"]
+[i:ac5 %name="拥有600个娱乐帝国" %desc="娱乐帝国13" %icon="ccIcons[16,22]" %id="17" %req="600" %i="13"]
+[i:ac5 %name="拥有1个只因宇宙" %desc="只因宇宙1" %icon="ccIcons[17,0]" %id="18" %req="1" %i="1"]
+[i:ac5 %name="拥有50个只因宇宙" %desc="只因宇宙2" %icon="ccIcons[17,1]" %id="18" %req="50" %i="2"]
+[i:ac5 %name="拥有100个只因宇宙" %desc="只因宇宙3" %icon="ccIcons[17,2]" %id="18" %req="100" %i="3"]
+[i:ac5 %name="拥有150个只因宇宙" %desc="只因宇宙4" %icon="ccIcons[17,13]" %id="18" %req="150" %i="4"]
+[i:ac5 %name="拥有200个只因宇宙" %desc="只因宇宙5" %icon="ccIcons[17,14]" %id="18" %req="200" %i="5"]
+[i:ac5 %name="拥有250个只因宇宙" %desc="只因宇宙6" %icon="ccIcons[17,15]" %id="18" %req="250" %i="6"]
+[i:ac5 %name="拥有300个只因宇宙" %desc="只因宇宙7" %icon="ccIcons[17,16]" %id="18" %req="300" %i="7"]
+[i:ac5 %name="拥有350个只因宇宙" %desc="只因宇宙8" %icon="ccIcons[17,17]" %id="18" %req="350" %i="8"]
+[i:ac5 %name="拥有400个只因宇宙" %desc="只因宇宙9" %icon="ccIcons[17,18]" %id="18" %req="400" %i="9"]
+[i:ac5 %name="拥有450个只因宇宙" %desc="只因宇宙10" %icon="ccIcons[17,19]" %id="18" %req="450" %i="10"]
+[i:ac5 %name="拥有500个只因宇宙" %desc="只因宇宙11" %icon="ccIcons[17,20]" %id="18" %req="500" %i="11"]
+[i:ac5 %name="拥有550个只因宇宙" %desc="只因宇宙12" %icon="ccIcons[17,21]" %id="18" %req="550" %i="12"]
+[i:ac5 %name="拥有600个只因宇宙" %desc="只因宇宙13" %icon="ccIcons[17,22]" %id="18" %req="600" %i="13"]
+[i:ac6 %name="练习室产出的只因达到10Q" %desc="练习室产量1" %icon="ccIcons[0,26]" %id="1" %req="10000000000000000000" %i="1"]
+[i:ac6 %name="练习室产出的只因达到100S" %desc="练习室产量2" %icon="ccIcons[0,27]" %id="1" %req="100000000000000000000000000" %i="2"]
+[i:ac6 %name="练习室产出的只因达到1d" %desc="练习室产量3" %icon="ccIcons[0,30]" %id="1" %req="1000000000000000000000000000000000" %i="3"]
+[i:ac6 %name="篮球场产出的只因达到10Q" %desc="篮球场产量1" %icon="ccIcons[1,26]" %id="2" %req="10000000000000000000" %i="1"]
+[i:ac6 %name="篮球场产出的只因达到100S" %desc="篮球场产量2" %icon="ccIcons[1,27]" %id="2" %req="100000000000000000000000000" %i="2"]
+[i:ac6 %name="篮球场产出的只因达到1d" %desc="篮球场产量3" %icon="ccIcons[1,30]" %id="2" %req="1000000000000000000000000000000000" %i="3"]
+[i:ac6 %name="录音室产出的只因达到100t" %desc="录音室产量1" %icon="ccIcons[2,26]" %id="3" %req="100000000000000" %i="1"]
+[i:ac6 %name="录音室产出的只因达到1s" %desc="录音室产量2" %icon="ccIcons[2,27]" %id="3" %req="1000000000000000000000" %i="2"]
+[i:ac6 %name="录音室产出的只因达到10o" %desc="录音室产量3" %icon="ccIcons[2,30]" %id="3" %req="10000000000000000000000000000" %i="3"]
+[i:ac6 %name="彩排厅产出的只因达到1q" %desc="彩排厅产量1" %icon="ccIcons[3,26]" %id="4" %req="1000000000000000" %i="1"]
+[i:ac6 %name="彩排厅产出的只因达到10s" %desc="彩排厅产量2" %icon="ccIcons[3,27]" %id="4" %req="10000000000000000000000" %i="2"]
+[i:ac6 %name="彩排厅产出的只因达到100o" %desc="彩排厅产量3" %icon="ccIcons[3,30]" %id="4" %req="100000000000000000000000000000" %i="3"]
+[i:ac6 %name="娱乐厅产出的只因达到10q" %desc="娱乐厅产量1" %icon="ccIcons[4,26]" %id="5" %req="10000000000000000" %i="1"]
+[i:ac6 %name="娱乐厅产出的只因达到100s" %desc="娱乐厅产量2" %icon="ccIcons[4,27]" %id="5" %req="100000000000000000000000" %i="2"]
+[i:ac6 %name="娱乐厅产出的只因达到1n" %desc="娱乐厅产量3" %icon="ccIcons[4,30]" %id="5" %req="1000000000000000000000000000000" %i="3"]
+[i:ac6 %name="签约公司产出的只因达到100q" %desc="签约公司产量1" %icon="ccIcons[5,26]" %id="6" %req="100000000000000000" %i="1"]
+[i:ac6 %name="签约公司产出的只因达到1S" %desc="签约公司产量2" %icon="ccIcons[5,27]" %id="6" %req="1000000000000000000000000" %i="2"]
+[i:ac6 %name="签约公司产出的只因达到10n" %desc="签约公司产量3" %icon="ccIcons[5,30]" %id="6" %req="10000000000000000000000000000000" %i="3"]
+[i:ac6 %name="演唱会场馆产出的只因达到1Q" %desc="演唱会场馆产量1" %icon="ccIcons[6,26]" %id="7" %req="1000000000000000000" %i="1"]
+[i:ac6 %name="演唱会场馆产出的只因达到10S" %desc="演唱会场馆产量2" %icon="ccIcons[6,27]" %id="7" %req="10000000000000000000000000" %i="2"]
+[i:ac6 %name="演唱会场馆产出的只因达到100n" %desc="演唱会场馆产量3" %icon="ccIcons[6,30]" %id="7" %req="100000000000000000000000000000000" %i="3"]
+[i:ac6 %name="电视台产出的只因达到10Q" %desc="电视台产量1" %icon="ccIcons[7,26]" %id="8" %req="10000000000000000000" %i="1"]
+[i:ac6 %name="电视台产出的只因达到100S" %desc="电视台产量2" %icon="ccIcons[7,27]" %id="8" %req="100000000000000000000000000" %i="2"]
+[i:ac6 %name="电视台产出的只因达到1d" %desc="电视台产量3" %icon="ccIcons[7,30]" %id="8" %req="1000000000000000000000000000000000" %i="3"]
+[i:ac6 %name="电影公司产出的只因达到100Q" %desc="电影公司产量1" %icon="ccIcons[8,26]" %id="9" %req="100000000000000000000" %i="1"]
+[i:ac6 %name="电影公司产出的只因达到1o" %desc="电影公司产量2" %icon="ccIcons[8,27]" %id="9" %req="1000000000000000000000000000" %i="2"]
+[i:ac6 %name="电影公司产出的只因达到10d" %desc="电影公司产量3" %icon="ccIcons[8,30]" %id="9" %req="10000000000000000000000000000000000" %i="3"]
+[i:ac6 %name="大型演出舞台产出的只因达到1s" %desc="大型演出舞台产量1" %icon="ccIcons[9,26]" %id="10" %req="1000000000000000000000" %i="1"]
+[i:ac6 %name="大型演出舞台产出的只因达到10o" %desc="大型演出舞台产量2" %icon="ccIcons[9,27]" %id="10" %req="10000000000000000000000000000" %i="2"]
+[i:ac6 %name="大型演出舞台产出的只因达到100d" %desc="大型演出舞台产量3" %icon="ccIcons[9,30]" %id="10" %req="100000000000000000000000000000000000" %i="3"]
+[i:ac6 %name="偶像工厂产出的只因达到10s" %desc="偶像工厂产量1" %icon="ccIcons[10,26]" %id="11" %req="10000000000000000000000" %i="1"]
+[i:ac6 %name="偶像工厂产出的只因达到100o" %desc="偶像工厂产量2" %icon="ccIcons[10,27]" %id="11" %req="100000000000000000000000000000" %i="2"]
+[i:ac6 %name="偶像工厂产出的只因达到1U" %desc="偶像工厂产量3" %icon="ccIcons[10,30]" %id="11" %req="1000000000000000000000000000000000000" %i="3"]
+[i:ac6 %name="巨星训练营产出的只因达到100s" %desc="巨星训练营产量1" %icon="ccIcons[11,26]" %id="12" %req="100000000000000000000000" %i="1"]
+[i:ac6 %name="巨星训练营产出的只因达到1n" %desc="巨星训练营产量2" %icon="ccIcons[11,27]" %id="12" %req="1000000000000000000000000000000" %i="2"]
+[i:ac6 %name="巨星训练营产出的只因达到10U" %desc="巨星训练营产量3" %icon="ccIcons[11,30]" %id="12" %req="10000000000000000000000000000000000000" %i="3"]
+[i:ac6 %name="演出中心产出的只因达到1S" %desc="演出中心产量1" %icon="ccIcons[12,26]" %id="13" %req="1000000000000000000000000" %i="1"]
+[i:ac6 %name="演出中心产出的只因达到10n" %desc="演出中心产量2" %icon="ccIcons[12,27]" %id="13" %req="10000000000000000000000000000000" %i="2"]
+[i:ac6 %name="演出中心产出的只因达到100U" %desc="演出中心产量3" %icon="ccIcons[12,30]" %id="13" %req="100000000000000000000000000000000000000" %i="3"]
+[i:ac6 %name="体育场产出的只因达到10S" %desc="体育场产量1" %icon="ccIcons[13,26]" %id="14" %req="10000000000000000000000000" %i="1"]
+[i:ac6 %name="体育场产出的只因达到100n" %desc="体育场产量2" %icon="ccIcons[13,27]" %id="14" %req="100000000000000000000000000000000" %i="2"]
+[i:ac6 %name="体育场产出的只因达到1D" %desc="体育场产量3" %icon="ccIcons[13,30]" %id="14" %req="1000000000000000000000000000000000000000" %i="3"]
+[i:ac6 %name="影视城产出的只因达到100S" %desc="影视城产量1" %icon="ccIcons[14,26]" %id="15" %req="100000000000000000000000000" %i="1"]
+[i:ac6 %name="影视城产出的只因达到1d" %desc="影视城产量2" %icon="ccIcons[14,27]" %id="15" %req="1000000000000000000000000000000000" %i="2"]
+[i:ac6 %name="影视城产出的只因达到10D" %desc="影视城产量3" %icon="ccIcons[14,30]" %id="15" %req="10000000000000000000000000000000000000000" %i="3"]
+[i:ac6 %name="全明星演唱会产出的只因达到1o" %desc="全明星演唱会产量1" %icon="ccIcons[15,26]" %id="16" %req="1000000000000000000000000000" %i="1"]
+[i:ac6 %name="全明星演唱会产出的只因达到10d" %desc="全明星演唱会产量2" %icon="ccIcons[15,27]" %id="16" %req="10000000000000000000000000000000000" %i="2"]
+[i:ac6 %name="全明星演唱会产出的只因达到100D" %desc="全明星演唱会产量3" %icon="ccIcons[15,30]" %id="16" %req="100000000000000000000000000000000000000000" %i="3"]
+[i:ac6 %name="娱乐帝国产出的只因达到10o" %desc="娱乐帝国产量1" %icon="ccIcons[16,26]" %id="17" %req="10000000000000000000000000000" %i="1"]
+[i:ac6 %name="娱乐帝国产出的只因达到100d" %desc="娱乐帝国产量2" %icon="ccIcons[16,27]" %id="17" %req="100000000000000000000000000000000000" %i="2"]
+[i:ac6 %name="娱乐帝国产出的只因达到1T" %desc="娱乐帝国产量3" %icon="ccIcons[16,30]" %id="17" %req="1000000000000000000000000000000000000000000" %i="3"]
+[i:ac6 %name="只因宇宙产出的只因达到100o" %desc="只因宇宙产量1" %icon="ccIcons[17,26]" %id="18" %req="100000000000000000000000000000" %i="1"]
+[i:ac6 %name="只因宇宙产出的只因达到1U" %desc="只因宇宙产量2" %icon="ccIcons[17,27]" %id="18" %req="1000000000000000000000000000000000000" %i="2"]
+[i:ac6 %name="只因宇宙产出的只因达到10T" %desc="只因宇宙产量3" %icon="ccIcons[17,30]" %id="18" %req="10000000000000000000000000000000000000000000" %i="3"]
+[i:ac7 %name="拥有100个建筑" %desc="建筑工人" %icon="ccIcons[2,6]" %req="100" %i="1"]
+[i:ac7 %name="拥有500个建筑" %desc="建筑师" %icon="ccIcons[3,6]" %req="500" %i="2"]
+[i:ac7 %name="拥有1000个建筑" %desc="工程师" %icon="ccIcons[4,6]" %req="1000" %i="3"]
+[i:ac7 %name="拥有2000个建筑" %desc="建造大师" %icon="ccIcons[5,6]" %req="2000" %i="4"]
+[i:ac7 %name="拥有4000个建筑" %desc="宏伟设计" %icon="ccIcons[32,12]" %req="4000" %i="5"]
+[i:ac7 %name="拥有8000个建筑" %desc="世界都市" %icon="ccIcons[33,12]" %req="8000" %i="6"]
+[i:ac8 %name="拥有20个科技" %desc="强化剂" %icon="ccIcons[20,0]" %req="20" %i="1"]
+[i:ac8 %name="拥有50个科技" %desc="放大器" %icon="ccIcons[20,1]" %req="50" %i="2"]
+[i:ac8 %name="拥有100个科技" %desc="升级程序" %icon="ccIcons[20,2]" %req="100" %i="3"]
+[i:ac8 %name="拥有150个科技" %desc="进度大师" %icon="ccIcons[20,13]" %req="150" %i="4"]
+[i:ac8 %name="拥有200个科技" %desc="科技大师" %icon="ccIcons[20,14]" %req="200" %i="5"]
+
+[i:ac9 %name="使用1次鸡币" %icon="ccIcons[21,23]" %req="1" %i="1"]
+[i:ac9 %name="使用10次鸡币" %icon="ccIcons[22,23]" %req="10" %i="2"]
+[i:ac9 %name="使用50次鸡币" %icon="ccIcons[23,23]" %req="50" %i="3"]
+[i:ac9 %name="使用100次鸡币" %icon="ccIcons[24,23]" %req="100" %i="4"]
+[i:ac9 %name="使用150次鸡币" %icon="ccIcons[25,23]" %req="150" %i="5"]
+[i:ac9 %name="使用200次鸡币" %icon="ccIcons[26,23]" %req="200" %i="6"]
+[i:ac9 %name="使用300次鸡币" %icon="ccIcons[26,23]" %req="300" %i="7"]
+[i:ac9 %name="使用500次鸡币" %icon="ccIcons[26,23]" %req="500" %i="8"]
+[i:ac9 %name="使用750次鸡币" %icon="ccIcons[26,23]" %req="750" %i="9"]
+[i:ac9 %name="使用1000次鸡币" %icon="ccIcons[26,23]" %req="1000" %i="10"]
+[i:ac9 %name="使用1500次鸡币" %icon="ccIcons[26,23]" %req="1500" %i="11"]
+[i:ac9 %name="使用2000次鸡币" %icon="ccIcons[26,23]" %req="2000" %i="12"]
+[i:ac9 %name="使用3000次鸡币" %icon="ccIcons[26,23]" %req="3000" %i="13"]
+[i:ac9 %name="使用5000次鸡币" %icon="ccIcons[26,23]" %req="5000" %i="14"]
+[i:ac9 %name="使用10000次鸡币" %icon="ccIcons[26,23]" %req="10000" %i="15"]
+[i:ac9 %name="使用20000次鸡币" %icon="ccIcons[26,23]" %req="20000" %i="16"]
+[i:ac9 %name="使用50000次鸡币" %icon="ccIcons[26,23]" %req="50000" %i="17"]
+[i:ac9 %name="使用100000次鸡币" %icon="ccIcons[26,23]" %req="100000" %i="18"]
+[i:ac9 %name="使用200000次鸡币" %icon="ccIcons[26,23]" %req="200000" %i="19"]
+[i:ac9 %name="使用500000次鸡币" %icon="ccIcons[26,23]" %req="500000" %i="20"]
+[i:ac9 %name="使用1000000次鸡币" %icon="ccIcons[26,23]" %req="1000000" %i="21"]
+[i:ac9 %name="使用2000000次鸡币" %icon="ccIcons[26,23]" %req="2000000" %i="22"]
+[i:ac9 %name="使用5000000次鸡币" %icon="ccIcons[26,23]" %req="5000000" %i="23"]
+[i:ac9 %name="使用10000000次鸡币" %icon="ccIcons[26,23]" %req="10000000" %i="24"]
+
+[i:ac10 %name="获得1次鸡币双倍奖励" %icon="ccIcons[27,23]" %req="1" %i="1"]
+[i:ac10 %name="获得5次鸡币双倍奖励" %icon="ccIcons[28,23]" %req="5" %i="2"]
+[i:ac10 %name="获得10次鸡币双倍奖励" %icon="ccIcons[29,23]" %req="10" %i="3"]
+[i:ac10 %name="获得20次鸡币双倍奖励" %icon="ccIcons[30,23]" %req="20" %i="4"]
+[i:ac10 %name="获得50次鸡币双倍奖励" %icon="ccIcons[31,23]" %req="50" %i="5"]
+[i:ac10 %name="获得100次鸡币双倍奖励" %icon="ccIcons[21,24]" %req="100" %i="6"]
+[i:ac10 %name="获得200次鸡币双倍奖励" %icon="ccIcons[21,24]" %req="200" %i="7"]
+[i:ac10 %name="获得500次鸡币双倍奖励" %icon="ccIcons[21,24]" %req="500" %i="8"]
+[i:ac10 %name="获得1000次鸡币双倍奖励" %icon="ccIcons[21,24]" %req="1000" %i="9"]
+[i:ac10 %name="获得2000次鸡币双倍奖励" %icon="ccIcons[21,24]" %req="2000" %i="10"]
+[i:ac10 %name="获得5000次鸡币双倍奖励" %icon="ccIcons[21,24]" %req="5000" %i="11"]
+[i:ac10 %name="获得10000次鸡币双倍奖励" %icon="ccIcons[21,24]" %req="10000" %i="12"]
+[i:ac10 %name="获得20000次鸡币双倍奖励" %icon="ccIcons[21,24]" %req="20000" %i="13"]
+[i:ac10 %name="获得50000次鸡币双倍奖励" %icon="ccIcons[21,24]" %req="50000" %i="14"]
+[i:ac10 %name="获得100000次鸡币双倍奖励" %icon="ccIcons[21,24]" %req="100000" %i="15"]
+[i:ac10 %name="获得200000次鸡币双倍奖励" %icon="ccIcons[21,24]" %req="200000" %i="16"]
+[i:ac10 %name="获得500000次鸡币双倍奖励" %icon="ccIcons[21,24]" %req="500000" %i="17"]
+[i:ac10 %name="获得1000000次鸡币双倍奖励" %icon="ccIcons[21,24]" %req="1000000" %i="18"]
+[i:ac10 %name="获得2000000次鸡币双倍奖励" %icon="ccIcons[21,24]" %req="2000000" %i="19"]
+[i:ac10 %name="获得5000000次鸡币双倍奖励" %icon="ccIcons[21,24]" %req="5000000" %i="20"]
+[i:ac10 %name="获得10000000次鸡币双倍奖励" %icon="ccIcons[21,24]" %req="10000000" %i="21"]
+[i:ac10 %name="获得20000000次鸡币双倍奖励" %icon="ccIcons[21,24]" %req="20000000" %i="22"]
+[i:ac10 %name="获得50000000次鸡币双倍奖励" %icon="ccIcons[21,24]" %req="50000000" %i="23"]
+[i:ac10 %name="获得100000000次鸡币双倍奖励" %icon="ccIcons[21,24]" %req="100000000" %i="24"]
+
+[i:ac11 %name="获得1次鸡币五倍奖励" %icon="ccIcons[1,8]" %req="1" %i="1"]
+[i:ac11 %name="获得5次鸡币五倍奖励" %icon="ccIcons[2,8]" %req="2" %i="2"]
+[i:ac11 %name="获得10次鸡币五倍奖励" %icon="ccIcons[3,8]" %req="5" %i="3"]
+[i:ac11 %name="获得20次鸡币五倍奖励" %icon="ccIcons[4,8]" %req="10" %i="4"]
+[i:ac11 %name="获得50次鸡币五倍奖励" %icon="ccIcons[5,8]" %req="20" %i="5"]
+[i:ac11 %name="获得100次鸡币五倍奖励" %icon="ccIcons[6,8]" %req="50" %i="6"]
+[i:ac11 %name="获得200次鸡币五倍奖励" %icon="ccIcons[21,24]" %req="200" %i="7"]
+[i:ac11 %name="获得500次鸡币五倍奖励" %icon="ccIcons[21,24]" %req="500" %i="8"]
+[i:ac11 %name="获得1000次鸡币五倍奖励" %icon="ccIcons[21,24]" %req="1000" %i="9"]
+[i:ac11 %name="获得2000次鸡币五倍奖励" %icon="ccIcons[21,24]" %req="2000" %i="10"]
+[i:ac11 %name="获得5000次鸡币五倍奖励" %icon="ccIcons[21,24]" %req="5000" %i="11"]
+[i:ac11 %name="获得10000次鸡币五倍奖励" %icon="ccIcons[21,24]" %req="10000" %i="12"]
+[i:ac11 %name="获得20000次鸡币五倍奖励" %icon="ccIcons[21,24]" %req="20000" %i="13"]
+[i:ac11 %name="获得50000次鸡币五倍奖励" %icon="ccIcons[21,24]" %req="50000" %i="14"]
+[i:ac11 %name="获得100000次鸡币五倍奖励" %icon="ccIcons[21,24]" %req="100000" %i="15"]
+[i:ac11 %name="获得200000次鸡币五倍奖励" %icon="ccIcons[21,24]" %req="200000" %i="16"]
+[i:ac11 %name="获得500000次鸡币五倍奖励" %icon="ccIcons[21,24]" %req="500000" %i="17"]
+[i:ac11 %name="获得1000000次鸡币五倍奖励" %icon="ccIcons[21,24]" %req="1000000" %i="18"]
+[i:ac11 %name="获得2000000次鸡币五倍奖励" %icon="ccIcons[21,24]" %req="2000000" %i="19"]
+[i:ac11 %name="获得5000000次鸡币五倍奖励" %icon="ccIcons[21,24]" %req="5000000" %i="20"]
+[i:ac11 %name="获得10000000次鸡币五倍奖励" %icon="ccIcons[21,24]" %req="10000000" %i="21"]
+[i:ac11 %name="获得20000000次鸡币五倍奖励" %icon="ccIcons[21,24]" %req="20000000" %i="22"]
+[i:ac11 %name="获得50000000次鸡币五倍奖励" %icon="ccIcons[21,24]" %req="50000000" %i="23"]
+[i:ac11 %name="获得100000000次鸡币五倍奖励" %icon="ccIcons[21,24]" %req="100000000" %i="24"]
+
+[i:ac12 %name="获得1次鸡币十倍奖励" %icon="ccIcons[7,8]" %req="1" %i="1"]
+[i:ac12 %name="获得2次鸡币十倍奖励" %icon="ccIcons[8,8]" %req="2" %i="2"]
+[i:ac12 %name="获得5次鸡币十倍奖励" %icon="ccIcons[9,8]" %req="5" %i="3"]
+[i:ac12 %name="获得10次鸡币十倍奖励" %icon="ccIcons[3,7]" %req="10" %i="4"]
+[i:ac12 %name="获得20次鸡币十倍奖励" %icon="ccIcons[4,8]" %req="10" %i="5"]
+[i:ac12 %name="获得50次鸡币十倍奖励" %icon="ccIcons[5,8]" %req="20" %i="6"]
+[i:ac12 %name="获得100次鸡币十倍奖励" %icon="ccIcons[6,8]" %req="50" %i="7"]
+[i:ac12 %name="获得200次鸡币十倍奖励" %icon="ccIcons[21,24]" %req="200" %i="8"]
+[i:ac12 %name="获得500次鸡币十倍奖励" %icon="ccIcons[21,24]" %req="500" %i="9"]
+[i:ac12 %name="获得1000次鸡币十倍奖励" %icon="ccIcons[21,24]" %req="1000" %i="10"]
+[i:ac12 %name="获得2000次鸡币十倍奖励" %icon="ccIcons[21,24]" %req="2000" %i="11"]
+[i:ac12 %name="获得5000次鸡币十倍奖励" %icon="ccIcons[21,24]" %req="5000" %i="12"]
+[i:ac12 %name="获得10000次鸡币十倍奖励" %icon="ccIcons[21,24]" %req="10000" %i="13"]
+[i:ac12 %name="获得20000次鸡币十倍奖励" %icon="ccIcons[21,24]" %req="20000" %i="14"]
+[i:ac12 %name="获得50000次鸡币十倍奖励" %icon="ccIcons[21,24]" %req="50000" %i="15"]
+[i:ac12 %name="获得100000次鸡币十倍奖励" %icon="ccIcons[21,24]" %req="100000" %i="16"]
+[i:ac12 %name="获得200000次鸡币十倍奖励" %icon="ccIcons[21,24]" %req="200000" %i="17"]
+[i:ac12 %name="获得500000次鸡币十倍奖励" %icon="ccIcons[21,24]" %req="500000" %i="18"]
+[i:ac12 %name="获得1000000次鸡币十倍奖励" %icon="ccIcons[21,24]" %req="1000000" %i="19"]
+[i:ac12 %name="获得2000000次鸡币十倍奖励" %icon="ccIcons[21,24]" %req="2000000" %i="20"]
+[i:ac12 %name="获得5000000次鸡币十倍奖励" %icon="ccIcons[21,24]" %req="5000000" %i="21"]
+[i:ac12 %name="获得10000000次鸡币十倍奖励" %icon="ccIcons[21,24]" %req="10000000" %i="22"]
+[i:ac12 %name="获得20000000次鸡币十倍奖励" %icon="ccIcons[21,24]" %req="20000000" %i="23"]
+[i:ac12 %name="获得50000000次鸡币十倍奖励" %icon="ccIcons[21,24]" %req="50000000" %i="24"]
+[i:ac12 %name="获得100000000次鸡币十倍奖励" %icon="ccIcons[21,24]" %req="100000000" %i="25"]
+
+[i:ac13 %name="获得1次鸡币50倍奖励" %icon="ccIcons[4,7]" %req="1" %i="1"]
+[i:ac13 %name="获得2次鸡币50倍奖励" %icon="ccIcons[5,7]" %req="2" %i="2"]
+[i:ac13 %name="获得5次鸡币50倍奖励" %icon="ccIcons[6,7]" %req="5" %i="3"]
+[i:ac13 %name="获得7次鸡币50倍奖励" %icon="ccIcons[7,7]" %req="7" %i="4"]
+[i:ac13 %name="获得10次鸡币50倍奖励" %icon="ccIcons[8,7]" %req="10" %i="5"]
+[i:ac14 %name="获得1次鸡币100倍奖励" %icon="ccIcons[9,7]" %req="1" %i="1"]
+[i:ac14 %name="获得2次鸡币100倍奖励" %icon="ccIcons[10,7]" %req="2" %i="2"]
+[i:ac14 %name="获得5次鸡币100倍奖励" %icon="ccIcons[15,6]" %req="5" %i="3"]
+[i:ac14 %name="获得7次鸡币100倍奖励" %icon="ccIcons[16,6]" %req="7" %i="4"]
+[i:ac14 %name="获得10次鸡币100倍奖励" %icon="ccIcons[25,6]" %req="10" %i="5"]
