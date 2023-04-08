@@ -8,11 +8,11 @@ Let's make a game!
 
 Settings
 	building cost increase:105%
-	background:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/bg.jpg
+	background:https://file.garden/ZDEW0Eu7QDnuPZ9w/bg.jpg
 	stylesheet:stuff/bigBlue.css
 	building cost refund:50%
-	spritesheet:icons, 48 by 48, https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/icons.png
-	spritesheet:ccIcons, 48 by 48, https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/ccIcons.png
+	spritesheet:icons, 48 by 48, https://file.garden/ZDEW0Eu7QDnuPZ9w/icons.png
+	spritesheet:ccIcons, 48 by 48, https://file.garden/ZDEW0Eu7QDnuPZ9w/ccIcons.png
 
 Layout
 *main
@@ -214,7 +214,7 @@ Buttons
 	*bitcoinButton
 		name:坤坤
 		desc:点击坤坤来生成更多的只因吧！
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/master/res/ikun.png
+		icon:https://file.garden/ZDEW0Eu7QDnuPZ9w/ikun.png
 		class:bigButton hasFlares
 		on click:
 			anim icon wobble
@@ -230,13 +230,13 @@ Resources
 	*bitcoin|bitcoins
 		name:只因
 		desc:这是你拥有的只因，你能用它们购买东西。你的目标是获得尽可能多的只因！
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/master/res/lq.png
+		icon:https://file.garden/ZDEW0Eu7QDnuPZ9w/lq.png
 		class:noBackground
 		show earned
 	*luckycoin|luckycoins
 		name:鸡币
 		desc:点击花费1[n:this]，可随机获得一定量的只因。
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/master/res/jb.png
+		icon:https://file.garden/ZDEW0Eu7QDnuPZ9w/jb.png
 		class:noBackground
 		show earned
 		on click:
@@ -336,7 +336,7 @@ Shinies
 		end
 		frequency:60
 		class:bigButton
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/qkun.png
+		icon:https://file.garden/ZDEW0Eu7QDnuPZ9w/qkun.png
 
 Buildings
 	*TEMPLATE
