@@ -8,11 +8,11 @@ Let's make a game!
 
 Settings
 	building cost increase:105%
-	background:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/bg.jpg
+	background:https://gitee.com/najoast/iKunClicker/raw/gitee/res/bg.jpg
 	stylesheet:stuff/bigBlue.css
 	building cost refund:50%
-	spritesheet:icons, 48 by 48, https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/icons.png
-	spritesheet:ccIcons, 48 by 48, https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/ccIcons.png
+	spritesheet:icons, 48 by 48, https://gitee.com/najoast/iKunClicker/raw/gitee/res/icons.png
+	spritesheet:ccIcons, 48 by 48, https://gitee.com/najoast/iKunClicker/raw/gitee/res/ccIcons.png
 
 Layout
 *main
@@ -336,7 +336,7 @@ Shinies
 		end
 		frequency:60
 		class:bigButton
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/qkun.png
+		icon:https://gitee.com/najoast/iKunClicker/raw/gitee/res/qkun.png
 
 Buildings
 	*TEMPLATE
