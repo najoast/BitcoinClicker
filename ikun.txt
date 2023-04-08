@@ -346,7 +346,7 @@ Buildings
 		name:练习室
         desc:练习偶像们必不可少的场所，可以提高他们的表演技能和音乐水平。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding1Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding1Earned:ps]个只因（占总产量的[varBuilding1Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding1Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding1Cost/(varBuilding1Earned:ps/building1)]</b>只因|]
 		// icon:ccIcons[0,0]
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/1.png
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/1.jpg
 		cost:15 bitcoins
 		on tick:
 			[include cursorClick]
@@ -364,7 +364,7 @@ Buildings
 		name:篮球场
 		desc:偶像们的运动必须要有足够的空间，篮球场不仅能满足运动需求，还可以提高身体素质和协调性。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding2Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding2Earned:ps]个只因（占总产量的[varBuilding2Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding2Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding2Cost/(varBuilding2Earned:ps/this)]</b>只因|]
 		// icon:ccIcons[16,0]
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/2.png
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/2.jpg
 		cost:100 bitcoins
 		on tick:
 			yield 4 bitcoins
@@ -378,7 +378,7 @@ Buildings
 		name:录音室
 		desc:音乐制作必备的场所，可以提高偶像们的音乐水平和录制效率。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding3Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding3Earned:ps]个只因（占总产量的[varBuilding3Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding3Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding3Cost/(varBuilding3Earned:ps/this)]</b>只因|]
 		// icon:icons[3,2]
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/3.png
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/3.jpg
 		cost:1100 bitcoins
 		on tick:
 			yield 8 bitcoins
@@ -392,7 +392,7 @@ Buildings
 		name:彩排厅
 		desc:彩排节目必备的场地，可提高演出节目的完成度。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding4Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding4Earned:ps]个只因（占总产量的[varBuilding4Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding4Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding4Cost/(varBuilding4Earned:ps/this)]</b>只因|]
 		// icon:ccIcons[4,0]
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/4.png
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/4.jpg
 		cost:12000 bitcoins
 		on tick:
 			yield 47 bitcoins
@@ -406,7 +406,7 @@ Buildings
 		name:娱乐厅
 		desc:为艺人提供休息、娱乐的场所，提高艺人的心情和健康状况。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding5Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding5Earned:ps]个只因（占总产量的[varBuilding5Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding5Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding5Cost/(varBuilding5Earned:ps/this)]</b>只因|]
 		// icon:icons[3,0]
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/5.png
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/5.jpg
 		cost:130000 bitcoins
 		on tick:
 			yield 260 bitcoins
@@ -420,7 +420,7 @@ Buildings
 		name:签约公司
 		desc:提供更广阔的发展平台，能够签约更多优秀的艺人。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding6Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding6Earned:ps]个只因（占总产量的[varBuilding6Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding6Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding6Cost/(varBuilding6Earned:ps/this)]</b>只因|]
 		// icon:icons[3,1]
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/6.png
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/6.jpg
 		cost:1400000 bitcoins
 		on tick:
 			yield 1400 bitcoins
@@ -434,7 +434,7 @@ Buildings
 		name:演唱会场馆
 		desc:可以容纳更多的粉丝，为艺人带来更高的知名度。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding7Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding7Earned:ps]个只因（占总产量的[varBuilding7Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding7Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding7Cost/(varBuilding7Earned:ps/this)]</b>只因|]
 		// icon:icons[3,8]
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/7.png
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/7.jpg
 		cost:20000000 bitcoins
 		on tick:
 			yield 7800 bitcoins
@@ -448,7 +448,7 @@ Buildings
 		name:电视台
 		desc:提供更广泛的宣传平台，增加艺人的曝光度和知名度。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding8Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding8Earned:ps]个只因（占总产量的[varBuilding8Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding8Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding8Cost/(varBuilding8Earned:ps/this)]</b>只因|]
 		// icon:icons[3,6]
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/8.png
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/8.jpg
 		cost:330000000 bitcoins
 		on tick:
 			yield 44000 bitcoins
@@ -462,7 +462,7 @@ Buildings
 		name:电影公司
 		desc:拍摄电影、电视剧等影视作品，提高艺人的知名度和影响力。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding9Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding9Earned:ps]个只因（占总产量的[varBuilding9Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding9Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding9Cost/(varBuilding9Earned:ps/this)]</b>只因|]
 		// icon:ccIcons[18,7]
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/9.png
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/9.jpg
 		cost:5100000000 bitcoins
 		on tick:
 			yield 260000 bitcoins
@@ -476,7 +476,7 @@ Buildings
 		name:大型演出舞台
 		desc:可容纳更多的观众和更多的精彩节目，为艺人带来更高的收益和只因产量。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding10Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding10Earned:ps]个只因（占总产量的[varBuilding10Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding10Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding10Cost/(varBuilding10Earned:ps/this)]</b>只因|]
 		// icon:ccIcons[17,7]
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/10.png
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/10.jpg
 		cost:75000000000 bitcoins
 		on tick:
 			yield 1600000 bitcoins
@@ -490,7 +490,7 @@ Buildings
 		name:偶像工厂
 		desc:培养新的偶像练习生，为公司提供更多优秀的艺人资源。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding11Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding11Earned:ps]个只因（占总产量的[varBuilding11Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding11Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding11Cost/(varBuilding11Earned:ps/this)]</b>只因|]
 		// icon:ccIcons[21,10]
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/11.png
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/11.jpg
 		cost:1000000000000 bitcoins
 		on tick:
 			yield 10000000 bitcoins
@@ -504,7 +504,7 @@ Buildings
 		name:巨星训练营
 		desc:为明星提供更专业的培训，提高艺人的专业水平和知名度。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding12Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding12Earned:ps]个只因（占总产量的[varBuilding12Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding12Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding12Cost/(varBuilding12Earned:ps/this)]</b>只因|]
 		// icon:ccIcons[12,10]
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/12.png
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/12.jpg
 		cost:14000000000000 bitcoins
 		on tick:
 			yield 65000000 bitcoins
@@ -518,7 +518,7 @@ Buildings
 		name:演出中心
 		desc:可容纳更多的观众和更多的演出节目，提高艺人的知名度和收益。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding13Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding13Earned:ps]个只因（占总产量的[varBuilding13Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding13Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding13Cost/(varBuilding13Earned:ps/this)]</b>只因|]
 		// icon:ccIcons[20,10]
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/13.png
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/13.jpg
 		cost:170000000000000 bitcoins
 		on tick:
 			yield 430000000 bitcoins
@@ -532,7 +532,7 @@ Buildings
 		name:体育场
 		desc:可容纳更多的粉丝，举办更大型的演唱会和体育比赛，为艺人带来更高的收益和只因产量。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding14Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding14Earned:ps]个只因（占总产量的[varBuilding14Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding14Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding14Cost/(varBuilding14Earned:ps/this)]</b>只因|]
 		// icon:ccIcons[8,0]
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/14.png
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/14.jpg
 		cost:2100000000000000 bitcoins
 		on tick:
 			yield 2900000000 bitcoins
@@ -546,7 +546,7 @@ Buildings
 		name:影视城
 		desc:拍摄更多、更大型的影视作品，为艺人带来更高的知名度和只因收益。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding15Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding15Earned:ps]个只因（占总产量的[varBuilding15Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding15Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding15Cost/(varBuilding15Earned:ps/this)]</b>只因|]
 		// icon:ccIcons[5,12]
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/15.png
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/15.jpg
 		cost:26000000000000000 bitcoins
 		on tick:
 			yield 21000000000 bitcoins
@@ -560,7 +560,7 @@ Buildings
 		name:全明星演唱会
 		desc:举办全明星的大型演唱会，为公司带来更高的知名度和收益，产生海量的只因。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding16Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding16Earned:ps]个只因（占总产量的[varBuilding16Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding16Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding16Cost/(varBuilding16Earned:ps/this)]</b>只因|]
 		// icon:ccIcons[14,12]
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/16.png
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/16.jpg
 		cost:310000000000000000 bitcoins
 		on tick:
 			yield 150000000000 bitcoins
@@ -574,7 +574,7 @@ Buildings
 		name:娱乐帝国
 		desc:拥有全球最顶尖的艺人，可以主导只因产业。[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding17Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding17Earned:ps]个只因（占总产量的[varBuilding17Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding17Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding17Cost/(varBuilding17Earned:ps/this)]</b>只因|]
 		// icon:ccIcons[24,15]
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/17.png
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/17.jpg
 		cost:71000000000000000000 bitcoins
 		on tick:
 			yield 1100000000000 bitcoins
@@ -588,7 +588,7 @@ Buildings
 		name:只因宇宙
 		desc:有无数其他空闲的宇宙与我们自己的宇宙一起运行。 你终于找到了一种方法来劫持他们的产品并将他们制作的任何东西转换成只因！[?(this>0)|<//></><.>每个<#F43F1A>[n:this]</#>每秒产出[varBuilding18Earned:ps/this]个只因<.>[this]个<#F43F1A>[n:this]</#>每秒产出[varBuilding18Earned:ps]个只因（占总产量的[varBuilding18Earned:ps*100/bitcoin:ps]%）<.>已生产[varBuilding18Earned]个只因<//><.>购买性价比：产量每+1需花费<b>[varBuilding18Cost/(varBuilding18Earned:ps/this)]</b>只因|]
 		// icon:ccIcons[9,9]
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/18.png
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/buildings/18.jpg
 		cost:12000000000000000000000 bitcoins
 		on tick:
 			yield 8300000000000 bitcoins
