@@ -1478,7 +1478,7 @@ Achievements
 [i:ac5 %name="拥有550个娱乐帝国" %desc="娱乐帝国万古长存" %icon="ccIcons[16,21]" %id="17" %req="550" %i="12"]
 [i:ac5 %name="拥有600个娱乐帝国" %desc="娱乐帝国终极霸主" %icon="ccIcons[16,22]" %id="17" %req="600" %i="13"]
 
-[i:ac5 %name="拥有1个只因宇宙" %desc="只因你在，宇宙才璀璨" %icon="ccIcons[17,0]" %id="18" %req="1" %i="1"]
+[i:ac5 %name="拥有1个只因宇宙" %desc="只因你在宇宙才璀璨" %icon="ccIcons[17,0]" %id="18" %req="1" %i="1"]
 [i:ac5 %name="拥有50个只因宇宙" %desc="跨越宇宙的只因" %icon="ccIcons[17,1]" %id="18" %req="50" %i="2"]
 [i:ac5 %name="拥有100个只因宇宙" %desc="穿越平行宇宙的只因" %icon="ccIcons[17,2]" %id="18" %req="100" %i="3"]
 [i:ac5 %name="拥有150个只因宇宙" %desc="打造宇宙级的只因共振" %icon="ccIcons[17,13]" %id="18" %req="150" %i="4"]
