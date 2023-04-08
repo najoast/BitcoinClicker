@@ -1,10 +1,10 @@
 Let's make a game!
-	desc:鸡你实在是太美<br> B站: https://space.bilibili.com/389407601
+	desc:鸡你实在是太美！
 	updated:28/07/2021
 	name:点鸡你太美
 	version:1.0.0
 	created:23/7/2021
-	by:全栈游戏开发 https://space.bilibili.com/389407601
+	by:全栈游戏开发 QQ:702077066
 
 Settings
 	building cost increase:105%
@@ -236,7 +236,7 @@ Resources
 	*luckycoin|luckycoins
 		name:鸡币
 		desc:点击花费1[n:this]，可随机获得一定量的只因。
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/master/res/lq.png
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/master/res/jb.png
 		class:noBackground
 		show earned
 		on click:
@@ -250,31 +250,31 @@ Resources
 				$val=random(1,10000)
 				if ($val>=1 and $val<=4000)
 					$num=$base
-					toast 再接再励，您获得1倍奖励。只因+[$num]
+					toast 练习时长两年半，获得1倍奖励。只因+[$num]
 				else if ($val>=4001 and $val<=8000)
 					$num=$base*2
 					yield 1 resLcm2
-					toast <#0dbae6>手气不错，您获得2倍奖励。只因+[$num]</#>
+					toast <#0dbae6>唱跳RAP，获得2倍奖励。只因+[$num]</#>
 				else if ($val>=8001 and $val<=9000)
 					$num=$base*5
 					yield 1 resLcm5
-					toast <#7ed321>啧啧称奇，您获得5倍奖励。只因+[$num]</#>
+					toast <#7ed321>篮球Music，获得5倍奖励。只因+[$num]</#>
 				else if ($val>=9001 and $val<=9400)
 					$num=$base*10
 					yield 1 resLcm10
-					toast <#f8e71c>目瞪口呆，您获得10倍奖励！只因+[$num]</#>
+					toast <#f8e71c>鸡你太美，获得10倍奖励！只因+[$num]</#>
 				else if ($val>=9401 and $val<=9700)
 					$num=$base*20
 					yield 1 resLcm20
-					toast <#f5a623>叹为观止，您获得20倍奖励！只因+[$num]</#>
+					toast <#f5a623>鸡你实在是太美，获得20倍奖励！只因+[$num]</#>
 				else if ($val>=9701 and $val<=9900)
 					$num=$base*50
 					yield 1 resLcm50
-					toast <#9013fe>俯首称臣，您获得50倍奖励！只因+[$num]</#>
+					toast <#9013fe>其实我平时很厉害的，获得50倍奖励！只因+[$num]</#>
 				else if ($val>=9901)
 					$num=$base*100
 					yield 1 resLcm100
-					toast <#d0021b>天降伟人，您获得100倍奖励！只因[$num]</#>
+					toast <#d0021b>哎呦你干嘛，获得100倍奖励！只因[$num]</#>
 				end
 			end
 			yield $num bitcoins
@@ -336,7 +336,7 @@ Shinies
 		end
 		frequency:60
 		class:bigButton
-		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/btn_bitcoin.png
+		icon:https://raw.githubusercontent.com/najoast/BitcoinClicker/main/res/qkun.png
 
 Buildings
 	*TEMPLATE
